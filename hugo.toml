@@ -1,3 +1,16 @@
 baseURL = 'https://example.org/'
-languageCode = 'en-us'
-title = 'My New Hugo Site'
+languageCode = 'es'
+title = 'ToBlogSi'
+theme = 'hugo-theme-stack'
+DefaultContentLanguage = 'es'
+
+[params]
+    favicon = '/favicon.ico'
+
+    [sidebar]
+        emoji = '🍥'
+        subtitle = 'Buenos días, tardes y noches :p'
+        [avatar]
+            enabled = true
+            local = true
+            src = 'img/avatar.png'
