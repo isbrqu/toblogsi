@@ -1,0 +1,14 @@
+[[main]]
+    name = "Home"
+    url = "/"
+    weight = 10
+    identifier = "home"
+    [main.params]
+        icon = "home"
+[[main]]
+    name = "Bash"
+    url = "/bash"
+    weight = 10
+    identifier = "bash"
+    [main.params]
+        icon = "terminal"

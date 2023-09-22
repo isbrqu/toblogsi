@@ -1,0 +1,18 @@
+favicon = '/favicon.ico'
+
+[sidebar]
+    compact = false
+    emoji = '🦆'
+    [avatar]
+        enabled = true
+        local = true
+        src = 'img/avatar.png'
+
+[article]
+    toc = true
+
+[comments]
+    enabled = false
+
+[[widgets.page]]
+    type = "toc"

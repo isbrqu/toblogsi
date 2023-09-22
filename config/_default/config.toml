@@ -1,0 +1,6 @@
+baseURL = 'https://isbrqu.github.io/toblogsi/'
+languageCode = 'es'
+title = 'ToBlogSi'
+theme = 'hugo-theme-stack'
+DefaultContentLanguage = 'es'
+
