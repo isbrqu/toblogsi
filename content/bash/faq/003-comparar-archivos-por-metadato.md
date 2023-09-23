@@ -1,7 +1,7 @@
 +++
 title = '3. ¿Cómo puedo comparar archivos basado en algún atributo de metadato (última modifiación, tamaño, etc.)?'
 date = 2023-09-23T08:40:04-03:00
-draft = true
+draft = false
 +++
 
 La solución tentadora es usar `ls` para generar nombres de archivos

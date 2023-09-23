@@ -2,7 +2,7 @@
 title = '01 - Comandos y argumentos'
 date = 2023-09-18T00:43:06-03:00
 tags = ['bash']
-draft = true
+draft = false
 +++
 
 BASH lee comandos de su entrada (que suele ser una terminal o un
