@@ -5,68 +5,6 @@
         <link>https://isbrqu.github.io/toblogsi/</link>
         <description>Recent content on ToBlogSi</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>es</language>
-        <lastBuildDate>Fri, 15 Sep 2023 23:48:03 -0300</lastBuildDate><atom:link href="https://isbrqu.github.io/toblogsi/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>My First Post</title>
-        <link>https://isbrqu.github.io/toblogsi/post/my-first-post/</link>
-        <pubDate>Fri, 15 Sep 2023 23:48:03 -0300</pubDate>
-        
-        <guid>https://isbrqu.github.io/toblogsi/post/my-first-post/</guid>
-        <description>&lt;p&gt;&lt;img src=&#34;https://isbrqu.github.io/toblogsi/toblogsi/post/my-first-post/waterfall.jpg&#34;
-	width=&#34;1000&#34;
-	height=&#34;667&#34;
-	srcset=&#34;https://isbrqu.github.io/toblogsi/toblogsi/post/my-first-post/waterfall_hu568ce19966433dc0c9b81049ea0d7a17_1097821_480x0_resize_q75_box.jpg 480w, https://isbrqu.github.io/toblogsi/toblogsi/post/my-first-post/waterfall_hu568ce19966433dc0c9b81049ea0d7a17_1097821_1024x0_resize_q75_box.jpg 1024w&#34;
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;Waterfall&#34;
-	
-	
-		class=&#34;gallery-image&#34; 
-		data-flex-grow=&#34;149&#34;
-		data-flex-basis=&#34;359px&#34;
-	
-&gt;
-&lt;img src=&#34;https://isbrqu.github.io/toblogsi/toblogsi/post/my-first-post/waterfall.jpg&#34;
-	width=&#34;1000&#34;
-	height=&#34;667&#34;
-	srcset=&#34;https://isbrqu.github.io/toblogsi/toblogsi/post/my-first-post/waterfall_hu568ce19966433dc0c9b81049ea0d7a17_1097821_480x0_resize_q75_box.jpg 480w, https://isbrqu.github.io/toblogsi/toblogsi/post/my-first-post/waterfall_hu568ce19966433dc0c9b81049ea0d7a17_1097821_1024x0_resize_q75_box.jpg 1024w&#34;
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;Waterfall&#34;
-	
-	
-		class=&#34;gallery-image&#34; 
-		data-flex-grow=&#34;149&#34;
-		data-flex-basis=&#34;359px&#34;
-	
-&gt;
-&lt;img src=&#34;https://isbrqu.github.io/toblogsi/toblogsi/post/my-first-post/waterfall.jpg&#34;
-	width=&#34;1000&#34;
-	height=&#34;667&#34;
-	srcset=&#34;https://isbrqu.github.io/toblogsi/toblogsi/post/my-first-post/waterfall_hu568ce19966433dc0c9b81049ea0d7a17_1097821_480x0_resize_q75_box.jpg 480w, https://isbrqu.github.io/toblogsi/toblogsi/post/my-first-post/waterfall_hu568ce19966433dc0c9b81049ea0d7a17_1097821_1024x0_resize_q75_box.jpg 1024w&#34;
-	loading=&#34;lazy&#34;
-	
-		alt=&#34;Waterfall&#34;
-	
-	
-		class=&#34;gallery-image&#34; 
-		data-flex-grow=&#34;149&#34;
-		data-flex-basis=&#34;359px&#34;
-	
-&gt;&lt;/p&gt;
-&lt;div class=&#34;video-wrapper&#34;&gt;
-    &lt;iframe loading=&#34;lazy&#34; 
-            src=&#34;https://www.youtube.com/embed/hzpt3fQjY9U&#34; 
-            allowfullscreen 
-            title=&#34;YouTube Video&#34;
-    &gt;
-    &lt;/iframe&gt;
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-    &lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&lt;/p&gt;&lt;span class=&#34;cite&#34;&gt;&lt;span&gt;― &lt;/span&gt;&lt;span&gt;A famous person, &lt;/span&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Book&#34;&gt;&lt;cite&gt;The book they wrote&lt;/cite&gt;&lt;/a&gt;&lt;/span&gt;&lt;/blockquote&gt;
-</description>
-        </item>
-        
+        <language>es</language><atom:link href="https://isbrqu.github.io/toblogsi/index.xml" rel="self" type="application/rss+xml" />
     </channel>
 </rss>
