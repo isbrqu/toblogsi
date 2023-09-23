@@ -1,5 +1,5 @@
 +++
-title = '002 - ¿Cómo puedo guardar el valor retornado y/o salida de un comando en una variable?'
+title = '2. ¿Cómo puedo guardar el valor retornado y/o salida de un comando en una variable?'
 date = 2023-09-22T00:34:16-03:00
 draft = false
 +++
