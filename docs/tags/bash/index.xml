@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>bash on ToBlogSi</title>
+        <link>https://isbrqu.github.io/toblogsi/tags/bash/</link>
+        <description>Recent content in bash on ToBlogSi</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>es</language>
+        <lastBuildDate>Mon, 18 Sep 2023 00:43:06 -0300</lastBuildDate><atom:link href="https://isbrqu.github.io/toblogsi/tags/bash/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>01 - Comandos y argumentos</title>
+        <link>https://isbrqu.github.io/toblogsi/bash/basics/01-commands-and-arguments/</link>
+        <pubDate>Mon, 18 Sep 2023 00:43:06 -0300</pubDate>
+        
+        <guid>https://isbrqu.github.io/toblogsi/bash/basics/01-commands-and-arguments/</guid>
+        <description>&lt;p&gt;BASH lee comandos de su entrada (que suele ser una terminal o un
+archivo). Cada linea de entrada que lee es tratada como un comando &amp;ndash;
+una instrucción para ser llevado a cabo. Hay pocos casos avanzados,
+como comandos que ocupan varias líneas, que serán tratadas después.&lt;/p&gt;
+&lt;p&gt;Bash divide cada linea entre &lt;em&gt;palabras&lt;/em&gt; que son demarcadas por un
+caracter en blaco (espacios o tabuladores). La primera palabra de la
+linea es el nombre del comando para ser ejecutado. Todas las palabras
+restantes seran &lt;em&gt;argumentos&lt;/em&gt; para ese comando (options, filenmaes,
+etc.).&lt;/p&gt;
+&lt;p&gt;Asumiendo que estamos en un directorio vacio&amp;hellip; (probar estos
+comandos, crear un directorio vacío llamado &lt;em&gt;test&lt;/em&gt; y entrar a ese
+directorio para correr: &lt;code&gt;mkdir test; cd test&lt;/code&gt;):&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ ls     &lt;span style=&#34;color:#75715e&#34;&gt;# Lista los archivos in el actual directorio (sin salida, sin archivos).&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ touch  &lt;span style=&#34;color:#75715e&#34;&gt;# Crea los archivos &amp;#39;a&amp;#39;, &amp;#39;b&amp;#39; y &amp;#39;c&amp;#39;.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ ls     &lt;span style=&#34;color:#75715e&#34;&gt;# Lista los archivos de nuevo, y esta vez muestra: &amp;#39;a&amp;#39;, &amp;#39;b&amp;#39; y &amp;#39;c&amp;#39;.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;a b c
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;El comando &lt;code&gt;ls&lt;/code&gt; imprime los nombres de los archivos en el directorio
+actual. La primera vez que corremos la lista de comandos no obtenemos
+salida, porque no hay archivos todadavía.&lt;/p&gt;
+&lt;p&gt;El caracter &lt;code&gt;#&lt;/code&gt; al principio de una palabra indica un comentario.
+Cualquier palabra seguida del comentario son ignoradas por la shell,
+destinado solo para leer. Si corremos el ejemplo en nuestra shell, no
+tenemos que tipear los comentarios; pero incluso si lo hacemos, el
+comando seguirá funcionando.&lt;/p&gt;
+&lt;p&gt;El comando &lt;code&gt;touch&lt;/code&gt; es una aplicación que cambia el dato de la &lt;em&gt;última
+modificación&lt;/em&gt; de un archivo. Si el nombre del archivo que se
+proporciona aún no existe, crea un nuevo archivo vacío y con ese
+nombre.&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
