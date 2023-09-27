@@ -1,14 +1,21 @@
 [[main]]
     name = "Home"
     url = "/"
-    weight = 10
+    weight = 1
     identifier = "home"
     [main.params]
         icon = "home"
 [[main]]
     name = "Bash"
     url = "/bash"
-    weight = 10
+    weight = 2
     identifier = "bash"
+    [main.params]
+        icon = "terminal"
+[[main]]
+    name = "Smalltalk"
+    url = "/smalltalk"
+    weight = 3
+    identifier = "smalltalk"
     [main.params]
         icon = "terminal"
