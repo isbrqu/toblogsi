@@ -5,147 +5,15 @@
         <link>https://isbrqu.github.io/toblogsi/</link>
         <description>Recent content on ToBlogSi</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>es</language>
-        <lastBuildDate>Sat, 23 Sep 2023 09:32:16 -0300</lastBuildDate><atom:link href="https://isbrqu.github.io/toblogsi/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>10. ¿Cómo puedo recrear una estructura jerárquica (árbol) de directorios sin los archivos?</title>
-        <link>https://isbrqu.github.io/toblogsi/bash/faq/010-recrear-arbol-directorio/</link>
-        <pubDate>Sat, 23 Sep 2023 09:32:16 -0300</pubDate>
+        <language>es</language><atom:link href="https://isbrqu.github.io/toblogsi/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>¡Bienvenido!</title>
+        <link>https://isbrqu.github.io/toblogsi/</link>
+        <pubDate>Thu, 21 Dec 2023 00:00:00 +0000</pubDate>
         
-        <guid>https://isbrqu.github.io/toblogsi/bash/faq/010-recrear-arbol-directorio/</guid>
-        <description>&lt;p&gt;Puedes usar alguno de estos tres programas: &lt;code&gt;cpio&lt;/code&gt;, &lt;code&gt;pax&lt;/code&gt; o &lt;code&gt;tar&lt;/code&gt;.&lt;/p&gt;
-</description>
-        </item>
-        <item>
-        <title>9. ¿Qué es el almacenamiento en buffer? O, ¿por qué mi línea de comando no produce ningún output? tail -f logfile | grep &#34;barra foo&#34; | awk ...</title>
-        <link>https://isbrqu.github.io/toblogsi/bash/faq/009-bufer-comando-sin-output/</link>
-        <pubDate>Sat, 23 Sep 2023 09:23:43 -0300</pubDate>
-        
-        <guid>https://isbrqu.github.io/toblogsi/bash/faq/009-bufer-comando-sin-output/</guid>
-        <description>&lt;p&gt;La mayoría de los comandos estándar de Unix amortiguan su salida
-cuando se usan de forma no interactiva. Esto significa que no escriben
-cada carácter (o incluso cada línea) inmediatamente, sino que
-recopilan una mayor cantidad de caracteres (a menudo 4 kilobytes)
-antes de imprimir cualquier cosa. En el caso anterior, el comando
-&lt;code&gt;grep&lt;/code&gt; almacena en buffer su salida y, por lo tanto, &lt;code&gt;awk&lt;/code&gt; solo
-obtiene su entrada en grandes porciones.&lt;/p&gt;
-</description>
-        </item>
-        <item>
-        <title>8. ¿Cómo puedo buscar recursivamente una cadena en todos los archivos?</title>
-        <link>https://isbrqu.github.io/toblogsi/bash/faq/008-busqueda-recursiva-de-archivos/</link>
-        <pubDate>Sat, 23 Sep 2023 09:18:05 -0300</pubDate>
-        
-        <guid>https://isbrqu.github.io/toblogsi/bash/faq/008-busqueda-recursiva-de-archivos/</guid>
-        <description>&lt;p&gt;Si estás en un sistema típico GNU o BSD, todo lo que necesitas es uno de estos.&lt;/p&gt;
-</description>
-        </item>
-        <item>
-        <title>6. ¿Cómo puedo utilizar variables variables (variables indirectas, punteros, referencias) o matrices asociativas?</title>
-        <link>https://isbrqu.github.io/toblogsi/bash/faq/006-punteros-y-referencias/</link>
-        <pubDate>Sat, 23 Sep 2023 09:09:24 -0300</pubDate>
-        
-        <guid>https://isbrqu.github.io/toblogsi/bash/faq/006-punteros-y-referencias/</guid>
-        <description>&lt;p&gt;Esta es una página compleja, porque es un tema complejo. Se ha
-dividido aproximadamente en tres partes: matrices asociativas,
-evaluación de variables indirectas y asignación de variables
-indirectas. Hay discusiones sobre cuestiones y conceptos de
-programación repartidos por todas partes.&lt;/p&gt;
-</description>
-        </item>
-        <item>
-        <title>5. ¿Cómo puedo usar arrays?</title>
-        <link>https://isbrqu.github.io/toblogsi/bash/faq/005-usar-arrays/</link>
-        <pubDate>Sat, 23 Sep 2023 09:00:32 -0300</pubDate>
-        
-        <guid>https://isbrqu.github.io/toblogsi/bash/faq/005-usar-arrays/</guid>
-        <description>&lt;p&gt;Esta respuesta asume que tienes un entendimiento básico de lo que son
-los arrays. Si eres nuevo en este tipo de programación, quizás quieras
-comenzar con la &lt;a class=&#34;link&#34; href=&#34;#&#34; &gt;explicación de la guía&lt;/a&gt;. Esta página es más
-completa. Consulte los &lt;a class=&#34;link&#34; href=&#34;#&#34; &gt;links&lt;/a&gt; en la parte inferior para obtener más
-recursos.&lt;/p&gt;
-</description>
-        </item>
-        <item>
-        <title>4. ¿Cómo puedo verificar si un directorio está vacío o no? ¿Cómo puedo comprobar si hay archivos *.mpg o contar cuantos hay?</title>
-        <link>https://isbrqu.github.io/toblogsi/bash/faq/004-verificar-contenido-de-directorio/</link>
-        <pubDate>Sat, 23 Sep 2023 08:49:46 -0300</pubDate>
-        
-        <guid>https://isbrqu.github.io/toblogsi/bash/faq/004-verificar-contenido-de-directorio/</guid>
-        <description>&lt;p&gt;En bash, puedes contar archivos de forma segura y sencilla con las
-opciones &lt;code&gt;nullglob&lt;/code&gt; y &lt;code&gt;dotglob&lt;/code&gt; (que cambian el comportamiento del
-&lt;a class=&#34;link&#34; href=&#34;#&#34; &gt;globbing&lt;/a&gt;), y un array.&lt;/p&gt;
-</description>
-        </item>
-        <item>
-        <title>3. ¿Cómo puedo comparar archivos basado en algún atributo de metadato (última modifiación, tamaño, etc.)?</title>
-        <link>https://isbrqu.github.io/toblogsi/bash/faq/003-comparar-archivos-por-metadato/</link>
-        <pubDate>Sat, 23 Sep 2023 08:40:04 -0300</pubDate>
-        
-        <guid>https://isbrqu.github.io/toblogsi/bash/faq/003-comparar-archivos-por-metadato/</guid>
-        <description>&lt;p&gt;La solución tentadora es usar &lt;code&gt;ls&lt;/code&gt; para generar nombres de archivos
-ordenados y operar con los resultados usando, por ejemplo, &lt;code&gt;awk&lt;/code&gt;. Como
-es habitual, el enfoque ls no &lt;a class=&#34;link&#34; href=&#34;#&#34; &gt;puede hacerse robusto&lt;/a&gt; y nunca debe
-usarse en scripts debido en parte a la posibilidad de que haya
-caracteres arbitrarios (incluidas nuevas líneas) presentes en los
-nombres de archivos. Por lo tanto, necesitamos alguna otra forma de
-comparar los metadatos de los archivos.&lt;/p&gt;
-</description>
-        </item>
-        <item>
-        <title>2. ¿Cómo puedo guardar el valor retornado y/o salida de un comando en una variable?</title>
-        <link>https://isbrqu.github.io/toblogsi/bash/faq/002-como-guardar-el-valor-retornado/</link>
-        <pubDate>Fri, 22 Sep 2023 00:34:16 -0300</pubDate>
-        
-        <guid>https://isbrqu.github.io/toblogsi/bash/faq/002-como-guardar-el-valor-retornado/</guid>
-        <description>&lt;p&gt;Bueno, eso depende de si desea almacenar el &lt;em&gt;output&lt;/em&gt; del comando (ya sea
-stdout o stdout + stderr) o su &lt;em&gt;exit status&lt;/em&gt; (0 a 255, donde 0
-normalmente significa &amp;ldquo;éxito&amp;rdquo;).&lt;/p&gt;
-</description>
-        </item>
-        <item>
-        <title>01 - Comandos y argumentos</title>
-        <link>https://isbrqu.github.io/toblogsi/bash/basics/01-commands-and-arguments/</link>
-        <pubDate>Mon, 18 Sep 2023 00:43:06 -0300</pubDate>
-        
-        <guid>https://isbrqu.github.io/toblogsi/bash/basics/01-commands-and-arguments/</guid>
-        <description>&lt;p&gt;BASH lee comandos de su entrada (que suele ser una terminal o un
-archivo). Cada linea de entrada que lee es tratada como un comando &amp;ndash;
-una instrucción para ser llevado a cabo. Hay pocos casos avanzados,
-como comandos que ocupan varias líneas, que serán tratadas después.&lt;/p&gt;
-&lt;p&gt;Bash divide cada linea entre &lt;em&gt;palabras&lt;/em&gt; que son demarcadas por un
-caracter en blaco (espacios o tabuladores). La primera palabra de la
-linea es el nombre del comando para ser ejecutado. Todas las palabras
-restantes seran &lt;em&gt;argumentos&lt;/em&gt; para ese comando (options, filenmaes,
-etc.).&lt;/p&gt;
-&lt;p&gt;Asumiendo que estamos en un directorio vacio&amp;hellip; (probar estos
-comandos, crear un directorio vacío llamado &lt;em&gt;test&lt;/em&gt; y entrar a ese
-directorio para correr: &lt;code&gt;mkdir test; cd test&lt;/code&gt;):&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ ls     &lt;span style=&#34;color:#75715e&#34;&gt;# Lista los archivos in el actual directorio (sin salida, sin archivos).&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ touch  &lt;span style=&#34;color:#75715e&#34;&gt;# Crea los archivos &amp;#39;a&amp;#39;, &amp;#39;b&amp;#39; y &amp;#39;c&amp;#39;.&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ ls     &lt;span style=&#34;color:#75715e&#34;&gt;# Lista los archivos de nuevo, y esta vez muestra: &amp;#39;a&amp;#39;, &amp;#39;b&amp;#39; y &amp;#39;c&amp;#39;.&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;a b c
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;El comando &lt;code&gt;ls&lt;/code&gt; imprime los nombres de los archivos en el directorio
-actual. La primera vez que corremos la lista de comandos no obtenemos
-salida, porque no hay archivos todadavía.&lt;/p&gt;
-&lt;p&gt;El caracter &lt;code&gt;#&lt;/code&gt; al principio de una palabra indica un comentario.
-Cualquier palabra seguida del comentario son ignoradas por la shell,
-destinado solo para leer. Si corremos el ejemplo en nuestra shell, no
-tenemos que tipear los comentarios; pero incluso si lo hacemos, el
-comando seguirá funcionando.&lt;/p&gt;
-&lt;p&gt;El comando &lt;code&gt;touch&lt;/code&gt; es una aplicación que cambia el dato de la &lt;em&gt;última
-modificación&lt;/em&gt; de un archivo. Si el nombre del archivo que se
-proporciona aún no existe, crea un nuevo archivo vacío y con ese
-nombre.&lt;/p&gt;
-</description>
-        </item>
-        <item>
-        <title>1. ¿Cómo leer un archivo (data stream, variable) línea por línea (y/o campo por campo)?</title>
-        <link>https://isbrqu.github.io/toblogsi/bash/faq/001-leer-un-archivo/</link>
-        <pubDate>Tue, 22 Aug 2023 00:09:17 -0300</pubDate>
-        
-        <guid>https://isbrqu.github.io/toblogsi/bash/faq/001-leer-un-archivo/</guid>
-        <description>&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;#&#34; &gt;No intentes usar &lt;code&gt;for&lt;/code&gt;&lt;/a&gt;. Usa &lt;code&gt;while&lt;/code&gt; y el comando &lt;code&gt;read&lt;/code&gt;. &lt;a class=&#34;link&#34; href=&#34;#&#34; &gt;Aquí
-está el template básico y muchas variaciones para discutir&lt;/a&gt;.&lt;/p&gt;
+        <guid>https://isbrqu.github.io/toblogsi/</guid>
+        <description>&lt;p&gt;Este es un pequeño blog para subir contenido relacionado a temas nichos de programación&lt;/p&gt;
+&lt;p&gt;Encontrarás temas relacionado al uso de la terminal, uso de herramientas para uso especifico y algún que otro algorimo que consideré sofisticado sobre el que valía la pena escribir.&lt;/p&gt;
+&lt;p&gt;Más que creación propia, es una recolección de blogs, wikis y documentación que consideré que se podían ordenar en un mejor formato. Mucho del contenido tiene abajo de cada página dedicada el enlace al recurso por si deseas ir a la fuente directa y revisar si hubo algún cambio que no haya actualizado.&lt;/p&gt;
 </description>
         </item>
         

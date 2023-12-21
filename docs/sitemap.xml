@@ -2,57 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://isbrqu.github.io/toblogsi/bash/faq/010-recrear-arbol-directorio/</loc>
-    <lastmod>2023-09-23T09:32:16-03:00</lastmod>
-  </url><url>
     <loc>https://isbrqu.github.io/toblogsi/</loc>
-    <lastmod>2023-09-23T09:32:16-03:00</lastmod>
-  </url><url>
-    <loc>https://isbrqu.github.io/toblogsi/bash/faq/009-bufer-comando-sin-output/</loc>
-    <lastmod>2023-09-23T09:23:43-03:00</lastmod>
-  </url><url>
-    <loc>https://isbrqu.github.io/toblogsi/bash/faq/008-busqueda-recursiva-de-archivos/</loc>
-    <lastmod>2023-09-23T09:18:05-03:00</lastmod>
-  </url><url>
-    <loc>https://isbrqu.github.io/toblogsi/bash/faq/006-punteros-y-referencias/</loc>
-    <lastmod>2023-09-23T09:09:24-03:00</lastmod>
-  </url><url>
-    <loc>https://isbrqu.github.io/toblogsi/bash/faq/005-usar-arrays/</loc>
-    <lastmod>2023-09-23T09:00:32-03:00</lastmod>
-  </url><url>
-    <loc>https://isbrqu.github.io/toblogsi/bash/faq/004-verificar-contenido-de-directorio/</loc>
-    <lastmod>2023-09-23T08:49:46-03:00</lastmod>
-  </url><url>
-    <loc>https://isbrqu.github.io/toblogsi/bash/faq/003-comparar-archivos-por-metadato/</loc>
-    <lastmod>2023-09-23T08:40:04-03:00</lastmod>
-  </url><url>
-    <loc>https://isbrqu.github.io/toblogsi/bash/faq/002-como-guardar-el-valor-retornado/</loc>
-    <lastmod>2023-09-22T00:34:16-03:00</lastmod>
-  </url><url>
-    <loc>https://isbrqu.github.io/toblogsi/bash/faq/</loc>
-    <lastmod>2023-09-22T00:08:54-03:00</lastmod>
-  </url><url>
-    <loc>https://isbrqu.github.io/toblogsi/bash/pitfalls/</loc>
-    <lastmod>2023-09-20T07:26:00-03:00</lastmod>
-  </url><url>
-    <loc>https://isbrqu.github.io/toblogsi/bash/basics/</loc>
-    <lastmod>2023-09-20T07:18:58-03:00</lastmod>
-  </url><url>
-    <loc>https://isbrqu.github.io/toblogsi/bash/</loc>
-    <lastmod>2023-09-20T07:18:12-03:00</lastmod>
-  </url><url>
-    <loc>https://isbrqu.github.io/toblogsi/bash/basics/01-commands-and-arguments/</loc>
-    <lastmod>2023-09-18T00:43:06-03:00</lastmod>
-  </url><url>
-    <loc>https://isbrqu.github.io/toblogsi/tags/bash/</loc>
-    <lastmod>2023-09-18T00:43:06-03:00</lastmod>
-  </url><url>
-    <loc>https://isbrqu.github.io/toblogsi/tags/</loc>
-    <lastmod>2023-09-18T00:43:06-03:00</lastmod>
-  </url><url>
-    <loc>https://isbrqu.github.io/toblogsi/bash/faq/001-leer-un-archivo/</loc>
-    <lastmod>2023-08-22T00:09:17-03:00</lastmod>
+    <lastmod>2023-12-21T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://isbrqu.github.io/toblogsi/categories/</loc>
+  </url><url>
+    <loc>https://isbrqu.github.io/toblogsi/tags/</loc>
+  </url><url>
+    <loc>https://isbrqu.github.io/toblogsi/</loc>
   </url>
 </urlset>
