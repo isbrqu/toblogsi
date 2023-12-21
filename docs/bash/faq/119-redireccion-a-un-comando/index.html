@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='La mayoría de las veces, estos comandos hacen lo mismo, pero el segundo es menos eficiente y también falla en determinadas circunstancias excepcionales.
+Suponiendo que cmd no es una función, una palabra clave incorporada o especial de la shell, el primer comando cmd &amp;lt; file funciona así:
+La shell bifurca un SubShell. Dentro del subshell, la entrada estándar se cierra y se vuelve a abrir usando un archivo en modo de solo lectura.'>
+<title>119. ¿Cuál es la diferencia entre &#34;cmd &lt;archivo&#34; y &#34;archivo cat | cmd&#34;? ¿Qué es un UUOC?</title>
+
+<link rel='canonical' href='https://isbrqu.github.io/toblogsi/bash/faq/119-redireccion-a-un-comando/'>
+
+<link rel="stylesheet" href="/toblogsi/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css"><meta property='og:title' content='119. ¿Cuál es la diferencia entre &#34;cmd &lt;archivo&#34; y &#34;archivo cat | cmd&#34;? ¿Qué es un UUOC?'>
+<meta property='og:description' content='La mayoría de las veces, estos comandos hacen lo mismo, pero el segundo es menos eficiente y también falla en determinadas circunstancias excepcionales.
+Suponiendo que cmd no es una función, una palabra clave incorporada o especial de la shell, el primer comando cmd &amp;lt; file funciona así:
+La shell bifurca un SubShell. Dentro del subshell, la entrada estándar se cierra y se vuelve a abrir usando un archivo en modo de solo lectura.'>
+<meta property='og:url' content='https://isbrqu.github.io/toblogsi/bash/faq/119-redireccion-a-un-comando/'>
+<meta property='og:site_name' content='ToBlogSi'>
+<meta property='og:type' content='article'><meta property='article:section' content='Bash' /><meta property='article:published_time' content='2023-10-01T11:57:05-03:00'/><meta property='article:modified_time' content='2023-10-01T11:57:05-03:00'/>
+<meta name="twitter:title" content="119. ¿Cuál es la diferencia entre &#34;cmd &lt;archivo&#34; y &#34;archivo cat | cmd&#34;? ¿Qué es un UUOC?">
+<meta name="twitter:description" content="La mayoría de las veces, estos comandos hacen lo mismo, pero el segundo es menos eficiente y también falla en determinadas circunstancias excepcionales.
+Suponiendo que cmd no es una función, una palabra clave incorporada o especial de la shell, el primer comando cmd &amp;lt; file funciona así:
+La shell bifurca un SubShell. Dentro del subshell, la entrada estándar se cierra y se vuelve a abrir usando un archivo en modo de solo lectura.">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/toblogsi/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/toblogsi/img/avatar_hu077a65c82ff2a9cd78b22c9f96ea6c97_324057_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🦆</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/toblogsi">ToBlogSi</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/toblogsi/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/toblogsi/bash' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-terminal-2" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M8 9l3 3l-3 3" />
+  <path d="M13 15l3 0" />
+  <path d="M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
+</svg>
+
+                
+                <span>Bash</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/toblogsi/smalltalk' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-terminal-2" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M8 9l3 3l-3 3" />
+  <path d="M13 15l3 0" />
+  <path d="M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
+</svg>
+
+                
+                <span>Smalltalk</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>Modo oscuro</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">Tabla de contenido</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ul>
+    <li><a href="#qué-es-un-uuoc">¿Qué es un UUOC?</a></li>
+  </ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/toblogsi/bash/faq/119-redireccion-a-un-comando/">119. ¿Cuál es la diferencia entre &#34;cmd &lt;archivo&#34; y &#34;archivo cat | cmd&#34;? ¿Qué es un UUOC?</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Oct 01, 2023</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    3 minutos a leer
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>La mayoría de las veces, estos comandos hacen lo mismo, pero el segundo es menos eficiente y también falla en determinadas circunstancias excepcionales.</p>
+<p>Suponiendo que <code>cmd</code> no es una función, una palabra clave incorporada o
+especial de la shell, el primer comando <code>cmd &lt; file</code> funciona así:</p>
+<ul>
+<li>La shell bifurca un <a class="link" href="#" >SubShell</a>.</li>
+<li>Dentro del subshell, la entrada estándar se cierra y se vuelve a
+abrir usando un archivo en modo de solo lectura.</li>
+<li>El subshell ejecuta <code>cmd</code>, reemplazándose con el nuevo comando, que
+presumiblemente lee el archivo.</li>
+<li>El padre espera a que termine el subshell y luego continúa
+normalmente.</li>
+</ul>
+<p>El segundo comando <code>cat file | cmd</code> funciona así:</p>
+<ul>
+<li>La shell bifurca dos subshells y crea una tubería anónima.</li>
+<li>La tubería está conectada de una subshell a la otra.</li>
+<li>La primera subshell ejecuta <code>cat</code> con <code>file</code> como argumento. <code>cat</code> abre el
+archivo y copia su contenido en la tubería.</li>
+<li>La segunda subshell ejecuta <code>cmd</code>, que presumiblemente lee desde la
+tubería.</li>
+<li>Cuando ambas subshells han terminado, el padre continúa
+normalmente.</li>
+</ul>
+<p>Entonces, ya podemos ver por qué el segundo comando es menos
+eficiente: introduce un proceso adicional, además de la canalización
+anónima.</p>
+<p>Otra diferencia es que en el primer comando, la entrada estándar de
+cmd es un descriptor de archivo que apunta a un archivo real. El
+comando puede rebobinar o buscar una ubicación diferente en el
+archivo. Sin embargo, en el segundo comando, la entrada estándar de
+cmd es una canalización anónima, no un archivo real. El comando sólo
+puede leer la entrada secuencialmente como un flujo de bytes; no puede
+rebobinarlo, ni saltar hacia adelante o hacia atrás.</p>
+<p>Por lo tanto, los comandos que esperan una entrada estándar buscable
+se interrumpirán al utilizar el segundo comando. Esto es raro, pero
+sucede a veces.</p>
+<p>En algunas circunstancias, el segundo comando también es más lento. Si
+<code>cmd</code> resulta ser un bucle <code>while read</code> implementado en el shell, el
+shell se ve <a class="link" href="https://lists.gnu.org/archive/html/bug-bash/2020-06/msg00045.html"  target="_blank" rel="noopener"
+    >obligado a utilizar lecturas de un solo
+byte</a>, en
+lugar de lecturas almacenadas en el búfer.</p>
+<h2 id="qué-es-un-uuoc">¿Qué es un UUOC?</h2>
+<p>UUOC es un acrónimo (o inicial, para los británicos) que significa
+<em>Useless Use Of Cat</em>. Es un término informal utilizado para describir
+el uso inadecuado de <code>cat file | cmd</code>.</p>
+<p>Entre los círculos de programadores competentes, cuando un recién
+llegado hace algo ineficiente o incorrecto, los demás normalmente
+intentan ayudar a esa persona señalándole el error y mostrándole el
+camino correcto. En algunos grupos de Usenet, esto se convirtió en una
+tradición: al recién llegado se le &ldquo;presentaba&rdquo; un <a class="link" href="https://porkmail.org/era/unix/award#cat"  target="_blank" rel="noopener"
+    >premio satírico
+UUOC</a>, una especie de
+insignia de logro.</p>
+<p>Lamentablemente, algunas personas no aprecian la ayuda que les brindan
+y ven la crítica constructiva como mera crítica. Ver también: <a class="link" href="http://www.mit.edu/~jcb/tact.html"  target="_blank" rel="noopener"
+    >filtro
+de tacto</a>.</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2023 ToBlogSi
+    </section>
+    
+    <section class="powerby">
+        Creado con <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Tema <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.20.0">Stack</a></b> diseñado por <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/toblogsi/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
