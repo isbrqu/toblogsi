@@ -135,15 +135,15 @@ Yo soy lhunath
 $ echo 'Yo soy $LOGNAME'
 Yo soy $LOGNAME
 $ # boo
-$ echo An open\ \ \ space
-An open   space
-$ echo "My computer is $(hostname)"
-My computer is Lyndir
+$ echo Un espacio\ \ \ abierto
+Un espacio   abierto
+$ echo "Mi computadora es $(hostname)"
+Mi computadora es Lyndir
 $ echo boo > file
 $ echo $(( 5 + 5 ))
 10
-$ (( 5 > 0 )) && echo "Five is greater than zero."
-Five is greater than zero.
+$ (( 5 > 0 )) && echo "Cinco es mayor a cero."
+Cinco es mayor a cero.
 ```
 
 [Página original](https://mywiki.wooledge.org/BashGuide/SpecialCharacters)
