@@ -146,4 +146,38 @@ $ (( 5 > 0 )) && echo "Cinco es mayor a cero."
 Cinco es mayor a cero.
 ```
 
+## Caracteres especiales obsoletos (reconocidos, pero no recomendados)
+
+Bash también evaluará este grupo de caracteres como si tuvieran un significado no literal, pero generalmente se incluyen solo por compatibilidad con versiones anteriores. No se recomienda su uso, pero suelen aparecer en scripts antiguos o mal escritos.
+
+<table>
+  <tr>
+    <th>Caracter</th>
+    <th>Descripción</th>
+  </tr>
+  <tr>
+    <td>`` ` ` ``</td>
+    <td>
+      [Sustitución de comando](https://mywiki.wooledge.org/CommandSubstitution): utilice `$( )` en su lugar.
+    </td>
+  </tr>
+  <tr>
+    <td>`[ ]`</td>
+    <td>
+      Test: un alias del antiguo comando `test`. Se utiliza habitualmente en scripts de shell POSIX. Carece de muchas funciones de `[[ ]]`.
+    </td>
+  </tr>
+  <tr>
+    <td>`$[ ]`</td>
+    <td>
+      [Expresión aritmética](https://mywiki.wooledge.org/ArithmeticExpression): Utilice `$(( ))` en su lugar.
+    </td>
+  </tr>
+</table>
+
+**Además:**
+
+- **En el manual**: [Sintaxis del shell](http://www.gnu.org/software/bash/manual/html_node/Shell-Syntax.html#Shell-Syntax)
+- Caracteres especiales: Caracteres que tienen un significado especial para Bash. Normalmente, se interpreta su significado y luego se eliminan del comando antes de ejecutarlo.
+
 [Página original](https://mywiki.wooledge.org/BashGuide/SpecialCharacters)

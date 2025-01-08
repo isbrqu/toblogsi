@@ -203,6 +203,47 @@
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="ex">10</span></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> <span class="er">(</span><span class="kw">(</span> <span class="ex">5</span> <span class="op">&gt;</span> 0 <span class="kw">))</span> <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">&quot;Cinco es mayor a cero.&quot;</span></span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ex">Cinco</span> es mayor a cero.</span></code></pre></div>
+    <h2 id="caracteres-especiales-obsoletos-reconocidos-pero-no-recomendados">Caracteres especiales obsoletos (reconocidos, pero no recomendados)</h2>
+    <p>Bash también evaluará este grupo de caracteres como si tuvieran un significado no literal, pero generalmente se incluyen solo por compatibilidad con versiones anteriores. No se recomienda su uso, pero suelen aparecer en scripts antiguos o mal escritos.</p>
+    <table>
+    <tr>
+    <th>
+    Caracter
+    </th>
+    <th>
+    Descripción
+    </th>
+    </tr>
+    <tr>
+    <td>
+    <code>` `</code>
+    </td>
+    <td>
+    <a href="https://mywiki.wooledge.org/CommandSubstitution">Sustitución de comando</a>: utilice <code>$( )</code> en su lugar.
+    </td>
+    </tr>
+    <tr>
+    <td>
+    <code>[ ]</code>
+    </td>
+    <td>
+    Test: un alias del antiguo comando <code>test</code>. Se utiliza habitualmente en scripts de shell POSIX. Carece de muchas funciones de <code>[[ ]]</code>.
+    </td>
+    </tr>
+    <tr>
+    <td>
+    <code>$[ ]</code>
+    </td>
+    <td>
+    <a href="https://mywiki.wooledge.org/ArithmeticExpression">Expresión aritmética</a>: Utilice <code>$(( ))</code> en su lugar.
+    </td>
+    </tr>
+    </table>
+    <p><strong>Además:</strong></p>
+    <ul>
+    <li><strong>En el manual</strong>: <a href="http://www.gnu.org/software/bash/manual/html_node/Shell-Syntax.html#Shell-Syntax">Sintaxis del shell</a></li>
+    <li>Caracteres especiales: Caracteres que tienen un significado especial para Bash. Normalmente, se interpreta su significado y luego se eliminan del comando antes de ejecutarlo.</li>
+    </ul>
     <p><a href="https://mywiki.wooledge.org/BashGuide/SpecialCharacters">Página original</a></p>
   </main>
 </body>
