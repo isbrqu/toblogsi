@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <meta name="author" content="Lhunath,GreyCat,isbrqu">
+  <meta name="description" content="Comandos y argumentos">
+  <link rel="stylesheet" href="../css/pico.min.css">
+  <title>Comandos y argumentos</title>
+</head>
+<body>
+  <main class="container">
+    <nav>
+      <ul>
+        <li><a href="/"<strong>ToBlogSi</strong></a></li>
+      </ul>
+      <ul>
+        <li><a href="/guia/introduccion.html">Guía</a></li>
+        <li><a href="/preguntas-frecuentes/introduccion.html">Preguntas frecuentes</a></li>
+        <li><a href="/malas-practicas/introduccion.html">Malas prácticas</a></li>
+        <li><a href="/referencia-rapida/introduccion.html">Referencia rápida</a></li>
+        <li><a href="/programacion/introduccion.html">Programación</a></li>
+      </ul>
+    </nav>
+    <h1>Comandos y argumentos</h1>
+    <p>BASH lee comandos de su entrada (que suele ser una terminal o un archivo). Cada linea de entrada que lee es tratada como un comando – una instrucción para ser llevado a cabo. Hay pocos casos avanzados, como comandos que ocupan varias líneas, que serán tratadas después.</p>
+    <p>Bash divide cada linea entre <em>palabras</em> que son demarcadas por un caracter en blaco (espacios o tabuladores). La primera palabra de la linea es el nombre del comando para ser ejecutado. Todas las palabras restantes seran <em>argumentos</em> para ese comando (options, filenmaes, etc.).</p>
+    <p>Asumiendo que estamos en un directorio vacio… (probar estos comandos, crear un directorio vacío llamado <em>test</em> y entrar a ese directorio para correr: <code>mkdir test; cd test</code>):</p>
+    <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls     <span class="co"># Lista los archivos in el actual directorio (sin salida, sin archivos).</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> touch  <span class="co"># Crea los archivos &#39;a&#39;, &#39;b&#39; y &#39;c&#39;.</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls     <span class="co"># Lista los archivos de nuevo, y esta vez muestra: &#39;a&#39;, &#39;b&#39; y &#39;c&#39;.</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">a</span> b c</span></code></pre></div>
+    <p>El comando <code>ls</code> imprime los nombres de los archivos en el directorio actual. La primera vez que corremos la lista de comandos no obtenemos salida, porque no hay archivos todadavía.</p>
+    <p>El caracter <code>#</code> al principio de una palabra indica un comentario. Cualquier palabra seguida del comentario son ignoradas por la shell, destinado solo para leer. Si corremos el ejemplo en nuestra shell, no tenemos que tipear los comentarios; pero incluso si lo hacemos, el comando seguirá funcionando.</p>
+    <p>El comando <code>touch</code> es una aplicación que cambia el dato de la <em>última modificación</em> de un archivo. Si el nombre del archivo que se proporciona aún no existe, crea un nuevo archivo vacío y con ese nombre.</p>
+    <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> rm <span class="pp">*</span>            <span class="co"># Eliminar todos los archivos del directorio actual.</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls              <span class="co"># Lista de archivos en el directorio actual (sin salida, sin archivos).</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> touch a   b c   <span class="co"># Crea los archivos &#39;a&#39;, &#39;b&#39; y &#39;c&#39;.</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls              <span class="co"># Enumere los archivos nuevamente; esta vez las salidas: &#39;a&#39;, &#39;b&#39; y &#39;c&#39;.</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">a</span>  b  c</span></code></pre></div>
+    <p>El comando <code>rm</code> es una aplicación que elimina todos los archivos que se le han asignado. <a href="https://mywiki.wooledge.org/glob"><code>*</code></a> es un glob. Básicamente significa todo y en este caso significa todos los archivos del directorio actual. Hablaremos más sobre globs más adelante.</p>
+    <p>Ahora, ¿nos dimos cuenta de que hay varios espacios entre <code>a</code> y <code>b</code>, y solo uno entre <code>b</code> y <code>c</code>? Además, observe que los archivos que se crearon con <code>touch</code> no son diferentes a los de la primera vez. ¡La cantidad de espacios en blanco entre los argumentos no importa! Es importante saber esto. Por ejemplo:</p>
+    <pre><code>$ echo Esto es una prueba.
+Esto es una prueba.
+$ echo Esto    es    una    prueba.
+Esto es una prueba.</code></pre>
+    <p><code>echo</code> es un comando que imprime sus argumentos en la salida estándar (que en nuestro caso es la terminal). En este ejemplo, proporcionamos al comando echo cuatro argumentos: ‘Esto’, ‘es’, ‘una’ y ‘prueba.’. echo toma estos argumentos y los imprime uno por uno con un espacio entre ellos. En el segundo caso, sucede exactamente lo mismo. Los espacios adicionales no hacen ninguna diferencia. Si queremos el espacio adicional, necesitamos pasar la oración como un solo argumento. Podemos hacer esto usando comillas:</p>
+    <pre><code>$ echo &quot;Esto    es    una    prueba.&quot;
+Esto    es    una    prueba.</code></pre>
+    <p>Las comillas agrupan todo lo que hay dentro de ellas en un único argumento. El argumento es: <code>'Esto    es    una    prueba.'</code>… específicamente espaciado. Tenga en cuenta que las comillas no son parte del argumento: Bash las elimina antes de pasarle el argumento a echo. echo imprime este único argumento como lo hace siempre.</p>
+    <p>Tenga mucho cuidado de evitar lo siguiente:</p>
+    <pre><code>$ ls                                          # Hay dos archivos en el directorio actual.
+The secret voice in your head.mp3  secret
+$ rm The secret voice in your head.mp3        # Ejecuta rm con 6 argumentos; ¡no 1!
+rm: cannot remove `The&#39;: No such file or directory
+rm: cannot remove `voice&#39;: No such file or directory
+rm: cannot remove `in&#39;: No such file or directory
+rm: cannot remove `your&#39;: No such file or directory
+rm: cannot remove `head.mp3&#39;: No such file or directory
+$ ls                                          # Lista de archivos en el directorio actual: todavía está allí.
+The secret voice in your head.mp3             # ¡Pero tu archivo &#39;secreto&#39; ahora ha desaparecido!</code></pre>
+    <p>Debemos asegurarnos de que entrecomillar los nombres de archivo correctamente. Si no lo hacemos, terminaremos eliminando las cosas incorrectas. <code>rm</code> toma los nombres de archivo como argumentos. Si nuestros nombres de archivo tienen espacios y no los entrecomillamos, Bash piensa que cada palabra es un argumento separado. Bash le entrega cada argumento a <code>rm</code> por separado. Como si fueran rebanadas de queso procesado envueltas individualmente, <code>rm</code> trata cada argumento como un archivo separado.</p>
+    <p>En el ejemplo anterior, <code>rm</code> intentó eliminar un archivo por cada palabra del nombre de archivo de la canción, en lugar de mantener el nombre del archivo intacto. Eso provocó que se eliminara nuestro archivo secreto y que nuestra canción quedara intacta.</p>
+    <p>Esto es lo que deberíamos haber hecho:</p>
+    <div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> rm <span class="st">&quot;The secret voice in your head.mp3&quot;</span></span></code></pre></div>
+    <p>Los argumentos se separan del nombre del comando y entre sí mediante un espacio en blanco. Es importante recordar esto. Por ejemplo, lo siguiente es incorrecto:</p>
+    <pre><code>$ [-f file]
+bash: [-f: command not found</code></pre>
+    <p>Esto tiene como objetivo comprobar la existencia de un archivo llamado “file”. Es razonable suponer que los espacios en blanco alrededor de “[” y ”]” no importan, pero <code>[</code> es en realidad un comando y requiere que su último argumento sea <code>]</code>. (Trataremos el comando <code>[</code> con más detalle <a href="https://mywiki.wooledge.org/BashGuide/TestsAndConditionals">más adelante</a>). Por lo tanto, debemos separar <code>[</code> de <code>-f</code> y <code>]</code> de file, de lo contrario Bash pensará que estamos intentando ejecutar un comando llamado <code>[-f</code> con un solo argumento <code>file]</code>. El comando correcto separa todos los argumentos con espacios en blanco:</p>
+    <p>(Vemos muchas personas que están confundidas por este comportamiento; creen que pueden omitir el espacio en blanco entre éste y sus argumentos, por lo que debemos presentar este ejemplo particular al principio).</p>
+    <p>Y, si nuestro nombre de archivo contiene espacios en blanco u <a href="https://mywiki.wooledge.org/BashGuide/SpecialCharacters">otros caracteres especiales</a>, también debe ir entre comillas:</p>
+    <div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> [ <span class="at">-f</span> <span class="st">&quot;my file&quot;</span> ]</span></code></pre></div>
+    <p>Eche un vistazo a <a href="https://mywiki.wooledge.org/Arguments">argumentos</a>, <a href="https://mywiki.wooledge.org/Quotes">comillas</a> y <a href="https://mywiki.wooledge.org/WordSplitting">división de palabras</a> si todo esto aún no le ha quedado muy claro. Es importante tener una buena comprensión de cómo el shell interpreta los espacios en blanco y los caracteres especiales antes de continuar con esta guía.</p>
+    <p><strong>Revisar:</strong></p>
+    <blockquote>
+    <ul>
+    <li><em>Argumentos</em>: Son palabras adicionales especificadas después del comando (<code>ls -l foo</code> ejecuta <code>ls</code> con dos argumentos).</li>
+    <li><em>Comillas</em>: Las dos formas de comillas, simples y dobles (<code>'</code> y <code>"</code>), se utilizan para agrupar palabras y pueden proteger caracteres especiales. La diferencia entre <code>'</code> y <code>"</code> se analizará más adelante.</li>
+    </ul>
+    </blockquote>
+    <p><strong>Adicional:</strong></p>
+    <blockquote>
+    <ul>
+    <li>Consejo: siempre entrecomille oraciones o cadenas que vayan juntas, incluso si no es absolutamente necesario. Esta práctica reducirá el riesgo de error humano en los scripts (por ejemplo, entrecomillar una oración de un comando <code>echo</code>).</li>
+    <li>Preguntas frecuentes: ¡Estoy intentando poner un comando en una variable, pero los casos complejos siempre fallan! <a href="https://mywiki.wooledge.org/BashFAQ/050">BashFAQ/050</a>.</li>
+    <li>Preguntas frecuentes: ¿Cómo puedo gestionar fácilmente los argumentos de la línea de comandos (opciones) de mi script? <a href="https://mywiki.wooledge.org/BashFAQ/035">BashFAQ/035</a>.</li>
+    </ul>
+    </blockquote>
+    <h2 id="cadenas">Cadenas</h2>
+    <p>El término <em>cadena</em> se refiere a una secuencia de caracteres que se trata como una sola unidad. El término se utiliza de forma imprecisa en esta guía, así como en casi todos los demás lenguajes de programación.</p>
+    <p>En la programación Bash, casi todo es una cadena. Cuando escribimos un comando, el nombre del comando es una cadena y cada argumento es una cadena; los nombres de las variables son cadenas y el contenido de las variables también; un nombre de archivo es una cadena y la mayoría de los archivos contienen cadenas. ¡Están en todas partes!</p>
+    <p>Un comando completo también puede considerarse una cadena. Este no suele ser un punto de vista útil, pero ilustra el hecho de que <em>partes</em> de cadenas a veces pueden considerarse cadenas por derecho propio. Una cadena que forma parte de una cadena más grande se denomina <em>subcadena</em>.</p>
+    <p>Las cadenas no tienen ningún significado intrínseco. Su significado se define según cómo y dónde se utilizan.</p>
+    <p>Probemos con otro ejemplo. Con el editor, escriba una lista de compras y guárdela con el nombre de archivo “lista” y utilice <code>cat</code> para imprimirlo:</p>
+    <div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat lista</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">shampoo</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ex">tejidos</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="ex">leche</span> <span class="er">(</span><span class="ex">descremada,</span> no entera<span class="kw">)</span></span></code></pre></div>
+    <p>Escribimos un comando: <code>cat list</code>. El shell lee este comando como una cadena y luego lo divide en las subcadenas <code>cat</code> y <code>list</code>. En lo que respecta al shell, <code>list</code> no tiene significado, es solo una cadena con cuatro caracteres. <code>cat</code> recibe el argumento <code>list</code>, que es una cadena con un nombre de archivo. La cadena <code>list</code> se volvió significativa debido a <em>cómo se utilizó</em>.</p>
+    <p>Resulta que el archivo contiene un texto que vemos en nuestra terminal. El contenido completo del archivo, tomado como un todo, es una cadena, pero esa cadena no tiene significado. Sin embargo, si dividimos el archivo en líneas (y, por lo tanto, tratamos cada línea como una cadena separada), entonces vemos que cada línea individual tiene significado.</p>
+    <p>Podemos dividir la línea final en palabras, pero estas palabras no tienen significado por sí mismas. No podemos comprar “(descremada” en la tienda y podríamos comprar el tipo de “leche” equivocado. Dividir las líneas en palabras no es algo útil en este ejemplo. Pero la shell no sabe nada de esto, ¡sólo nosotros lo sabemos!</p>
+    <p>Por lo tanto, cuando trabajamos con comandos, datos y variables (todos los cuales son simplemente cadenas para el shell), tenemos <em>toda</em> la responsabilidad. Necesitamos asegurarnos de que todo lo que necesita estar separado se separe correctamente y que todo lo que necesita permanecer unido se mantenga unido correctamente. Abordaremos estos conceptos repetidamente a medida que avancemos.</p>
+    <h2 id="tipos-de-comandos">Tipos de comandos</h2>
+    <p>Bash entiende varios tipos diferentes de comandos: alias, funciones, comandos integrados, palabras clave y ejecutables.</p>
+    <h3 id="alias">Alias</h3>
+    <p>Un alias es una forma de abreviar un comando. (Solo se utilizan en shells <strong>interactivos</strong> y <em>no</em> en scripts; esta es una de las pocas diferencias entre un script y un shell interactivo). Un alias es una <em>palabra</em> que se asigna a una determinada <em>cadena</em>. Siempre que esa <em>palabra</em> se utiliza como nombre de un comando, se reemplaza por la <em>cadena</em> antes de ejecutar el comando. Por lo tanto, en lugar de ejecutar:</p>
+    <div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> nmap <span class="at">-Pn</span> <span class="at">-A</span> <span class="at">--osscan-limit</span> 192.168.0.1</span></code></pre></div>
+    <p>Podríamos usar un alias como este:</p>
+    <div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> alias nmapp=<span class="st">&quot;nmap -Pn -A --osscan-limit&quot;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> nmapp 192.168.0.1</span></code></pre></div>
+    <p>Los alias tienen un poder limitado; el reemplazo solo ocurre en la primera palabra. Para tener más flexibilidad, use una función. Los alias solo son útiles como atajos de texto simples.</p>
+    <h3 id="funciones">Funciones</h3>
+    <p>Las funciones en Bash son algo así como alias, pero más potentes. A diferencia de los alias, se pueden usar en <strong>scripts</strong>. Una función contiene comandos de shell y actúa de forma muy similar a un pequeño script; incluso puede tomar argumentos y crear variables locales. Cuando se llama a una función, se ejecutan los comandos que contiene. Las funciones se tratarán en profundidad <a href="https://mywiki.wooledge.org/BashGuide/CompoundCommands#Functions">más adelante en la guía</a>.</p>
+    <h3 id="elementos-incorporados-builtins">Elementos incorporados (Builtins)</h3>
+    <p>Bash tiene algunos comandos básicos integrados, como cd (cambiar directorio), echo (escribir salida), etc. Se pueden considerar funciones que ya están incluidas.</p>
+    <h3 id="palabras-clave-keywords">Palabras clave (keywords)</h3>
+    <p>Las palabras clave son como las incorporadas, con la principal diferencia de que las palabras clave son en realidad sintaxis de Bash y pueden analizarse utilizando reglas especiales. Por ejemplo, <code>[</code> es una incorporada de Bash, mientras que <code>[[</code> es una palabra clave de Bash; ambas se utilizan para <a href="https://mywiki.wooledge.org/BashGuide/TestsAndConditionals">probar una variedad de condiciones</a>. Aquí intentamos usarlas para comparar las palabras “<em>a</em>” y “<em>b</em>” lexicográficamente:</p>
+    <div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> [ a <span class="op">&lt;</span> b ]</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">-bash:</span> b: No such file or directory</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> [[ a <span class="op">&lt;</span> b ]]</span></code></pre></div>
+    <p>El primer ejemplo devuelve un error porque, como es habitual, Bash trata a <code>&lt;</code> como un <a href="https://mywiki.wooledge.org/BashGuide/InputAndOutput#File_Redirection">operador de redirección de archivo</a> e intenta redirigir el archivo inexistente <code>b</code> al comando <code>[ a ]</code>. El segundo ejemplo funciona porque Bash analiza las palabras entre <code>[[</code> y <code>]]</code> utilizando reglas diferentes que no utilizan <code>&lt;</code> para la redirección.</p>
+    <h3 id="ejecutables">Ejecutables</h3>
+    <p>El último tipo de comando que puede ejecutar Bash es un <em>ejecutable</em>. (Los ejecutables también pueden llamarse <em>comandos externos</em> o <em>aplicaciones</em>). Los ejecutables se invocan comúnmente escribiendo solo su nombre. Esto se puede hacer porque una variable predefinida le da a conocer a Bash una lista de rutas de archivos ejecutables comunes. Esta variable se llama <code>PATH</code>. Es un conjunto de nombres de directorio separados por dos puntos (p. ej. <code>/usr/bin:/bin</code>). Cuando se especifica un comando (p. ej. <code>myprogram</code> o <code>ls</code>) sin una ruta de archivo (y no es un alias, una función, un comando incorporado o una palabra clave), Bash busca en los directorios en <code>PATH</code>. La búsqueda se realiza en orden, de izquierda a derecha, para ver si contienen un ejecutable del comando escrito.</p>
+    <p>Si el ejecutable está <em>fuera</em> de una ruta conocida… será necesario definir la ruta del archivo ejecutable. Para un ejecutable en el directorio actual, utilice <code>./myprogram</code>; si está en el directorio <code>/opt/somedirectory</code>, utilice <code>/opt/somedirectory/myprogram</code>.</p>
+    <p><strong>Revisar:</strong></p>
+    <blockquote>
+    <ul>
+    <li><dl>
+    <dt><em>Alias</em></dt>
+    <dd>
+    Palabra que se asigna a una cadena. Siempre que se utiliza esa palabra como comando, se reemplaza por la cadena a la que se ha asignado.
+    </dd>
+    </dl></li>
+    <li><dl>
+    <dt><em>Función</em></dt>
+    <dd>
+    Nombre que se asigna a un conjunto de comandos. Siempre que se utiliza la función como comando, se la llama con los argumentos que la siguen. Las funciones son el método básico para crear nuevos comandos.
+    </dd>
+    </dl></li>
+    <li><dl>
+    <dt><em>Builtin</em></dt>
+    <dd>
+    Un comando que se ha incorporado a Bash. Los comandos incorporados se manejan directamente mediante el ejecutable de Bash y no crean nuevos procesos.
+    </dd>
+    </dl></li>
+    <li><dl>
+    <dt><em>Palabra clave</em></dt>
+    <dd>
+    Un comando que forma parte de la sintaxis de Bash. Bash puede analizar las palabras clave de forma diferente a los comandos normales.
+    </dd>
+    </dl></li>
+    <li><dl>
+    <dt><em>Ejecutable</em></dt>
+    <dd>
+    Un programa que puede ejecutarse haciendo referencia a su ruta de archivo (por ejemplo, <code>/bin/ls</code>), o simplemente por su nombre si su ubicación está en la variable <code>PATH</code>.
+    </dd>
+    </dl></li>
+    </ul>
+    </blockquote>
+    <p><strong>Además:</strong></p>
+    <blockquote>
+    <ul>
+    <li>Manual — <a href="http://www.gnu.org/software/bash/manual/bashref.html#Simple-Commands">Comandos simples</a></li>
+    <li>Preguntas frecuentes: ¿Cuál es la diferencia entre <code>test</code>, <code>[</code> y <code>[[</code>? <a href="https://mywiki.wooledge.org/BashFAQ/031">BashFAQ/031</a>.</li>
+    <li>Preguntas frecuentes: ¿Cómo puedo crear un alias que acepte un argumento? <a href="https://mywiki.wooledge.org/BashFAQ/080">BashFAQ/080</a>.</li>
+    <li>Consejo: el comando <code>type</code> se puede utilizar para obtener una descripción del tipo de comando:</li>
+    </ul>
+    </blockquote>
+    <div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> type rm</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> is hashed <span class="er">(</span><span class="ex">/bin/rm</span><span class="kw">)</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> type cd</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> is a shell builtin</span></code></pre></div>
+    <h2 id="scripts">Scripts</h2>
+    <p>Un script es básicamente una secuencia de comandos en un archivo. Bash lee el archivo y procesa los comandos <strong>en orden</strong>. Pasa al siguiente comando solo cuando el actual ha <strong>finalizado</strong>. (La excepción es si se ha especificado que un comando se ejecute de forma asincrónica, en segundo plano. No te preocupes demasiado por este caso todavía; aprenderemos cómo funciona más adelante).</p>
+    <p>Prácticamente cualquier ejemplo que exista en la línea de comandos en esta guía también se puede utilizar en un script.</p>
+    <p>Crear un script es fácil. Comienza creando un nuevo archivo y pon esto en la primera línea:</p>
+    <div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span></code></pre></div>
+    <p>El encabezado se denomina <em>directiva de interpretación</em> (también se denomina <em>hashbang</em> o <em>shebang</em>). Especifica que <code>/bin/bash</code> se utilizará como intérprete cuando el archivo se utilice como ejecutable en un comando. Cuando el kernel ejecuta un archivo no binario, lee la primera línea del archivo. Si la línea comienza con <code>#!</code>, el kernel utiliza la línea para determinar el intérprete al que retransmitir el archivo. (También existen otras formas válidas de hacer esto, consulte a continuación). El #! debe estar al principio del archivo, sin espacios ni líneas en blanco antes. Los comandos de nuestro script aparecerán en líneas separadas debajo de esto.</p>
+    <blockquote>
+    <ul>
+    <li>Consejo: En lugar de <code>#!/bin/bash</code>, puedes usar: <code>#!/usr/bin/env bash</code>.</li>
+    </ul>
+    <p><code>env</code> busca en <code>$PATH</code> el ejecutable nombrado por su primer argumento (en este caso, “bash”). Para obtener una explicación más detallada de esta técnica y en qué se diferencia del simple <code>#!/bin/bash</code>, consulte esta pregunta en <a href="https://stackoverflow.com/questions/16365130/what-is-the-difference-between-usr-bin-env-bash-and-usr-bin-bash/16365367#16365367">StackOverflow</a>.</p>
+    </blockquote>
+    <p>No se deje engañar por scripts o ejemplos en Internet que utilizan <code>/bin/sh</code> como intérprete. <strong>¡<code>sh</code> no es <code>bash</code>!</strong> Bash en sí es un shell “compatible con sh” (lo que significa que puede ejecutar la mayoría de los scripts “sh” y tiene gran parte de la misma sintaxis); sin embargo, lo opuesto no es cierto; algunas características de <code>bash</code> pueden fallar o causar un comportamiento inesperado en <code>sh</code>.</p>
+    <p>Además, absténgase de darle a los scripts la extensión <code>.sh</code>. No sirve para nada y es completamente engañoso (ya que será un script <code>bash</code>, no un script <code>sh</code>).</p>
+    <p>Está perfectamente bien utilizar Windows para escribir scripts. Evite, sin embargo, utilizar el <strong>Bloc de notas</strong> (Notepad). “Microsoft Notepad” sólo puede crear archivos con finales de línea de estilo DOS. Los finales de línea de estilo DOS terminan con dos caracteres: un <strong>C</strong>arriage Return (ASCII CR; 0xD) y un carácter de <strong>L</strong>ine <strong>F</strong>eed (ASCII LF; 0xA). Bash entiende finales de línea con sólo caracteres de avance de línea (<strong>L</strong>ine <strong>F</strong>eed). Como resultado, el carácter de retorno de carro (<strong>C</strong>arriage <strong>R</strong>eturn) causará una sorpresa inesperada si uno no sabe que está allí (mensajes de error muy extraños). Si es posible, utilice un editor más potente como <a href="http://vim.org"><em>Vim</em></a>, <a href="http://gnu.org/software/emacs"><em>Emacs</em></a>, <em>kate</em>, <em>GEdit…</em> Si no lo hace, será necesario eliminar los retornos de carro de los scripts antes de ejecutarlos.</p>
+    <p>Una vez creado el archivo de script, se puede ejecutar haciendo lo siguiente:</p>
+    <div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> bash miscript</span></code></pre></div>
+    <p>En este ejemplo, ejecutamos <code>bash</code> y le indicamos que lea el script. Cuando lo hacemos así, la línea <code>#!</code> es solo un comentario, Bash no hace nada con ella.</p>
+    <p>Alternativamente, podemos otorgarles a nuestros scripts permisos de ejecución. Con este método, en lugar de llamar a Bash manualmente, podemos ejecutar el script como una aplicación:</p>
+    <div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> chmod +x miscript  <span class="co"># Marcar el archivo como ejecutable.</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ./miscript         <span class="co"># Ahora, myscript se puede ejecutar directamente en lugar de tener que pasarlo a bash.</span></span></code></pre></div>
+    <p>Cuando ejecutamos el comando de esta manera, el sistema operativo (OS) usa la línea <code>#!</code> para determinar qué intérprete usar.</p>
+    <p>Para decidir dónde colocar el script, existen un par de alternativas. Generalmente, a la gente le gusta mantener sus scripts en un directorio definido personalmente; esto evita que su script interfiera con otros usuarios en el sistema. A algunos les gusta mantener sus scripts en un directorio preexistente en <code>PATH</code>, porque estas personas piensan que nunca cometerán un error.</p>
+    <p>Para utilizar un directorio personal:</p>
+    <div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> mkdir <span class="at">-p</span> <span class="st">&quot;</span><span class="va">$HOME</span><span class="st">/bin&quot;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&#39;PATH=&quot;$HOME/bin:$PATH&quot;&#39;</span> <span class="op">&gt;&gt;</span> <span class="st">&quot;</span><span class="va">$HOME</span><span class="st">/.bashrc&quot;</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> source <span class="st">&quot;</span><span class="va">$HOME</span><span class="st">/.bashrc&quot;</span></span></code></pre></div>
+    <p>El primer comando creará un directorio llamado <code>bin</code> dentro de su <em>directorio de inicio</em> (el directorio que le pertenece a usted personalmente). Es tradicional que los directorios que contienen comandos se llamen <code>bin</code>, incluso cuando esos comandos son scripts y no programas compilados (“binarios”). El segundo comando agrega una línea que contiene la asignación de una variable a un archivo. La variable es <code>PATH</code> y estamos agregando esta línea al archivo de configuración de Bash (<code>.bashrc</code>). Cada nueva instancia interactiva de Bash ahora buscará scripts ejecutables en nuestro nuevo directorio antes de verificar cualquier directorio que ya estuviera en <code>PATH</code>. El tercer comando le dice a Bash que vuelva a leer su archivo de configuración.</p>
+    <p>Algunas personas prefieren utilizar un directorio diferente para guardar sus scripts personales, como <code>$HOME/.config/bin</code> o <code>$HOME/.local/bin</code>. Puedes utilizar el que prefieras, siempre y cuando seas coherente.</p>
+    <p>Los cambios en el archivo de configuración de Bash no tendrán un efecto inmediato; debemos realizar el paso de volver a leer el archivo. En el ejemplo anterior, usamos <code>source "$HOME/.bashrc"</code>.</p>
+    <p>También podríamos haber usado <code>exec bash</code>, o podríamos cerrar la terminal existente y abrir una nueva. Bash se inicializaría nuevamente leyendo <code>.bashrc</code> (y posiblemente otros archivos).</p>
+    <p>En cualquier caso, ahora podemos poner nuestro script en nuestro directorio <code>bin</code> y ejecutarlo como un comando normal; ya no necesitamos anteponer la ruta del archivo al nombre de nuestro script (que era la parte <code>./</code> en el ejemplo anterior):</p>
+    <div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> mv myscript <span class="st">&quot;</span><span class="va">$HOME</span><span class="st">/bin&quot;</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> myscript</span></code></pre></div>
+    <p><strong>Además:</strong></p>
+    <blockquote>
+    <ul>
+    <li>Consejo: si el sistema tiene varias versiones de bash instaladas, puede ser conveniente especificar el intérprete por ruta absoluta para garantizar que se use la versión de bash correcta. Por ejemplo: <code>#!/usr/bin/bash</code>. Escriba “<code>type -a bash</code>” para imprimir las rutas de todos los ejecutables de Bash en <code>PATH</code>.</li>
+    <li>Consejo: El intérprete puede ir seguido opcionalmente de una palabra de las opciones del intérprete. Por ejemplo, las siguientes opciones activarán la depuración detallada: “<code>#!/usr/bin/bash -x</code>”. Para obtener más información, consulte <a href="https://mywiki.wooledge.org/BashGuide/Practices#Debugging">Depuración</a>. Consejo: después de definir el intérprete en el encabezado, se recomienda resumir el propósito de los scripts. Si lo desea, puede incluir información sobre los derechos de autor…:</li>
+    </ul>
+    </blockquote>
+    <div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># scriptname - a short explanation of the scripts purpose.</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Copyright (C) &lt;date&gt; &lt;name&gt;...</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># scriptname [option] [argument] ...</span></span></code></pre></div>
+    <p>&lt;-<a href="introduccion.html">Contenido</a> – <a href="caracteres-especiales.html">Caracteres especiales</a> -&gt;</p>
+    <p><a href="https://mywiki.wooledge.org/BashGuide/CommandsAndArguments">Página original</a></p>
+  </main>
+</body>
+</html>
