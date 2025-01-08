@@ -98,7 +98,7 @@ $ help read
 La guía se ha dividido en secciones, que se deben leer aproximadamente en el orden en que se presentan. Si se salta una sección específica, es posible que se pierda información de fondo de las secciones anteriores. (No siempre se proporcionan enlaces a las secciones pertinentes cuando se menciona un tema).
 
 - [Comandos y argumentos](comandos-y-argumentos.html): Tipos de comandos; división de argumentos; escritura de scripts.
-- [Caracteres especiales](https://mywiki.wooledge.org/BashGuide/SpecialCharacters).
+- [Caracteres especiales](caracteres-especiales.html).
 - [Parámetros](https://mywiki.wooledge.org/BashGuide/Parameters): Parámetros Variables; parámetros especiales; tipos de parámetros; expansión de parámetros.
 - [Patronas](https://mywiki.wooledge.org/BashGuide/Patterns): Globs; coincidencia de nombre de archivo; globs extendidos; expansión de llaves; expresiones regulares.
 - [Tests y condicionales](https://mywiki.wooledge.org/BashGuide/TestsAndConditionals): Estado de salida; `&&` y `||`; `if`, `test` y `[[`; `while`, `until` y `for`; `case` y `select`.
