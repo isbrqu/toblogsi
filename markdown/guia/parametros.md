@@ -63,3 +63,7 @@ Y de acuerdo con las reglas de división de palabras, Bash pensó que querías d
 
 > - *Parámetros*
 : Los parámetros almacenan datos que pueden recuperarse a través de un símbolo o un nombre.
+
+## Parámetros y variables especiales
+
+[Página original](https://mywiki.wooledge.org/BashGuide/Parameters)
