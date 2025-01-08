@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <meta name="author" content="Lhunath,GreyCat,isbrqu">
+  <meta name="description" content="Parámetros">
+  <link rel="stylesheet" href="../css/pico.min.css">
+  <title>Parámetros</title>
+</head>
+<body>
+  <main class="container">
+    <nav>
+      <ul>
+        <li><a href="/"<strong>ToBlogSi</strong></a></li>
+      </ul>
+      <ul>
+        <li><a href="/guia/introduccion.html">Guía</a></li>
+        <li><a href="/preguntas-frecuentes/introduccion.html">Preguntas frecuentes</a></li>
+        <li><a href="/malas-practicas/introduccion.html">Malas prácticas</a></li>
+        <li><a href="/referencia-rapida/introduccion.html">Referencia rápida</a></li>
+        <li><a href="/programacion/introduccion.html">Programación</a></li>
+      </ul>
+    </nav>
+    <h1>Parámetros</h1>
+    <p>Los parámetros son una especie de espacio con nombre en la memoria que se puede utilizar para recuperar o almacenar información. En términos generales, almacenan datos de cadena, pero también se pueden utilizar para almacenar números enteros, matrices indexadas y asociativas.</p>
+    <p>Los parámetros se presentan en dos formas: variables y parámetros especiales. Los parámetros especiales son de solo lectura, están preestablecidos por BASH y se utilizan para comunicar algún tipo de estado interno. Las variables son parámetros que puede crear y actualizar usted mismo. Los nombres de las variables están sujetos a la siguiente regla:</p>
+    <blockquote>
+    <ul>
+    <li><dl>
+    <dt><em>Nombre</em></dt>
+    <dd>
+    Palabra que consta únicamente de letras, dígitos y guiones bajos y que comienza con una letra o un guión bajo. También se denomina identificador.
+    </dd>
+    </dl></li>
+    </ul>
+    </blockquote>
+    <p>Para almacenar datos en una variable, utilizamos la siguiente sintaxis de asignación:</p>
+    <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> varname=vardata</span></code></pre></div>
+    <p>Este comando asigna los datos <code>vardata</code> a la variable por nombre <code>varname</code>.</p>
+    <p>Tenga en cuenta que no puede utilizar espacios alrededor del signo <code>=</code> en una asignación. Si escribe esto:</p>
+    <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ¡Esto está mal!</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> varname = vardata</span></code></pre></div>
+    <p><a href="https://mywiki.wooledge.org/BASH">BASH</a> no sabrá que estás intentando asignar algo. El analizador verá <code>varname</code> sin <code>=</code> y lo tratará como un nombre de comando, y luego le pasará <code>=</code> y <code>vardata</code> como argumentos.</p>
+    <p>Para acceder a los datos almacenados en una variable, utilizamos la <a href="https://mywiki.wooledge.org/BashGuide/Parameters#Parameter_Expansion">expansión de parámetros</a>. La expansión de parámetros es la <em>sustitución</em> de un parámetro por su valor, es decir, la sintaxis le dice a bash que desea utilizar el contenido de la variable. Después de eso, Bash <em>aún puede realizar manipulaciones adicionales en el resultado</em>. ¡Este es un concepto muy importante para comprender correctamente, porque es muy diferente a la forma en que se manejan las variables en otros lenguajes de programación!</p>
+    <p>Para ilustrar qué es la expansión de parámetros, utilicemos este ejemplo:</p>
+    <div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> foo=bar</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&quot;Foo es </span><span class="va">$foo</span><span class="st">&quot;</span></span></code></pre></div>
+    <p>Cuando Bash está a punto de ejecutar su código, primero cambia el comando tomando su expansión de parámetros (el <code>$foo</code>) y reemplazándolo por el contenido de <code>foo</code>, que es <code>bar</code>. El comando se convierte en:</p>
+    <div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&quot;Foo es </span><span class="va">$foo</span><span class="st">&quot;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Foo</span> es bar</span></code></pre></div>
+    <p>Ahora Bash está listo para ejecutar el comando. Al ejecutarlo, nos muestra la oración simple en pantalla.</p>
+    <p>Es importante entender que la expansión de parámetros hace que el <code>$parametro</code> sea <strong>reemplazado</strong> por su contenido. Observe el siguiente caso, que se basa en la comprensión del capítulo anterior sobre división de argumentos:</p>
+    <div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> song=<span class="st">&quot;Mi cancion.mp3&quot;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> rm <span class="va">$song</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">rm:</span> Mi: No such file or directory</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">rm:</span> cancion.mp3: No such file or directory</span></code></pre></div>
+    <p>¿Por qué no funcionó? Porque Bash reemplazó tu <code>$song</code> por su contenido, que es <code>Mi cancion.mp3</code>; luego, realizó la división de palabras y SOLO ENTONCES ejecutó el comando. Fue como si hubieras escrito esto:</p>
+    <div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> rm Mi cancion.mp3</span></code></pre></div>
+    <p>Y de acuerdo con las reglas de división de palabras, Bash pensó que querías decir que <code>Mi</code> y <code>cancion.mp3</code> significaban dos archivos diferentes, porque hay un espacio en blanco entre ellos y no estaban entre comillas. ¿Cómo solucionamos esto? ¡Recordamos poner <strong>comillas dobles alrededor de cada expansión de parámetro</strong>!</p>
+    <blockquote>
+    <ul>
+    <li><dl>
+    <dt><em>Parámetros</em></dt>
+    <dd>
+    Los parámetros almacenan datos que pueden recuperarse a través de un símbolo o un nombre.
+    </dd>
+    </dl></li>
+    </ul>
+    </blockquote>
+  </main>
+</body>
+</html>
