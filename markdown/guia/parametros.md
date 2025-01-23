@@ -155,12 +155,10 @@ Creo que ya entendiste la idea. Aquí tienes un resumen de la mayoría de los *p
 Y aquí hay algunos ejemplos de *variables* que el shell le proporciona:
 
 <table>
-  <th>
-    <td>Nombre de la variable</td>
-    <td>
-      Descripción
-    </td>
-  </th>
+  <tr>
+    <th>Nombre de la variable</th>
+    <th>Descripción</th>
+  </tr>
   <tr>
     <td>`BASH_VERSION`</td>
     <td>
@@ -236,5 +234,7 @@ Y aquí hay algunos ejemplos de *variables* que el shell le proporciona:
 </table>
 
 (Hay muchas más; consulte el manual para obtener una lista completa). Por supuesto, no está limitado únicamente a estas variables. Siéntase libre de definir las suyas propias:
+
+
 
 [Página original](https://mywiki.wooledge.org/BashGuide/Parameters)
