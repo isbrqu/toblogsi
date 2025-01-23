@@ -1,195 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="color-scheme" content="light dark">
-  <meta name="author" content="Lhunath,GreyCat,isbrqu">
-  <meta name="description" content="Caracteres especiales">
-  <link rel="stylesheet" href="../css/pico.min.css">
-  <title>Caracteres especiales</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="color-scheme" content="light dark">
+	<meta name="author" content="Lhunath,GreyCat,isbrqu">
+	<meta name="description" content="Caracteres especiales">
+	<link rel="stylesheet" href="../css/pico.min.css">
+	<title>Caracteres especiales</title>
 </head>
 <body>
-  <main class="container">
-    <nav>
-      <ul>
-        <li><a href="/"<strong>ToBlogSi</strong></a></li>
-      </ul>
-      <ul>
-        <li><a href="/guia/introduccion.html">Guía</a></li>
-        <li><a href="/preguntas-frecuentes/introduccion.html">Preguntas frecuentes</a></li>
-        <li><a href="/malas-practicas/introduccion.html">Malas prácticas</a></li>
-        <li><a href="/referencia-rapida/introduccion.html">Referencia rápida</a></li>
-        <li><a href="/programacion/introduccion.html">Programación</a></li>
-      </ul>
-    </nav>
-    <h1>Caracteres especiales</h1>
-    <p>Bash evalúa algunos caracteres como si tuvieran un significado no literal. En cambio, estos caracteres llevan a cabo una instrucción especial o tienen un significado alternativo; se denominan “caracteres especiales” o “metacaracteres”.</p>
-    <p>A continuación se muestran algunos de los usos más comunes de caracteres especiales:</p>
-    <table>
-    <tr>
-    <th>
-    Caracter
-    </th>
-    <th>
-    Descripción
-    </th>
-    </tr>
-    <tr>
-    <td>
-    <code>" "</code>
-    </td>
-    <td>
-    <em>Espacio en blanco</em>: Es una tabulación, una nueva línea, una tabulación vertical, un avance de página, un retorno de carro o un espacio. Bash utiliza espacios en blanco para determinar dónde comienzan y terminan las palabras. La primera palabra es el nombre del comando y las palabras adicionales se convierten en argumentos de ese comando.
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <code>$</code>
-    </td>
-    <td>
-    <em>Expansión</em>: Presenta varios tipos de expansión: expansión de parámetros (p. ej., <code>$var</code> o <code>${var}</code>), <a href="https://mywiki.wooledge.org/CommandSubstitution">sustitución de comandos</a> (p. ej., <code>$(comando)</code>) o expansión aritmética (p. ej., <code>$((expresión))</code>). Más adelante hablaremos más sobre las expansiones.
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <code>""</code>
-    </td>
-    <td>
-    <em>Comillas simples</em>: Protegen el texto que contienen para que tenga un significado <em>literal</em>. Con ellas, generalmente se ignora cualquier tipo de interpretación de Bash: se pasan por alto los caracteres especiales y se evita que se dividan varias palabras.
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <code>""</code>
-    </td>
-    <td>
-    <em>Comillas dobles</em>: Protegen el texto dentro de ellas para que no se divida en múltiples palabras o argumentos, pero permiten que se realicen sustituciones; generalmente se evita el significado de la mayoría de los demás caracteres especiales.
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <code>\</code>
-    </td>
-    <td>
-    <em>Escape</em> (barra invertida): Evita que el siguiente carácter se interprete como un carácter especial. Funciona fuera de las comillas, dentro de las comillas dobles y, por lo general, se ignora en las comillas simples.
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <code>#</code>
-    </td>
-    <td>
-    <em>Comentario</em>: El carácter <code>#</code> comienza un comentario que se extiende hasta el final de la línea. Los comentarios son notas explicativas y no son procesados por el shell.
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <code>=</code>
-    </td>
-    <td>
-    <em>Asignación</em>: asigna un valor a una variable (por ejemplo, <code>logdir=/var/log/myprog</code>). No se permiten espacios en blanco en ninguno de los lados del carácter <code>=</code>.
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <code>[[ ]]</code>
-    </td>
-    <td>
-    <em>Prueba</em>: evaluación de una expresión condicional para determinar si es “verdadera” o “falsa”. Las pruebas se utilizan en Bash para comparar cadenas, comprobar la existencia de un archivo, etc. Más adelante se explicarán más detalles sobre este tema.
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <code>!</code>
-    </td>
-    <td>
-    <em>Negar</em>: Se utiliza para negar o revertir un estado de prueba o de salida. Por ejemplo: <code>! grep text file; exit $?</code>.
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <code>&gt;</code>, <code>&gt;&gt;</code>, <code>&lt;</code>
-    </td>
-    <td>
-    <em>Redirección</em>: Redirigir la salida o la entrada de un comando a un archivo. Las redirecciones se tratarán más adelante.
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <code>|</code>
-    </td>
-    <td>
-    <em>Canalización</em>: Envía la salida de un comando a la entrada de otro comando. Este es un método para encadenar comandos. Ejemplo: <code>echo "Hola hermosa." | grep -o hermosa</code>.
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <code>;</code>
-    </td>
-    <td>
-    <em>Separador de comandos</em>: Se utiliza para separar varios comandos que están en la misma línea.
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <code>{ }</code>
-    </td>
-    <td>
-    <em>Grupo en línea</em>: Los comandos dentro de las llaves se tratan como si fueran un solo comando. Es conveniente usarlos cuando la sintaxis de Bash requiere solo un comando y no parece justificada una función.
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <code>( )</code>
-    </td>
-    <td>
-    <em>Grupo de subshell</em>: Similar al anterior, pero donde los comandos que contiene se ejecutan en un <a href="https://mywiki.wooledge.org/SubShell">subshell</a> (un nuevo proceso). Se utiliza de forma muy similar a un sandbox; si un comando provoca efectos secundarios (como cambiar variables), no tendrá ningún efecto en el shell actual.
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <code>(( ))</code>
-    </td>
-    <td>
-    <em>Expresión aritmética</em>: En una <a href="https://mywiki.wooledge.org/ArithmeticExpression">expresión aritmética</a>, los caracteres como <code>+</code>, <code>-</code>, <code>*</code> y <code>/</code> son operadores matemáticos que se utilizan para realizar cálculos. Se pueden utilizar para asignaciones de variables como <code>((a = 1 + 4))</code> y también para realizar pruebas como <code>if (( a &lt; b ))</code>. Más adelante hablaremos más sobre esto.
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <code>$(( ))</code>
-    </td>
-    <td>
-    <em>Expansión aritmética</em>: Comparable a la anterior, pero la expresión se reemplaza con el resultado de su evaluación aritmética. Ejemplo: <code>echo "El promedio es $(( (a+b)/2 ))"</code>.
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <code>*</code>, <code>?</code>
-    </td>
-    <td>
-    <em>Globs</em>: Caracteres “comodín” que coinciden con partes de nombres de archivos (por ejemplo, <code>ls *.txt</code>).
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <code>~</code>
-    </td>
-    <td>
-    <em>Directorio personal</em>: la tilde es una representación de un directorio personal. Cuando está sola o seguida de <code>/</code>, significa el directorio personal del usuario actual; de lo contrario, se debe especificar un nombre de usuario (p. ej., <code>ls ~/Documents; cp ~john/.bashrc .</code>).
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <code>&amp;</code>
-    </td>
-    <td>
-    <em>Fondo</em>: Cuando se usa al final de un comando, ejecuta el comando en segundo plano (no espera a que se complete).
-    </td>
-    </tr>
-    </table>
-    <p>Ejemplos:</p>
-    <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&quot;Yo soy </span><span class="va">$LOGNAME</span><span class="st">&quot;</span></span>
+	<header class="container">
+		<hgroup>
+			<h1><a href="/">ToBlogSi</a></h1>
+			<p>Traducciones manuales</p>
+		</hgroup>
+		<nav>
+			<ul>
+				<li><a href="/guia/introduccion.html">Guía</a></li>
+				<li><a href="/preguntas-frecuentes/introduccion.html">Preguntas frecuentes</a></li>
+				<li><a href="/malas-practicas/introduccion.html">Malas prácticas</a></li>
+				<li><a href="/referencia-rapida/introduccion.html">Referencia rápida</a></li>
+				<li><a href="/programacion/introduccion.html">Programación</a></li>
+			</ul>
+		</nav>
+	</header>
+	<main class="container">
+		<h1>Caracteres especiales</h1>
+		<p>Bash evalúa algunos caracteres como si tuvieran un significado no literal. En cambio, estos caracteres llevan a cabo una instrucción especial o tienen un significado alternativo; se denominan “caracteres especiales” o “metacaracteres”.</p>
+<p>A continuación se muestran algunos de los usos más comunes de caracteres especiales:</p>
+<table>
+<tr>
+<th>
+Caracter
+</th>
+<th>
+Descripción
+</th>
+</tr>
+<tr>
+<td>
+<code>" "</code>
+</td>
+<td>
+<em>Espacio en blanco</em>: Es una tabulación, una nueva línea, una tabulación vertical, un avance de página, un retorno de carro o un espacio. Bash utiliza espacios en blanco para determinar dónde comienzan y terminan las palabras. La primera palabra es el nombre del comando y las palabras adicionales se convierten en argumentos de ese comando.
+</td>
+</tr>
+<tr>
+<td>
+<code>$</code>
+</td>
+<td>
+<em>Expansión</em>: Presenta varios tipos de expansión: expansión de parámetros (p. ej., <code>$var</code> o <code>${var}</code>), <a href="https://mywiki.wooledge.org/CommandSubstitution">sustitución de comandos</a> (p. ej., <code>$(comando)</code>) o expansión aritmética (p. ej., <code>$((expresión))</code>). Más adelante hablaremos más sobre las expansiones.
+</td>
+</tr>
+<tr>
+<td>
+<code>""</code>
+</td>
+<td>
+<em>Comillas simples</em>: Protegen el texto que contienen para que tenga un significado <em>literal</em>. Con ellas, generalmente se ignora cualquier tipo de interpretación de Bash: se pasan por alto los caracteres especiales y se evita que se dividan varias palabras.
+</td>
+</tr>
+<tr>
+<td>
+<code>""</code>
+</td>
+<td>
+<em>Comillas dobles</em>: Protegen el texto dentro de ellas para que no se divida en múltiples palabras o argumentos, pero permiten que se realicen sustituciones; generalmente se evita el significado de la mayoría de los demás caracteres especiales.
+</td>
+</tr>
+<tr>
+<td>
+<code>\</code>
+</td>
+<td>
+<em>Escape</em> (barra invertida): Evita que el siguiente carácter se interprete como un carácter especial. Funciona fuera de las comillas, dentro de las comillas dobles y, por lo general, se ignora en las comillas simples.
+</td>
+</tr>
+<tr>
+<td>
+<code>#</code>
+</td>
+<td>
+<em>Comentario</em>: El carácter <code>#</code> comienza un comentario que se extiende hasta el final de la línea. Los comentarios son notas explicativas y no son procesados por el shell.
+</td>
+</tr>
+<tr>
+<td>
+<code>=</code>
+</td>
+<td>
+<em>Asignación</em>: asigna un valor a una variable (por ejemplo, <code>logdir=/var/log/myprog</code>). No se permiten espacios en blanco en ninguno de los lados del carácter <code>=</code>.
+</td>
+</tr>
+<tr>
+<td>
+<code>[[ ]]</code>
+</td>
+<td>
+<em>Prueba</em>: evaluación de una expresión condicional para determinar si es “verdadera” o “falsa”. Las pruebas se utilizan en Bash para comparar cadenas, comprobar la existencia de un archivo, etc. Más adelante se explicarán más detalles sobre este tema.
+</td>
+</tr>
+<tr>
+<td>
+<code>!</code>
+</td>
+<td>
+<em>Negar</em>: Se utiliza para negar o revertir un estado de prueba o de salida. Por ejemplo: <code>! grep text file; exit $?</code>.
+</td>
+</tr>
+<tr>
+<td>
+<code>&gt;</code>, <code>&gt;&gt;</code>, <code>&lt;</code>
+</td>
+<td>
+<em>Redirección</em>: Redirigir la salida o la entrada de un comando a un archivo. Las redirecciones se tratarán más adelante.
+</td>
+</tr>
+<tr>
+<td>
+<code>|</code>
+</td>
+<td>
+<em>Canalización</em>: Envía la salida de un comando a la entrada de otro comando. Este es un método para encadenar comandos. Ejemplo: <code>echo "Hola hermosa." | grep -o hermosa</code>.
+</td>
+</tr>
+<tr>
+<td>
+<code>;</code>
+</td>
+<td>
+<em>Separador de comandos</em>: Se utiliza para separar varios comandos que están en la misma línea.
+</td>
+</tr>
+<tr>
+<td>
+<code>{ }</code>
+</td>
+<td>
+<em>Grupo en línea</em>: Los comandos dentro de las llaves se tratan como si fueran un solo comando. Es conveniente usarlos cuando la sintaxis de Bash requiere solo un comando y no parece justificada una función.
+</td>
+</tr>
+<tr>
+<td>
+<code>( )</code>
+</td>
+<td>
+<em>Grupo de subshell</em>: Similar al anterior, pero donde los comandos que contiene se ejecutan en un <a href="https://mywiki.wooledge.org/SubShell">subshell</a> (un nuevo proceso). Se utiliza de forma muy similar a un sandbox; si un comando provoca efectos secundarios (como cambiar variables), no tendrá ningún efecto en el shell actual.
+</td>
+</tr>
+<tr>
+<td>
+<code>(( ))</code>
+</td>
+<td>
+<em>Expresión aritmética</em>: En una <a href="https://mywiki.wooledge.org/ArithmeticExpression">expresión aritmética</a>, los caracteres como <code>+</code>, <code>-</code>, <code>*</code> y <code>/</code> son operadores matemáticos que se utilizan para realizar cálculos. Se pueden utilizar para asignaciones de variables como <code>((a = 1 + 4))</code> y también para realizar pruebas como <code>if (( a &lt; b ))</code>. Más adelante hablaremos más sobre esto.
+</td>
+</tr>
+<tr>
+<td>
+<code>$(( ))</code>
+</td>
+<td>
+<em>Expansión aritmética</em>: Comparable a la anterior, pero la expresión se reemplaza con el resultado de su evaluación aritmética. Ejemplo: <code>echo "El promedio es $(( (a+b)/2 ))"</code>.
+</td>
+</tr>
+<tr>
+<td>
+<code>*</code>, <code>?</code>
+</td>
+<td>
+<em>Globs</em>: Caracteres “comodín” que coinciden con partes de nombres de archivos (por ejemplo, <code>ls *.txt</code>).
+</td>
+</tr>
+<tr>
+<td>
+<code>~</code>
+</td>
+<td>
+<em>Directorio personal</em>: la tilde es una representación de un directorio personal. Cuando está sola o seguida de <code>/</code>, significa el directorio personal del usuario actual; de lo contrario, se debe especificar un nombre de usuario (p. ej., <code>ls ~/Documents; cp ~john/.bashrc .</code>).
+</td>
+</tr>
+<tr>
+<td>
+<code>&amp;</code>
+</td>
+<td>
+<em>Fondo</em>: Cuando se usa al final de un comando, ejecuta el comando en segundo plano (no espera a que se complete).
+</td>
+</tr>
+</table>
+<p>Ejemplos:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&quot;Yo soy </span><span class="va">$LOGNAME</span><span class="st">&quot;</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Yo</span> soy lhunath</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&#39;Yo soy $LOGNAME&#39;</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Yo</span> soy <span class="va">$LOGNAME</span></span>
@@ -203,48 +206,48 @@
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="ex">10</span></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> <span class="er">(</span><span class="kw">(</span> <span class="ex">5</span> <span class="op">&gt;</span> 0 <span class="kw">))</span> <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">&quot;Cinco es mayor a cero.&quot;</span></span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ex">Cinco</span> es mayor a cero.</span></code></pre></div>
-    <h2 id="caracteres-especiales-obsoletos-reconocidos-pero-no-recomendados">Caracteres especiales obsoletos (reconocidos, pero no recomendados)</h2>
-    <p>Bash también evaluará este grupo de caracteres como si tuvieran un significado no literal, pero generalmente se incluyen solo por compatibilidad con versiones anteriores. No se recomienda su uso, pero suelen aparecer en scripts antiguos o mal escritos.</p>
-    <table>
-    <tr>
-    <th>
-    Caracter
-    </th>
-    <th>
-    Descripción
-    </th>
-    </tr>
-    <tr>
-    <td>
-    <code>` `</code>
-    </td>
-    <td>
-    <a href="https://mywiki.wooledge.org/CommandSubstitution">Sustitución de comando</a>: utilice <code>$( )</code> en su lugar.
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <code>[ ]</code>
-    </td>
-    <td>
-    Test: un alias del antiguo comando <code>test</code>. Se utiliza habitualmente en scripts de shell POSIX. Carece de muchas funciones de <code>[[ ]]</code>.
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <code>$[ ]</code>
-    </td>
-    <td>
-    <a href="https://mywiki.wooledge.org/ArithmeticExpression">Expresión aritmética</a>: Utilice <code>$(( ))</code> en su lugar.
-    </td>
-    </tr>
-    </table>
-    <p><strong>Además:</strong></p>
-    <ul>
-    <li><strong>En el manual</strong>: <a href="http://www.gnu.org/software/bash/manual/html_node/Shell-Syntax.html#Shell-Syntax">Sintaxis del shell</a></li>
-    <li>Caracteres especiales: Caracteres que tienen un significado especial para Bash. Normalmente, se interpreta su significado y luego se eliminan del comando antes de ejecutarlo.</li>
-    </ul>
-    <p><a href="https://mywiki.wooledge.org/BashGuide/SpecialCharacters">Página original</a></p>
-  </main>
+<h2 id="caracteres-especiales-obsoletos-reconocidos-pero-no-recomendados">Caracteres especiales obsoletos (reconocidos, pero no recomendados)</h2>
+<p>Bash también evaluará este grupo de caracteres como si tuvieran un significado no literal, pero generalmente se incluyen solo por compatibilidad con versiones anteriores. No se recomienda su uso, pero suelen aparecer en scripts antiguos o mal escritos.</p>
+<table>
+<tr>
+<th>
+Caracter
+</th>
+<th>
+Descripción
+</th>
+</tr>
+<tr>
+<td>
+<code>` `</code>
+</td>
+<td>
+<a href="https://mywiki.wooledge.org/CommandSubstitution">Sustitución de comando</a>: utilice <code>$( )</code> en su lugar.
+</td>
+</tr>
+<tr>
+<td>
+<code>[ ]</code>
+</td>
+<td>
+Test: un alias del antiguo comando <code>test</code>. Se utiliza habitualmente en scripts de shell POSIX. Carece de muchas funciones de <code>[[ ]]</code>.
+</td>
+</tr>
+<tr>
+<td>
+<code>$[ ]</code>
+</td>
+<td>
+<a href="https://mywiki.wooledge.org/ArithmeticExpression">Expresión aritmética</a>: Utilice <code>$(( ))</code> en su lugar.
+</td>
+</tr>
+</table>
+<p><strong>Además:</strong></p>
+<ul>
+<li><strong>En el manual</strong>: <a href="http://www.gnu.org/software/bash/manual/html_node/Shell-Syntax.html#Shell-Syntax">Sintaxis del shell</a></li>
+<li>Caracteres especiales: Caracteres que tienen un significado especial para Bash. Normalmente, se interpreta su significado y luego se eliminan del comando antes de ejecutarlo.</li>
+</ul>
+<p><a href="https://mywiki.wooledge.org/BashGuide/SpecialCharacters">Página original</a></p>
+	</main>
 </body>
 </html>
