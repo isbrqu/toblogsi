@@ -47,6 +47,7 @@ create_html() {
     --metadata=author:"${author}"\
     --template="${template}"\
     --output="${html}"
+  sed -i 's/\r//g' "${html}"
 }
 
 main "${@}"
