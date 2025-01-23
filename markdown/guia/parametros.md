@@ -66,4 +66,175 @@ Y de acuerdo con las reglas de división de palabras, Bash pensó que querías d
 
 ## Parámetros y variables especiales
 
+Aclaremos nuestro vocabulario antes de entrar en materia. Hay *parámetros* y *variables*. Las variables son en realidad sólo un tipo de parámetro: parámetros que se denotan por un nombre. Los parámetros que no son variables se denominan parámetros especiales. Seguro que entenderás mejor las cosas con algunos ejemplos:
+
+```bash
+$ # Algunos parámetros que no son variables:
+$ echo "Mi shell es $0, y tiene estas opciones configuradas: $-"
+Mi shell es -bash, y tiene estas opciones configuradas: himB
+$ # Algunos parámetros que SON variables:
+$ echo "Yo soy $LOGNAME, y vivo en $HOME."
+Yo soy lhunath, y vivo en /home/lhunath.
+```
+
+**Tenga en cuenta**: A diferencia de PHP/Perl/... los parámetros NO comienzan con el signo $. El signo $ que se ve en los ejemplos simplemente hace que se *expanda* el parámetro que le sigue. La expansión básicamente significa que el shell reemplaza el parámetro por su contenido. Como tal, `LOGNAME` es el parámetro (variable) que contiene su nombre de usuario. `$LOGNAME` es una expresión que será reemplazada con el contenido de esa variable, que en mi caso es `lhunath`.
+
+Creo que ya entendiste la idea. Aquí tienes un resumen de la mayoría de los *parámetros especiales*:
+
+<table>
+  <tr>
+    <th>Nombre del parámetro</th>
+    <th>Uso</th>
+    <th>Descripción</th>
+  </tr>
+  <tr>
+    <td>**0**</td>
+    <td>`"$0"`</td>
+    <td>
+      Contiene el nombre o la ruta del script. Esto no siempre es confiable.
+    </td>
+  </tr>
+  <tr>
+    <td>**1, 2, etc.**</td>
+    <td>`$1`, `$2`, etc</td>
+    <td>
+      Los parámetros posicionales contienen los argumentos que se pasaron al script o función actual.
+    </td>
+  </tr>
+  <tr>
+    <td>**&ast;**</td>
+    <td>`"$*"`</td>
+    <td>
+      Se expande a todas las palabras de todos los parámetros posicionales. Entre comillas dobles, se expande a una sola cadena que las contiene todas, separadas por el primer carácter de la variable `IFS` (que se analiza más adelante).
+    </td>
+  </tr>
+  <tr>
+    <td>**&#64;**</td>
+    <td>`"$@"`</td>
+    <td>
+      Se expande a todas las palabras de todos los parámetros posicionales. Entre comillas dobles, se expande a una lista de todas ellas como palabras individuales. 
+    </td>
+  </tr>
+  <tr>
+    <td>**#**</td>
+    <td>`$#`</td>
+    <td>
+      Se expande al número de parámetros posicionales que están configurados actualmente.
+    </td>
+  </tr>
+  <tr>
+    <td>**?**</td>
+    <td>`$?`</td>
+    <td>
+      Se expande al código de salida del comando de primer plano completado más recientemente.
+    </td>
+  </tr>
+  <tr>
+    <td>**&#36;**</td>
+    <td>`$$`</td>
+    <td>
+      Se expande al [PID](https://mywiki.wooledge.org/ProcessManagement) (número de identificación del proceso) del shell actual.
+    </td>
+  </tr>
+  <tr>
+    <td>**!**</td>
+    <td>`$!`</td>
+    <td>
+      Se expande al PID del comando ejecutado más recientemente en segundo plano.
+    </td>
+  </tr>
+  <tr>
+    <td>**&lowbar;**</td>
+    <td>`"$_"`</td>
+    <td>
+      Se expande hasta el último argumento del último comando que se ejecutó.
+    </td>
+  </tr>
+</table>
+
+Y aquí hay algunos ejemplos de *variables* que el shell le proporciona:
+
+<table>
+  <th>
+    <td>Nombre de la variable</td>
+    <td>
+      Descripción
+    </td>
+  </th>
+  <tr>
+    <td>`BASH_VERSION`</td>
+    <td>
+      Contiene una cadena que describe la versión de Bash.
+    </td>
+  </tr>
+  <tr>
+    <td>`HOSTNAME`</td>
+    <td>
+      Contiene el nombre de host de tu computadora, lo juro. Puede ser corto o largo, según cómo esté configurada tu computadora.
+    </td>
+  </tr>
+  <tr>
+    <td>`PPID`</td>
+    <td>
+      Contiene el PID del proceso padre de este shell.
+    </td>
+  </tr>
+  <tr>
+    <td>`PWD`</td>
+    <td>
+      Contiene el directorio de trabajo actual.
+    </td>
+  </tr>
+  <tr>
+    <td>`RANDOM`</td>
+    <td>
+      Cada vez que se expande esta variable, se genera un número (pseudo)aleatorio entre 0 y 32767.
+    </td>
+  </tr>
+  <tr>
+    <td>`UID`</td>
+    <td>
+      El número de identificación del usuario actual. Lamentablemente, no es confiable para fines de seguridad o autenticación.
+    </td>
+  </tr>
+  <tr>
+    <td>`COLUMNS`</td>
+    <td>
+      La cantidad de caracteres que caben en una línea de su terminal. (El ancho de su terminal en caracteres).
+    </td>
+  </tr>
+  <tr>
+    <td>`LINES`</td>
+    <td>
+      La cantidad de líneas que caben en su terminal. (La altura de su terminal en caracteres).
+    </td>
+  </tr>
+  <tr>
+    <td>`HOME`</td>
+    <td>
+      El directorio de inicio del usuario actual.
+    </td>
+  </tr>
+  <tr>
+    <td>`PATH`</td>
+    <td>
+      Una lista separada por dos puntos de rutas que se buscarán para encontrar un comando, si no es un alias, una función, un comando incorporado o una palabra clave de shell y no se especifica ninguna ruta.
+    </td>
+  </tr>
+  <tr>
+    <td>`PS1`</td>
+    <td>
+      Contiene una cadena que describe el formato del indicador de shell.
+    </td>
+  </tr>
+  <tr>
+    <td>`TMPDIR`</td>
+    <td>
+      Contiene el directorio que se utiliza para almacenar archivos temporales (por el shell).
+    </td>
+  </tr>
+</table>
+
+(Hay muchas más; consulte el manual para obtener una lista completa). Por supuesto, no está limitado únicamente a estas variables. Siéntase libre de definir las suyas propias:
+
 [Página original](https://mywiki.wooledge.org/BashGuide/Parameters)
