@@ -4,9 +4,9 @@ title: 'Comandos y argumentos'
 
 BASH lee comandos de su entrada (que suele ser una terminal o un archivo). Cada linea de entrada que lee es tratada como un comando -- una instrucción para ser llevado a cabo. Hay pocos casos avanzados, como comandos que ocupan varias líneas, que serán tratadas después.
 
-Bash divide cada linea entre _palabras_ que son demarcadas por un caracter en blaco (espacios o tabuladores). La primera palabra de la linea es el nombre del comando para ser ejecutado. Todas las palabras restantes seran _argumentos_ para ese comando (options, filenmaes, etc.).
+Bash divide cada linea entre *palabras* que son demarcadas por un caracter en blaco (espacios o tabuladores). La primera palabra de la linea es el nombre del comando para ser ejecutado. Todas las palabras restantes seran *argumentos* para ese comando (options, filenmaes, etc.).
 
-Asumiendo que estamos en un directorio vacio... (probar estos comandos, crear un directorio vacío llamado _test_ y entrar a ese directorio para correr: `mkdir test; cd test`):
+Asumiendo que estamos en un directorio vacio... (probar estos comandos, crear un directorio vacío llamado *test* y entrar a ese directorio para correr: `mkdir test; cd test`):
 
 ```bash
 $ ls     # Lista los archivos in el actual directorio (sin salida, sin archivos).
@@ -19,7 +19,7 @@ El comando `ls` imprime los nombres de los archivos en el directorio actual. La 
 
 El caracter `#` al principio de una palabra indica un comentario. Cualquier palabra seguida del comentario son ignoradas por la shell, destinado solo para leer. Si corremos el ejemplo en nuestra shell, no tenemos que tipear los comentarios; pero incluso si lo hacemos, el comando seguirá funcionando.
 
-El comando `touch` es una aplicación que cambia el dato de la _última modificación_ de un archivo. Si el nombre del archivo que se proporciona aún no existe, crea un nuevo archivo vacío y con ese nombre.
+El comando `touch` es una aplicación que cambia el dato de la *última modificación* de un archivo. Si el nombre del archivo que se proporciona aún no existe, crea un nuevo archivo vacío y con ese nombre.
 
 ```bash
 $ rm *            # Eliminar todos los archivos del directorio actual.
@@ -93,24 +93,27 @@ $ [ -f "my file" ]
 
 Eche un vistazo a [argumentos](https://mywiki.wooledge.org/Arguments), [comillas](https://mywiki.wooledge.org/Quotes) y [división de palabras](https://mywiki.wooledge.org/WordSplitting) si todo esto aún no le ha quedado muy claro. Es importante tener una buena comprensión de cómo el shell interpreta los espacios en blanco y los caracteres especiales antes de continuar con esta guía.
 
-__Revisar:__
+> - *Argumentos*
+: Son palabras adicionales especificadas después del comando (`ls -l foo` ejecuta `ls` con dos argumentos).
+> - *Comillas*
+: Las dos formas de comillas, simples y dobles (`'` y `"`), se utilizan para agrupar palabras y pueden proteger caracteres especiales. La diferencia entre `'` y `"` se analizará más adelante.
 
-> - _Argumentos_: Son palabras adicionales especificadas después del comando (`ls -l foo` ejecuta `ls` con dos argumentos).
-> - _Comillas_: Las dos formas de comillas, simples y dobles (`'` y `"`), se utilizan para agrupar palabras y pueden proteger caracteres especiales. La diferencia entre `'` y `"` se analizará más adelante.
+> **Consejo.**
+>
+> Siempre entrecomille oraciones o cadenas que vayan juntas, incluso si no es absolutamente necesario. Esta práctica  reducirá el riesgo de error humano en los scripts (por ejemplo, entrecomillar una oración de un comando `echo`).
 
-__Adicional:__
-
-> - Consejo: siempre entrecomille oraciones o cadenas que vayan juntas, incluso si no es absolutamente necesario. Esta práctica  reducirá el riesgo de error humano en los scripts (por ejemplo, entrecomillar una oración de un comando `echo`).
-> - Preguntas frecuentes: ¡Estoy intentando poner un comando en una variable, pero los casos complejos siempre fallan! [BashFAQ/050](https://mywiki.wooledge.org/BashFAQ/050).
-> - Preguntas frecuentes: ¿Cómo puedo gestionar fácilmente los argumentos de la línea de comandos (opciones) de mi script? [BashFAQ/035](https://mywiki.wooledge.org/BashFAQ/035).
+> **En las preguntas frecuentes.**
+>
+> - ¡Estoy intentando poner un comando en una variable, pero los casos complejos siempre fallan! [BashFAQ/050](https://mywiki.wooledge.org/BashFAQ/050).
+> - ¿Cómo puedo gestionar fácilmente los argumentos de la línea de comandos (opciones) de mi script? [BashFAQ/035](https://mywiki.wooledge.org/BashFAQ/035).
 
 ## Cadenas
 
-El término _cadena_ se refiere a una secuencia de caracteres que se trata como una sola unidad. El término se utiliza de forma imprecisa en esta guía, así como en casi todos los demás lenguajes de programación.
+El término *cadena* se refiere a una secuencia de caracteres que se trata como una sola unidad. El término se utiliza de forma imprecisa en esta guía, así como en casi todos los demás lenguajes de programación.
 
 En la programación Bash, casi todo es una cadena. Cuando escribimos un comando, el nombre del comando es una cadena y cada argumento es una cadena; los nombres de las variables son cadenas y el contenido de las variables también; un nombre de archivo es una cadena y la mayoría de los archivos contienen cadenas. ¡Están en todas partes!
 
-Un comando completo también puede considerarse una cadena. Este no suele ser un punto de vista útil, pero ilustra el hecho de que _partes_ de cadenas a veces pueden considerarse cadenas por derecho propio. Una cadena que forma parte de una cadena más grande se denomina _subcadena_.
+Un comando completo también puede considerarse una cadena. Este no suele ser un punto de vista útil, pero ilustra el hecho de que *partes* de cadenas a veces pueden considerarse cadenas por derecho propio. Una cadena que forma parte de una cadena más grande se denomina *subcadena*.
 
 Las cadenas no tienen ningún significado intrínseco. Su significado se define según cómo y dónde se utilizan.
 
@@ -123,13 +126,13 @@ tejidos
 leche (descremada, no entera)
 ```
 
-Escribimos un comando: `cat list`. El shell lee este comando como una cadena y luego lo divide en las subcadenas `cat` y `list`. En lo que respecta al shell, `list` no tiene significado, es solo una cadena con cuatro caracteres. `cat` recibe el argumento `list`, que es una cadena con un nombre de archivo. La cadena `list` se volvió significativa debido a _cómo se utilizó_.
+Escribimos un comando: `cat list`. El shell lee este comando como una cadena y luego lo divide en las subcadenas `cat` y `list`. En lo que respecta al shell, `list` no tiene significado, es solo una cadena con cuatro caracteres. `cat` recibe el argumento `list`, que es una cadena con un nombre de archivo. La cadena `list` se volvió significativa debido a *cómo se utilizó*.
 
 Resulta que el archivo contiene un texto que vemos en nuestra terminal. El contenido completo del archivo, tomado como un todo, es una cadena, pero esa cadena no tiene significado. Sin embargo, si dividimos el archivo en líneas (y, por lo tanto, tratamos cada línea como una cadena separada), entonces vemos que cada línea individual tiene significado.
 
 Podemos dividir la línea final en palabras, pero estas palabras no tienen significado por sí mismas. No podemos comprar "(descremada" en la tienda y podríamos comprar el tipo de "leche" equivocado. Dividir las líneas en palabras no es algo útil en este ejemplo. Pero la shell no sabe nada de esto, ¡sólo nosotros lo sabemos!
 
-Por lo tanto, cuando trabajamos con comandos, datos y variables (todos los cuales son simplemente cadenas para el shell), tenemos _toda_ la responsabilidad. Necesitamos asegurarnos de que todo lo que necesita estar separado se separe correctamente y que todo lo que necesita permanecer unido se mantenga unido correctamente. Abordaremos estos conceptos repetidamente a medida que avancemos.
+Por lo tanto, cuando trabajamos con comandos, datos y variables (todos los cuales son simplemente cadenas para el shell), tenemos *toda* la responsabilidad. Necesitamos asegurarnos de que todo lo que necesita estar separado se separe correctamente y que todo lo que necesita permanecer unido se mantenga unido correctamente. Abordaremos estos conceptos repetidamente a medida que avancemos.
 
 ## Tipos de comandos
 
@@ -137,7 +140,7 @@ Bash entiende varios tipos diferentes de comandos: alias, funciones, comandos in
 
 ### Alias
 
-Un alias es una forma de abreviar un comando. (Solo se utilizan en shells __interactivos__ y *no* en scripts; esta es una de las pocas diferencias entre un script y un shell interactivo). Un alias es una _palabra_ que se asigna a una determinada _cadena_. Siempre que esa _palabra_ se utiliza como nombre de un comando, se reemplaza por la _cadena_ antes de ejecutar el comando. Por lo tanto, en lugar de ejecutar:
+Un alias es una forma de abreviar un comando. (Solo se utilizan en shells **interactivos** y *no* en scripts; esta es una de las pocas diferencias entre un script y un shell interactivo). Un alias es una *palabra* que se asigna a una determinada *cadena*. Siempre que esa *palabra* se utiliza como nombre de un comando, se reemplaza por la *cadena* antes de ejecutar el comando. Por lo tanto, en lugar de ejecutar:
 
 ```bash
 $ nmap -Pn -A --osscan-limit 192.168.0.1
@@ -154,7 +157,7 @@ Los alias tienen un poder limitado; el reemplazo solo ocurre en la primera palab
 
 ### Funciones
 
-Las funciones en Bash son algo así como alias, pero más potentes. A diferencia de los alias, se pueden usar en __scripts__. Una función contiene comandos de shell y actúa de forma muy similar a un pequeño script; incluso puede tomar argumentos y crear variables locales. Cuando se llama a una función, se ejecutan los comandos que contiene. Las funciones se tratarán en profundidad [más adelante en la guía](https://mywiki.wooledge.org/BashGuide/CompoundCommands#Functions).
+Las funciones en Bash son algo así como alias, pero más potentes. A diferencia de los alias, se pueden usar en **scripts**. Una función contiene comandos de shell y actúa de forma muy similar a un pequeño script; incluso puede tomar argumentos y crear variables locales. Cuando se llama a una función, se ejecutan los comandos que contiene. Las funciones se tratarán en profundidad [más adelante en la guía](https://mywiki.wooledge.org/BashGuide/CompoundCommands#Functions).
 
 ### Elementos incorporados (Builtins)
 
@@ -162,7 +165,7 @@ Bash tiene algunos comandos básicos integrados, como cd (cambiar directorio), e
 
 ### Palabras clave (keywords)
 
-Las palabras clave son como las incorporadas, con la principal diferencia de que las palabras clave son en realidad sintaxis de Bash y pueden analizarse utilizando reglas especiales. Por ejemplo, `[` es una incorporada de Bash, mientras que `[[` es una palabra clave de Bash; ambas se utilizan para [probar una variedad de condiciones](https://mywiki.wooledge.org/BashGuide/TestsAndConditionals). Aquí intentamos usarlas para comparar las palabras "_a_" y "_b_" lexicográficamente:
+Las palabras clave son como las incorporadas, con la principal diferencia de que las palabras clave son en realidad sintaxis de Bash y pueden analizarse utilizando reglas especiales. Por ejemplo, `[` es una incorporada de Bash, mientras que `[[` es una palabra clave de Bash; ambas se utilizan para [probar una variedad de condiciones](https://mywiki.wooledge.org/BashGuide/TestsAndConditionals). Aquí intentamos usarlas para comparar las palabras "*a*" y "*b*" lexicográficamente:
 
 ```bash
 $ [ a < b ]
@@ -174,29 +177,37 @@ El primer ejemplo devuelve un error porque, como es habitual, Bash trata a `<` c
 
 ### Ejecutables
 
-El último tipo de comando que puede ejecutar Bash es un _ejecutable_. (Los ejecutables también pueden llamarse _comandos externos_ o _aplicaciones_). Los ejecutables se invocan comúnmente escribiendo solo su nombre. Esto se puede hacer porque una variable predefinida le da a conocer a Bash una lista de rutas de archivos ejecutables comunes. Esta variable se llama `PATH`. Es un conjunto de nombres de directorio separados por dos puntos (p. ej. `/usr/bin:/bin`). Cuando se especifica un comando (p. ej. `myprogram` o `ls`) sin una ruta de archivo (y no es un alias, una función, un comando incorporado o una palabra clave), Bash busca en los directorios en `PATH`. La búsqueda se realiza en orden, de izquierda a derecha, para ver si contienen un ejecutable del comando escrito.
+El último tipo de comando que puede ejecutar Bash es un *ejecutable*. (Los ejecutables también pueden llamarse *comandos externos* o *aplicaciones*). Los ejecutables se invocan comúnmente escribiendo solo su nombre. Esto se puede hacer porque una variable predefinida le da a conocer a Bash una lista de rutas de archivos ejecutables comunes. Esta variable se llama `PATH`. Es un conjunto de nombres de directorio separados por dos puntos (p. ej. `/usr/bin:/bin`). Cuando se especifica un comando (p. ej. `myprogram` o `ls`) sin una ruta de archivo (y no es un alias, una función, un comando incorporado o una palabra clave), Bash busca en los directorios en `PATH`. La búsqueda se realiza en orden, de izquierda a derecha, para ver si contienen un ejecutable del comando escrito.
 
-Si el ejecutable está _fuera_ de una ruta conocida... será necesario definir la ruta del archivo ejecutable. Para un ejecutable en el directorio actual, utilice `./myprogram`; si está en el directorio `/opt/somedirectory`, utilice `/opt/somedirectory/myprogram`.
+Si el ejecutable está *fuera* de una ruta conocida... será necesario definir la ruta del archivo ejecutable. Para un ejecutable en el directorio actual, utilice `./myprogram`; si está en el directorio `/opt/somedirectory`, utilice `/opt/somedirectory/myprogram`.
 
-__Revisar:__
-
-> - _Alias_
+> **Revisar.**
+>
+> - *Alias*
 : Palabra que se asigna a una cadena. Siempre que se utiliza esa palabra como comando, se reemplaza por la cadena a la que se ha asignado.
-> - _Función_
+> - *Función*
 : Nombre que se asigna a un conjunto de comandos. Siempre que se utiliza la función como comando, se la llama con los argumentos que la siguen. Las funciones son el método básico para crear nuevos comandos.
-> - _Builtin_
+> - *Builtin*
 : Un comando que se ha incorporado a Bash. Los comandos incorporados se manejan directamente mediante el ejecutable de Bash y no crean nuevos procesos.
-> - _Palabra clave_
+> - *Palabra clave*
 : Un comando que forma parte de la sintaxis de Bash. Bash puede analizar las palabras clave de forma diferente a los comandos normales.
-> - _Ejecutable_
+> - *Ejecutable*
 : Un programa que puede ejecutarse haciendo referencia a su ruta de archivo (por ejemplo, `/bin/ls`), o simplemente por su nombre si su ubicación está en la variable `PATH`.
 
-__Además:__
+> **En el manual.**
+>
+> — [Comandos simples](http://www.gnu.org/software/bash/manual/bashref.html#Simple-Commands)
 
-> - Manual — [Comandos simples](http://www.gnu.org/software/bash/manual/bashref.html#Simple-Commands)
-> - Preguntas frecuentes: ¿Cuál es la diferencia entre `test`, `[` y `[[`? [BashFAQ/031](https://mywiki.wooledge.org/BashFAQ/031).
-> - Preguntas frecuentes: ¿Cómo puedo crear un alias que acepte un argumento? [BashFAQ/080](https://mywiki.wooledge.org/BashFAQ/080).
-> - Consejo: el comando `type` se puede utilizar para obtener una descripción del tipo de comando:
+
+> **En las preguntas frecuentes.**
+>
+> - [¿Cuál es la diferencia entre `test`, `[` y `[[`?](https://mywiki.wooledge.org/BashFAQ/031)
+> - [¿Cómo puedo crear un alias que acepte un argumento?](https://mywiki.wooledge.org/BashFAQ/080)
+
+> **Consejo**
+>
+> El comando `type` se puede utilizar para obtener una descripción del tipo de comando:
+
 ```bash
 $ type rm
 rm is hashed (/bin/rm)
@@ -206,7 +217,7 @@ cd is a shell builtin
 
 ## Scripts
 
-Un script es básicamente una secuencia de comandos en un archivo. Bash lee el archivo y procesa los comandos __en orden__. Pasa al siguiente comando solo cuando el actual ha __finalizado__. (La excepción es si se ha especificado que un comando se ejecute de forma asincrónica, en segundo plano. No te preocupes demasiado por este caso todavía; aprenderemos cómo funciona más adelante).
+Un script es básicamente una secuencia de comandos en un archivo. Bash lee el archivo y procesa los comandos **en orden**. Pasa al siguiente comando solo cuando el actual ha **finalizado**. (La excepción es si se ha especificado que un comando se ejecute de forma asincrónica, en segundo plano. No te preocupes demasiado por este caso todavía; aprenderemos cómo funciona más adelante).
 
 Prácticamente cualquier ejemplo que exista en la línea de comandos en esta guía también se puede utilizar en un script.
 
@@ -216,18 +227,18 @@ Crear un script es fácil. Comienza creando un nuevo archivo y pon esto en la pr
 #!/bin/bash
 ```
 
-El encabezado se denomina _directiva de interpretación_ (también se denomina _hashbang_ o _shebang_). Especifica que `/bin/bash` se utilizará como intérprete cuando el archivo se utilice como ejecutable en un comando. Cuando el kernel ejecuta un archivo no binario, lee la primera línea del archivo. Si la línea comienza con `#!`, el kernel utiliza la línea para determinar el intérprete al que retransmitir el archivo. (También existen otras formas válidas de hacer esto, consulte a continuación). El #! debe estar al principio del archivo, sin espacios ni líneas en blanco antes. Los comandos de nuestro script aparecerán en líneas separadas debajo de esto.
+El encabezado se denomina *directiva de interpretación* (también se denomina *hashbang* o *shebang*). Especifica que `/bin/bash` se utilizará como intérprete cuando el archivo se utilice como ejecutable en un comando. Cuando el kernel ejecuta un archivo no binario, lee la primera línea del archivo. Si la línea comienza con `#!`, el kernel utiliza la línea para determinar el intérprete al que retransmitir el archivo. (También existen otras formas válidas de hacer esto, consulte a continuación). El #! debe estar al principio del archivo, sin espacios ni líneas en blanco antes. Los comandos de nuestro script aparecerán en líneas separadas debajo de esto.
 
 > - Consejo: En lugar de `#!/bin/bash`, puedes usar: `#!/usr/bin/env bash`.
 >
 > `env` busca en `$PATH` el ejecutable nombrado por su primer argumento (en este caso, "bash"). Para obtener una explicación más detallada de esta técnica y en qué se diferencia del simple `#!/bin/bash`, consulte esta pregunta en [StackOverflow](https://stackoverflow.com/questions/16365130/what-is-the-difference-between-usr-bin-env-bash-and-usr-bin-bash/16365367#16365367).
 
 
-No se deje engañar por scripts o ejemplos en Internet que utilizan `/bin/sh` como intérprete. __¡`sh` no es `bash`!__ Bash en sí es un shell "compatible con sh" (lo que significa que puede ejecutar la mayoría de los scripts "sh" y tiene gran parte de la misma sintaxis); sin embargo, lo opuesto no es cierto; algunas características de `bash` pueden fallar o causar un comportamiento inesperado en `sh`.
+No se deje engañar por scripts o ejemplos en Internet que utilizan `/bin/sh` como intérprete. **¡`sh` no es `bash`!** Bash en sí es un shell "compatible con sh" (lo que significa que puede ejecutar la mayoría de los scripts "sh" y tiene gran parte de la misma sintaxis); sin embargo, lo opuesto no es cierto; algunas características de `bash` pueden fallar o causar un comportamiento inesperado en `sh`.
 
 Además, absténgase de darle a los scripts la extensión `.sh`. No sirve para nada y es completamente engañoso (ya que será un script `bash`, no un script `sh`).
 
-Está perfectamente bien utilizar Windows para escribir scripts. Evite, sin embargo, utilizar el **Bloc de notas** (Notepad). "Microsoft Notepad" sólo puede crear archivos con finales de línea de estilo DOS. Los finales de línea de estilo DOS terminan con dos caracteres: un **C**arriage Return (ASCII CR; 0xD) y un carácter de **L**ine **F**eed (ASCII LF; 0xA). Bash entiende finales de línea con sólo caracteres de avance de línea (**L**ine **F**eed). Como resultado, el carácter de retorno de carro (**C**arriage **R**eturn) causará una sorpresa inesperada si uno no sabe que está allí (mensajes de error muy extraños). Si es posible, utilice un editor más potente como [_Vim_](http://vim.org), [_Emacs_](http://gnu.org/software/emacs), _kate_, _GEdit..._ Si no lo hace, será necesario eliminar los retornos de carro de los scripts antes de ejecutarlos.
+Está perfectamente bien utilizar Windows para escribir scripts. Evite, sin embargo, utilizar el **Bloc de notas** (Notepad). "Microsoft Notepad" sólo puede crear archivos con finales de línea de estilo DOS. Los finales de línea de estilo DOS terminan con dos caracteres: un **C**arriage Return (ASCII CR; 0xD) y un carácter de **L**ine **F**eed (ASCII LF; 0xA). Bash entiende finales de línea con sólo caracteres de avance de línea (**L**ine **F**eed). Como resultado, el carácter de retorno de carro (**C**arriage **R**eturn) causará una sorpresa inesperada si uno no sabe que está allí (mensajes de error muy extraños). Si es posible, utilice un editor más potente como [*Vim*](http://vim.org), [*Emacs*](http://gnu.org/software/emacs), *kate*, *GEdit...* Si no lo hace, será necesario eliminar los retornos de carro de los scripts antes de ejecutarlos.
 
 Una vez creado el archivo de script, se puede ejecutar haciendo lo siguiente:
 
@@ -256,7 +267,7 @@ $ echo 'PATH="$HOME/bin:$PATH"' >> "$HOME/.bashrc"
 $ source "$HOME/.bashrc"
 ```
 
-El primer comando creará un directorio llamado `bin` dentro de su _directorio de inicio_ (el directorio que le pertenece a usted personalmente). Es tradicional que los directorios que contienen comandos se llamen `bin`, incluso cuando esos comandos son scripts y no programas compilados ("binarios"). El segundo comando agrega una línea que contiene la asignación de una variable a un archivo. La variable es `PATH` y estamos agregando esta línea al archivo de configuración de Bash (`.bashrc`). Cada nueva instancia interactiva de Bash ahora buscará scripts ejecutables en nuestro nuevo directorio antes de verificar cualquier directorio que ya estuviera en `PATH`. El tercer comando le dice a Bash que vuelva a leer su archivo de configuración.
+El primer comando creará un directorio llamado `bin` dentro de su *directorio de inicio* (el directorio que le pertenece a usted personalmente). Es tradicional que los directorios que contienen comandos se llamen `bin`, incluso cuando esos comandos son scripts y no programas compilados ("binarios"). El segundo comando agrega una línea que contiene la asignación de una variable a un archivo. La variable es `PATH` y estamos agregando esta línea al archivo de configuración de Bash (`.bashrc`). Cada nueva instancia interactiva de Bash ahora buscará scripts ejecutables en nuestro nuevo directorio antes de verificar cualquier directorio que ya estuviera en `PATH`. El tercer comando le dice a Bash que vuelva a leer su archivo de configuración.
 
 Algunas personas prefieren utilizar un directorio diferente para guardar sus scripts personales, como `$HOME/.config/bin` o `$HOME/.local/bin`. Puedes utilizar el que prefieras, siempre y cuando seas coherente.
 
@@ -271,7 +282,7 @@ $ mv myscript "$HOME/bin"
 $ myscript
 ```
 
-__Además:__
+**Además:**
 
 > - Consejo: si el sistema tiene varias versiones de bash instaladas, puede ser conveniente especificar el intérprete por ruta absoluta para garantizar que se use la versión de bash correcta. Por ejemplo: `#!/usr/bin/bash`. Escriba "`type -a bash`" para imprimir las rutas de todos los ejecutables de Bash en `PATH`.
 > - Consejo: El intérprete puede ir seguido opcionalmente de una palabra de las opciones del intérprete. Por ejemplo, las siguientes opciones activarán la depuración detallada: "`#!/usr/bin/bash -x`". Para obtener más información, consulte [Depuración](https://mywiki.wooledge.org/BashGuide/Practices#Debugging).
@@ -285,6 +296,6 @@ __Además:__
 # scriptname [option] [argument] ...
 ```
 
-<-[Contenido](introduccion.html) -- [Caracteres especiales](caracteres-especiales.html) ->
+[&#8612; Introducción](introduccion.html) &#8231; [Caracteres especiales &#8614;](caracteres-especiales.html)
 
 [Página original](https://mywiki.wooledge.org/BashGuide/CommandsAndArguments)
