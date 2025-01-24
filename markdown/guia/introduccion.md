@@ -94,5 +94,6 @@ La guía se ha dividido en secciones, que se deben leer aproximadamente en el or
 - [Control de trabajo](https://mywiki.wooledge.org/BashGuide/JobControl).
 - [Prácticas](https://mywiki.wooledge.org/BashGuide/Practices): Elegir su shell; citar; legibilidad; depuración.
 
+&#8231; [Comandos y argumentos &#8614;](comandos-y-argumentos.html)
 
 [Página original](https://mywiki.wooledge.org/BashGuide)
