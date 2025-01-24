@@ -180,4 +180,7 @@ Bash también evaluará este grupo de caracteres como si tuvieran un significado
 - **En el manual**: [Sintaxis del shell](http://www.gnu.org/software/bash/manual/html_node/Shell-Syntax.html#Shell-Syntax)
 - Caracteres especiales: Caracteres que tienen un significado especial para Bash. Normalmente, se interpreta su significado y luego se eliminan del comando antes de ejecutarlo.
 
+
+[&#8612; Comandos y argumentos](comandos-y-argumentos.html) &#8231; [Parámetros &#8614;](parametros.html)
+
 [Página original](https://mywiki.wooledge.org/BashGuide/SpecialCharacters)
