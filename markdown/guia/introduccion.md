@@ -6,8 +6,6 @@ Se le invita a realizar adiciones o modificaciones siempre que pueda mantener la
 
 Toda la información aquí presentada se presenta sin garantía alguna de exactitud. Úsela bajo su propio riesgo. En caso de duda, consulte las páginas de manual o las páginas de información de GNU como referencias autorizadas.
 
-<section>
-
 ## Acerca de esta guía
 
 Actualmente se está redactando [una nueva versión de esta guía](https://guide.bash.academy). Por ahora, esta guía sigue siendo la más completa y la que ha recibido mejores críticas. Se aceptan contribuciones a la nueva guía a través de [forks de GitHub](https://github.com/lhunath/bash.academy).
@@ -27,11 +25,6 @@ The primary maintainer(s) of this document:
 
 La guía también está disponible en [formato PDF](https://s.ntnu.no/bashguide.pdf). Otra opción es imprimirla después de acceder a [FullBashGuide](https://mywiki.wooledge.org/FullBashGuide). Esto garantiza que imprimirá la versión más reciente de este documento.
 
-</section>
-
-
-<section>
-
 ## Una definición
 
 BASH es el acrónimo de **B**ourne **A**gain **Sh**ell. Está basado en Bourne Shell y es compatible en gran medida con sus características.
@@ -47,10 +40,6 @@ BASH **no** es su sistema operativo. No es su gestor de ventanas. No es su termi
 > _Shell_ : Un intérprete de comandos (posiblemente interactivo), que actúa como una capa entre el usuario y el sistema.
 >
 > _Bash_ : The Bourne Again Shell, un shell compatible con _Bourne_.
-
-</section>
-
-<section>
 
 ## Usando Bash
 
@@ -89,9 +78,6 @@ $ help read
 >
 > _Script_ : Archivo que contiene una secuencia de comandos para ejecutar uno tras otro.
 
-</section>
-
-<section>
 
 ## Contenido
 
@@ -108,6 +94,5 @@ La guía se ha dividido en secciones, que se deben leer aproximadamente en el or
 - [Control de trabajo](https://mywiki.wooledge.org/BashGuide/JobControl).
 - [Prácticas](https://mywiki.wooledge.org/BashGuide/Practices): Elegir su shell; citar; legibilidad; depuración.
 
-</section>
 
 [Página original](https://mywiki.wooledge.org/BashGuide)
