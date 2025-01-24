@@ -1,15 +1,18 @@
 #!/usr/bin/env bash
 
 main() { 
+  local content="content"
+  local docs="docs"
   while IFS= read -r -d $'\0' md;do
     local html="$(cext "${md}" "html")"
-    html="$(cpath "${html}" "public")"
+    html="$(cpath "${html}" "${docs}")"
     local css="$(generate_css_path "${html}")"
     create_html "${md}" "${css}" "${html}"
-  done < <(find markdown -type f -print0)
+  done < <(find "${content}" -type f -print0)
 }
 
 generate_css_path() {
+  local css_file="pico.min.css"
   local html="${1}"
   local path="${html%/*}"
   local slash="${path//[^\/]}"
@@ -17,7 +20,7 @@ generate_css_path() {
   for (( i=1; i <= ${#slash}; i++ )); do
     css="../${css}"
   done
-  echo "${css}/pico.min.css"
+  echo "${css}/${css_file}"
 }
 
 cext() {
@@ -33,7 +36,6 @@ cpath() {
 }
 
 create_html() {
-  local css="css/pico.min.css"
   local template="template.html"
   local author="Lhunath,GreyCat,isbrqu"
   local markdown="${1}"
