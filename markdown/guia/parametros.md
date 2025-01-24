@@ -77,7 +77,9 @@ $ echo "Yo soy $LOGNAME, y vivo en $HOME."
 Yo soy lhunath, y vivo en /home/lhunath.
 ```
 
-**Tenga en cuenta**: A diferencia de PHP/Perl/... los parámetros NO comienzan con el signo $. El signo $ que se ve en los ejemplos simplemente hace que se *expanda* el parámetro que le sigue. La expansión básicamente significa que el shell reemplaza el parámetro por su contenido. Como tal, `LOGNAME` es el parámetro (variable) que contiene su nombre de usuario. `$LOGNAME` es una expresión que será reemplazada con el contenido de esa variable, que en mi caso es `lhunath`.
+> **Tenga en cuenta.**
+>
+> A diferencia de PHP/Perl/... los parámetros NO comienzan con el signo $. El signo $ que se ve en los ejemplos simplemente hace que se *expanda* el parámetro que le sigue. La expansión básicamente significa que el shell reemplaza el parámetro por su contenido. Como tal, `LOGNAME` es el parámetro (variable) que contiene su nombre de usuario. `$LOGNAME` es una expresión que será reemplazada con el contenido de esa variable, que en mi caso es `lhunath`.
 
 Creo que ya entendiste la idea. Aquí tienes un resumen de la mayoría de los *parámetros especiales*:
 
@@ -233,8 +235,57 @@ Y aquí hay algunos ejemplos de *variables* que el shell le proporciona:
   </tr>
 </table>
 
-(Hay muchas más; consulte el manual para obtener una lista completa). Por supuesto, no está limitado únicamente a estas variables. Siéntase libre de definir las suyas propias:
+(Hay muchas más; consulte el manual para obtener una lista completa).
 
+Por supuesto, no está limitado únicamente a estas variables. Siéntase libre de definir las suyas propias:
 
+```bash
+$ pais=Argentina
+$ echo "Yo soy $LOGNAME y vivo en $pais"
+Yo soy lhunath y vivo en Argentina
+```
+
+Observa lo que hicimos para asignar el valor `Argentina` a la variable `pais`. Recuerda que **NO se permiten espacios antes ni después del signo igual**.
+
+```bash
+$ language = PHP
+-bash: language: command not found
+$ language=PHP
+$ echo "Estoy demasiado acostumbrado a $language."
+Estoy demasiado acostumbrado a PHP.
+```
+
+Recuerda que Bash no es Perl ni PHP. Debes tener muy claro cómo funciona la expansión para evitar grandes problemas. Si no lo haces, acabarás creando situaciones **muy peligrosas** en tus scripts, especialmente si cometes este error con `rm`:
+
+```bash
+$ ls
+no secret  secret
+$ file='no secret'
+$ rm $file
+rm: cannot remove `no': No such file or directory
+```
+
+Imaginemos que tenemos dos archivos, uno `no secret` y otro `secret`. El primero no contiene nada útil, pero el segundo contiene el secreto que salvará al mundo de una catástrofe inminente. Tan desconsiderado como eres, olvidaste citar tu expansión de parámetros `file`. Bash divide los argumentos por sus espacios en blanco como lo hace normalmente, y a `rm` se le pasan dos argumentos: 'no' y 'secret'. Como resultado, no puede encontrar el archivo `no` y elimina el archivo `secret`. ¡Se ha perdido `secret`!
+
+> **Buena práctica.**
+>
+> Siempre debe mantener las expansiones de parámetros correctamente entrecomilladas. Esto evita que los espacios en blanco o las posibles extensiones dentro de ellas le provoquen canas o borren información inesperadamente de su computadora. La única expansión de parámetros buena es una expansión de parámetros entrecomillada.
+
+> **En el manual.**
+>
+> - [Parametros](http://www.gnu.org/software/bash/manual/bashref.html#Shell-Parameters).
+> - [Variables](http://www.gnu.org/software/bash/manual/bashref.html#Shell-Variables).
+
+> **En las preguntas frecuentes.**
+>
+> - [¿Cómo puedo concatenar dos variables? ¿Cómo puedo agregar una cadena a una variable?](https://mywiki.wooledge.org/BashFAQ/013)
+> - [¿Cómo puedo acceder a los parámetros posicionales después de $9?](https://mywiki.wooledge.org/BashFAQ/025)
+
+> **Revisar.**
+>
+> - *Variable*
+: Una variable es un tipo de parámetro que se puede crear y modificar directamente. Se denota por un nombre, que debe comenzar con una letra o un guión bajo (\_), y debe constar únicamente de letras, dígitos y el guión bajo. Los nombres de las variables distinguen entre mayúsculas y minúsculas.
+> - *Expansion*
+: La expansión se produce cuando un parámetro tiene como prefijo un signo de dólar. Bash toma el valor del parámetro y reemplaza la expansión del parámetro por su valor antes de ejecutar el comando. Esto también se denomina *sustitución*.
 
 [Página original](https://mywiki.wooledge.org/BashGuide/Parameters)
