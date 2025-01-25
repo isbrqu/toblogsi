@@ -288,4 +288,245 @@ Imaginemos que tenemos dos archivos, uno `no secret` y otro `secret`. El primero
 > - *Expansion*
 : La expansión se produce cuando un parámetro tiene como prefijo un signo de dólar. Bash toma el valor del parámetro y reemplaza la expansión del parámetro por su valor antes de ejecutar el comando. Esto también se denomina *sustitución*.
 
+## Tipos de variables
+
+Aunque Bash no es un lenguaje tipado, sí tiene algunos tipos diferentes de variables. Estos tipos definen el tipo de contenido que pueden tener. Bash almacena internamente la información de tipo.
+
+<table>
+	<thead>
+		<tr>
+			<th>Tipo de variable</th>
+			<th>Declaración de variable</th>
+			<th>Descripción</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Arreglo</td>
+			<td>`declare -a foo`</td>
+			<td>La variable `foo` es un arreglo de cadenas.</td>
+		</tr>
+		<tr>
+			<td>Arreglo asociativo</td>
+			<td>`declare -A foo`</td>
+			<td>La variable `foo` es un arreglo asociativo de cadenas (bash 4.0 o superior).</td>
+		</tr>
+		<tr>
+			<td>Entero</td>
+			<td>`declare -i foo`</td>
+			<td>La variable `foo` contiene un número entero. Al asignar valores a esta variable se activa automáticamente la *evaluación aritmética*.</td>
+		</tr>
+		<tr>
+			<td>Solo lectura</td>
+			<td>`declare -r foo`</td>
+			<td>La variable `foo` ya no se puede modificar ni desconfigurar.</td>
+		</tr>
+		<tr>
+			<td>Exportar</td>
+			<td>`declare -x foo`</td>
+			<td>La variable `foo` está marcada para exportación, lo que significa que será heredada por cualquier proceso secundario.</td>
+		</tr>
+	</tbody>
+</table>
+
+Los [arreglos](https://mywiki.wooledge.org/BashGuide/Arrays) son básicamente listas indexadas de cadenas. Son muy convenientes por su capacidad de almacenar múltiples cadenas juntas sin depender de un delimitador para separarlas (lo que es tedioso cuando se hace correctamente y propenso a errores cuando no se hace).
+
+Definir variables como números enteros tiene la ventaja de que se puede omitir parte de la sintaxis al intentar asignarlas o modificarlas:
+
+```bash
+$ a=5; a+=2; echo "$a"; unset a
+52
+$ a=5; let a+=2; echo "$a"; unset a
+7
+$ declare -i a=5; a+=2; echo "$a"; unset a
+7
+$ a=5+2; echo "$a"; unset a
+5+2
+$ declare -i a=5+2; echo "$a"; unset a
+7
+```
+
+Sin embargo, en la práctica, el uso de `declare -i` es extremadamente raro. En gran parte, esto se debe a que crea un comportamiento que puede sorprender a cualquiera que intente mantener el script, que no se da cuenta de la declaración `declare`. La mayoría de los programadores de shell con experiencia prefieren usar comandos aritméticos explícitos (con `((...))` o `let`) cuando quieren realizar operaciones aritméticas.
+
+También es raro ver una declaración explícita de una matriz utilizando `declare -a`. Es suficiente escribir `array=(...)` y Bash sabrá que la variable ahora es una matriz. La excepción a esto es la matriz asociativa, que *debe* ser declarada explícitamente: `declare -A mi_arreglo`.
+
+> **Revisar.**
+>
+> - *String*
+> : Una *cadena* es una secuencia de caracteres.
+> - *Array*
+> : Una *arreglo* es una lista de cadenas indexadas por números.
+> - *Integer*
+> : Un entero es un número entero (positivo, negativo o cero).
+> - *Read Only*
+> : Los parámetros que son de *solo lectura* no se pueden modificar ni desconfigurar.
+> - *Export*
+> : Las variables marcadas para *exportación* serán heredadas por cualquier proceso secundario. Las variables heredadas de esta manera se denominan *Variables de entorno*.
+
+
+> **En las preguntas frecuentes.**
+>
+> - [¿Cómo puedo utilizar arreglos?](https://mywiki.wooledge.org/BashFAQ/005)
+
+## Expansión de parámetros
+
+*Expansión de parámetros* es el término que se refiere a cualquier operación que haga que un parámetro se expanda (se reemplace por contenido). En su forma más básica, la expansión de un parámetro se logra anteponiendo a ese parámetro el signo `$`. En ciertas situaciones, se requieren llaves adicionales alrededor del nombre del parámetro:
+
+```bash
+$ echo "'$USER', '$USERs', '${USER}s'"
+'lhunath', '', 'lhunaths'
+```
+
+Este ejemplo ilustra cómo se ven las expansiones de parámetros básicas (PE). La segunda PE da como resultado una cadena vacía. Esto se debe a que el parámetro `USERs` está vacío. No teníamos la intención de que la `s` fuera parte del nombre del parámetro. Dado que no hay forma de que Bash pueda saber que desea agregar una `s` literal al valor del parámetro, debe usar llaves para marcar el comienzo y el final del nombre del parámetro. Eso es lo que hacemos en la tercera PE en nuestro ejemplo anterior.
+
+*Expansión de parámetros* también nos da trucos para modificar la cadena que se va a expandir. Estas operaciones pueden resultar muy prácticas:
+
+```bash
+$ for file in *.JPG *.jpeg
+do mv -- "$file" "${file%.*}.jpg"
+done
+```
+
+El código anterior se puede utilizar para cambiar el nombre de todos los archivos JPEG con extensión `.JPG` o `.jpeg` para que tengan la extensión `.jpg` normal. La expresión `${file%.*}` corta todo lo que esté al final, comenzando por el último punto (`.`). Luego, entre las mismas comillas, se agrega una nueva extensión al resultado de la expansión.
+
+A continuación se muestra un resumen de la mayoría de los trucos de EP disponibles:
+
+<table>
+	<thead>
+		<tr>
+			<th></th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>`${parameter:-word}`</td>
+			<td>**Usa el valor por defecto.** Si el `parameter` no está definido o es nulo, se sustituye por la `word` (que puede ser una expansión). De lo contrario, se sustituye por el valor del `parameter`.</td>
+		</tr>
+		<tr>
+			<td>`${parameter:=word}`</td>
+			<td>**Asignar valor por defecto.** Si `parameter` no está definido o es nulo, se asigna `word` (que puede ser una expansión) a `parameter`. Luego se sustituye el valor de `parameter`.</td>
+		</tr>
+		<tr>
+			<td>`${parameter:+word}`</td>
+			<td>**Utilice un valor alternativo.** Si `parameter` es nulo o no está definido, no se sustituye nada; de lo contrario, se sustituye `word` (que puede ser una expansión).</td>
+		</tr>
+		<tr>
+			<td>`${parameter:offset:length}`</td>
+			<td>**Expansión de subcadena.** Se expande hasta `length` caracteres de `parameter` comenzando en el carácter especificado por `offset` (indexado a 0). Si se omite `:length`, se llega hasta el final. Si `offset` es negativo (¡use paréntesis!), se cuenta hacia atrás desde el final de `parameter` en lugar de hacia adelante desde el principio. Si `parameter` es `@` o un nombre de arreglo indexado subíndice por `@` o `*`, el resultado es `length` parámetros posicionales o miembros del arreglo, respectivamente, comenzando desde `offset`.</td>
+		</tr>
+		<tr>
+			<td>`${#parameter}`</td>
+			<td>Se sustituye la longitud en caracteres del valor de `parameter`. Si `parameter` es un nombre de matriz con subíndice `@` o `*`, se devuelve el número de elementos.</td>
+		</tr>
+		<tr>
+			<td>`${parameter#pattern}`</td>
+			<td>
+				`pattern` se compara con el **comienzo** de `parameter`. El resultado es el valor expandido de `parameter` con la coincidencia más corta eliminada.
+				Si `parameter` es un nombre de matriz con subíndice `@` o `*`, esto se hará en cada elemento. Lo mismo para todos los elementos siguientes.
+			</td>
+		</tr>
+		<tr>
+			<td>`${parameter##pattern}`</td>
+			<td>Igual que el anterior, pero se elimina la coincidencia más *larga*.</td>
+		</tr>
+		<tr>
+			<td>`${parameter%pattern}`</td>
+			<td>
+				`pattern` se compara con el **final** de `parameter`. El resultado es el valor expandido de `parameter` con la coincidencia más corta eliminada.
+			</td>
+		</tr>
+		<tr>
+			<td>`${parameter%%pattern}`</td>
+			<td>Igual que el anterior, pero se elimina la coincidencia más *larga*.</td>
+		</tr>
+		<tr>
+			<td>`${parameter/pat/string}`</td>
+			<td>
+				El resultado es el valor expandido de `parameter` con la **primera** coincidencia (no anclada) de `pat` reemplazada por `string`. Se asume que la cadena es nula cuando la parte `/string` está ausente.
+			</td>
+		</tr>
+		<tr>
+			<td>`${parameter//pat/string}`</td>
+			<td>Igual que el anterior, pero se reemplaza *cada coincidencia* de `pat`.</td>
+		</tr>
+		<tr>
+			<td>`${parameter/#pat/string}`</td>
+			<td>
+				Igual que el anterior, pero comparado con el **principio**. Útil para agregar un prefijo común con un patrón nulo: `${array[@]/#/prefix}`.
+			</td>
+		</tr>
+		<tr>
+			<td>`${parameter/%pat/string}`</td>
+			<td>
+				Igual que el anterior, pero combinado con el **final**. Útil para agregar un sufijo común con un patrón nulo.
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+Los aprenderás con la experiencia. Te resultarán útiles con mucha más frecuencia de la que crees. A continuación, te mostramos algunos ejemplos para empezar:
+
+```bash
+$ file="$HOME/.secrets/007"; \
+echo "Ubicación del archivo: $file"; \
+echo "Nombre del archivo: ${file##*/}"; \
+echo "Directorio de archivos: ${file%/*}"; \
+echo "Archivo no secreto: ${file/secrets/not_secret}"; \
+echo; \
+echo "Otra ubicación de archivo: ${other:-No hay otro archivo}"; \
+echo "Usar archivo si no hay otro archivo: ${other:=$file}"; \
+echo "Otro nombre de archivo: ${other##*/}"; \
+echo "Longitud de otra ubicación de archivo: ${#other}"
+Ubicación del archivo: /home/lhunath/.secrets/007
+Nombre del archivo: 007
+Directorio de archivos: /home/lhunath/.secrets
+Archivo no secreto: /home/lhunath/.not_secret/007
+
+Otra ubicación de archivo: No hay otro archivo
+Usar archivo si no hay otro archivo: /home/lhunath/.secrets/007
+Otro nombre de archivo: 007
+Longitud de otra ubicación de archivo: 26
+```
+Recuerde la diferencia entre `${v#p}` y `${v##p}`. La duplicación del carácter `#` significa que los patrones se volverán voraces. Lo mismo ocurre con `%`:
+
+```
+$ version=1.5.9; echo "MAJOR: ${version%%.*}, MINOR: ${version#*.}."
+MAJOR: 1, MINOR: 5.9.
+$ echo "Dash: ${version/./-}, Dashes: ${version//./-}."
+Dash: 1-5.9, Dashes: 1-5-9.
+```
+
+Nota: **No puedes** utilizar varios PE juntos. Si necesitas ejecutar varios PE en un parámetro, necesitarás utilizar varias instrucciones:
+
+```
+$ file=$HOME/image.jpg
+$ file=${file##*/}
+$ echo "${file%.*}"
+image
+```
+
+> **Buenas prácticas.**
+>
+> Puede verse tentado a utilizar aplicaciones externas como `sed`, `awk`, `cut`, `perl` u otras para modificar sus cadenas. Tenga en cuenta que todas ellas requieren que se inicie un proceso adicional, lo que en algunos casos puede provocar ralentizaciones. Las expansiones de parámetros son la alternativa perfecta.
+
+> **En el manual.**
+>
+> - [Shell Parameter Expansion](http://www.gnu.org/software/bash/manual/bashref.html#Shell-Parameter-Expansion)
+
+> **En las preguntas frecuentes.**
+>
+> - [¿Cómo puedo manipular cadenas en bash?](https://mywiki.wooledge.org/BashFAQ/100)
+> - [¿Cómo puedo cambiar el nombre de todos mis archivos \*.foo a \*.bar, o convertir espacios en guiones bajos, o convertir nombres de archivos en mayúsculas a minúsculas?](https://mywiki.wooledge.org/BashFAQ/030)
+> - [¿Cómo puedo usar la expansión de parámetros? ¿Cómo puedo obtener subcadenas? ¿Cómo puedo obtener un archivo sin su extensión, o solo la extensión de un archivo?](https://mywiki.wooledge.org/BashFAQ/073)
+> - [¿Cómo obtengo los efectos de esas ingeniosas expansiones de parámetros de Bash en shells más antiguos?](https://mywiki.wooledge.org/BashFAQ/074)
+> - [¿Cómo puedo determinar si una variable ya está definida? ¿O una función?](https://mywiki.wooledge.org/BashFAQ/083)
+
+> **Revisar.**
+>
+> - *Expansión de parámetros*
+> : Cualquier expansión (consulte la definición anterior) de un parámetro. Durante esta expansión, se pueden realizar determinadas operaciones sobre el valor que se va a expandir.
+
+[&#8612; Caracteres especiales](caracteres-especiales.html) &#8231; [Patrones &#8614;](patrones.html)
+
 [Página original](https://mywiki.wooledge.org/BashGuide/Parameters)

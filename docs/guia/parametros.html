@@ -357,6 +357,324 @@ La expansión se produce cuando un parámetro tiene como prefijo un signo de dó
 </dl></li>
 </ul>
 </blockquote>
+<h2 id="tipos-de-variables">Tipos de variables</h2>
+<p>Aunque Bash no es un lenguaje tipado, sí tiene algunos tipos diferentes de variables. Estos tipos definen el tipo de contenido que pueden tener. Bash almacena internamente la información de tipo.</p>
+<table>
+<thead>
+<tr>
+<th>
+Tipo de variable
+</th>
+<th>
+Declaración de variable
+</th>
+<th>
+Descripción
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Arreglo
+</td>
+<td>
+<code>declare -a foo</code>
+</td>
+<td>
+La variable <code>foo</code> es un arreglo de cadenas.
+</td>
+</tr>
+<tr>
+<td>
+Arreglo asociativo
+</td>
+<td>
+<code>declare -A foo</code>
+</td>
+<td>
+La variable <code>foo</code> es un arreglo asociativo de cadenas (bash 4.0 o superior).
+</td>
+</tr>
+<tr>
+<td>
+Entero
+</td>
+<td>
+<code>declare -i foo</code>
+</td>
+<td>
+La variable <code>foo</code> contiene un número entero. Al asignar valores a esta variable se activa automáticamente la <em>evaluación aritmética</em>.
+</td>
+</tr>
+<tr>
+<td>
+Solo lectura
+</td>
+<td>
+<code>declare -r foo</code>
+</td>
+<td>
+La variable <code>foo</code> ya no se puede modificar ni desconfigurar.
+</td>
+</tr>
+<tr>
+<td>
+Exportar
+</td>
+<td>
+<code>declare -x foo</code>
+</td>
+<td>
+La variable <code>foo</code> está marcada para exportación, lo que significa que será heredada por cualquier proceso secundario.
+</td>
+</tr>
+</tbody>
+</table>
+<p>Los <a href="https://mywiki.wooledge.org/BashGuide/Arrays">arreglos</a> son básicamente listas indexadas de cadenas. Son muy convenientes por su capacidad de almacenar múltiples cadenas juntas sin depender de un delimitador para separarlas (lo que es tedioso cuando se hace correctamente y propenso a errores cuando no se hace).</p>
+<p>Definir variables como números enteros tiene la ventaja de que se puede omitir parte de la sintaxis al intentar asignarlas o modificarlas:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> a=5<span class="kw">;</span> <span class="va">a</span><span class="op">+=</span>2<span class="kw">;</span> <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$a</span><span class="st">&quot;</span><span class="kw">;</span> <span class="bu">unset</span> <span class="va">a</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">52</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> a=5<span class="kw">;</span> <span class="bu">let</span> <span class="va">a</span><span class="op">+=</span><span class="dv">2</span><span class="kw">;</span> <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$a</span><span class="st">&quot;</span><span class="kw">;</span> <span class="bu">unset</span> <span class="va">a</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="ex">7</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> declare <span class="at">-i</span> a=5<span class="kw">;</span> <span class="va">a</span><span class="op">+=</span>2<span class="kw">;</span> <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$a</span><span class="st">&quot;</span><span class="kw">;</span> <span class="bu">unset</span> <span class="va">a</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="ex">7</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> a=5+2<span class="kw">;</span> <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$a</span><span class="st">&quot;</span><span class="kw">;</span> <span class="bu">unset</span> <span class="va">a</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="ex">5+2</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> declare <span class="at">-i</span> a=5+2<span class="kw">;</span> <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$a</span><span class="st">&quot;</span><span class="kw">;</span> <span class="bu">unset</span> <span class="va">a</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="ex">7</span></span></code></pre></div>
+<p>Sin embargo, en la práctica, el uso de <code>declare -i</code> es extremadamente raro. En gran parte, esto se debe a que crea un comportamiento que puede sorprender a cualquiera que intente mantener el script, que no se da cuenta de la declaración <code>declare</code>. La mayoría de los programadores de shell con experiencia prefieren usar comandos aritméticos explícitos (con <code>((...))</code> o <code>let</code>) cuando quieren realizar operaciones aritméticas.</p>
+<p>También es raro ver una declaración explícita de una matriz utilizando <code>declare -a</code>. Es suficiente escribir <code>array=(...)</code> y Bash sabrá que la variable ahora es una matriz. La excepción a esto es la matriz asociativa, que <em>debe</em> ser declarada explícitamente: <code>declare -A mi_arreglo</code>.</p>
+<blockquote>
+<p><strong>Revisar.</strong></p>
+<ul>
+<li><dl>
+<dt><em>String</em></dt>
+<dd>
+Una <em>cadena</em> es una secuencia de caracteres.
+</dd>
+</dl></li>
+<li><dl>
+<dt><em>Array</em></dt>
+<dd>
+Una <em>arreglo</em> es una lista de cadenas indexadas por números.
+</dd>
+</dl></li>
+<li><dl>
+<dt><em>Integer</em></dt>
+<dd>
+Un entero es un número entero (positivo, negativo o cero).
+</dd>
+</dl></li>
+<li><dl>
+<dt><em>Read Only</em></dt>
+<dd>
+Los parámetros que son de <em>solo lectura</em> no se pueden modificar ni desconfigurar.
+</dd>
+</dl></li>
+<li><dl>
+<dt><em>Export</em></dt>
+<dd>
+Las variables marcadas para <em>exportación</em> serán heredadas por cualquier proceso secundario. Las variables heredadas de esta manera se denominan <em>Variables de entorno</em>.
+</dd>
+</dl></li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>En las preguntas frecuentes.</strong></p>
+<ul>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/005">¿Cómo puedo utilizar arreglos?</a></li>
+</ul>
+</blockquote>
+<h2 id="expansión-de-parámetros">Expansión de parámetros</h2>
+<p><em>Expansión de parámetros</em> es el término que se refiere a cualquier operación que haga que un parámetro se expanda (se reemplace por contenido). En su forma más básica, la expansión de un parámetro se logra anteponiendo a ese parámetro el signo <code>$</code>. En ciertas situaciones, se requieren llaves adicionales alrededor del nombre del parámetro:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&quot;&#39;</span><span class="va">$USER</span><span class="st">&#39;, &#39;</span><span class="va">$USERs</span><span class="st">&#39;, &#39;</span><span class="va">${USER}</span><span class="st">s&#39;&quot;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="st">&#39;lhunath&#39;</span><span class="ex">,</span> <span class="st">&#39;&#39;</span>, <span class="st">&#39;lhunaths&#39;</span></span></code></pre></div>
+<p>Este ejemplo ilustra cómo se ven las expansiones de parámetros básicas (PE). La segunda PE da como resultado una cadena vacía. Esto se debe a que el parámetro <code>USERs</code> está vacío. No teníamos la intención de que la <code>s</code> fuera parte del nombre del parámetro. Dado que no hay forma de que Bash pueda saber que desea agregar una <code>s</code> literal al valor del parámetro, debe usar llaves para marcar el comienzo y el final del nombre del parámetro. Eso es lo que hacemos en la tercera PE en nuestro ejemplo anterior.</p>
+<p><em>Expansión de parámetros</em> también nos da trucos para modificar la cadena que se va a expandir. Estas operaciones pueden resultar muy prácticas:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> for file in <span class="pp">*</span>.JPG <span class="pp">*</span>.jpeg</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span> <span class="fu">mv</span> <span class="at">--</span> <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span> <span class="st">&quot;</span><span class="va">${file</span><span class="op">%</span>.<span class="pp">*</span><span class="va">}</span><span class="st">.jpg&quot;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p>El código anterior se puede utilizar para cambiar el nombre de todos los archivos JPEG con extensión <code>.JPG</code> o <code>.jpeg</code> para que tengan la extensión <code>.jpg</code> normal. La expresión <code>${file%.*}</code> corta todo lo que esté al final, comenzando por el último punto (<code>.</code>). Luego, entre las mismas comillas, se agrega una nueva extensión al resultado de la expansión.</p>
+<p>A continuación se muestra un resumen de la mayoría de los trucos de EP disponibles:</p>
+<table>
+<thead>
+<tr>
+<th>
+</th>
+<th>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>${parameter:-word}</code>
+</td>
+<td>
+<strong>Usa el valor por defecto.</strong> Si el <code>parameter</code> no está definido o es nulo, se sustituye por la <code>word</code> (que puede ser una expansión). De lo contrario, se sustituye por el valor del <code>parameter</code>.
+</td>
+</tr>
+<tr>
+<td>
+<code>${parameter:=word}</code>
+</td>
+<td>
+<strong>Asignar valor por defecto.</strong> Si <code>parameter</code> no está definido o es nulo, se asigna <code>word</code> (que puede ser una expansión) a <code>parameter</code>. Luego se sustituye el valor de <code>parameter</code>.
+</td>
+</tr>
+<tr>
+<td>
+<code>${parameter:+word}</code>
+</td>
+<td>
+<strong>Utilice un valor alternativo.</strong> Si <code>parameter</code> es nulo o no está definido, no se sustituye nada; de lo contrario, se sustituye <code>word</code> (que puede ser una expansión).
+</td>
+</tr>
+<tr>
+<td>
+<code>${parameter:offset:length}</code>
+</td>
+<td>
+<strong>Expansión de subcadena.</strong> Se expande hasta <code>length</code> caracteres de <code>parameter</code> comenzando en el carácter especificado por <code>offset</code> (indexado a 0). Si se omite <code>:length</code>, se llega hasta el final. Si <code>offset</code> es negativo (¡use paréntesis!), se cuenta hacia atrás desde el final de <code>parameter</code> en lugar de hacia adelante desde el principio. Si <code>parameter</code> es <code>@</code> o un nombre de arreglo indexado subíndice por <code>@</code> o <code>*</code>, el resultado es <code>length</code> parámetros posicionales o miembros del arreglo, respectivamente, comenzando desde <code>offset</code>.
+</td>
+</tr>
+<tr>
+<td>
+<code>${#parameter}</code>
+</td>
+<td>
+Se sustituye la longitud en caracteres del valor de <code>parameter</code>. Si <code>parameter</code> es un nombre de matriz con subíndice <code>@</code> o <code>*</code>, se devuelve el número de elementos.
+</td>
+</tr>
+<tr>
+<td>
+<code>${parameter#pattern}</code>
+</td>
+<td>
+<code>pattern</code> se compara con el <strong>comienzo</strong> de <code>parameter</code>. El resultado es el valor expandido de <code>parameter</code> con la coincidencia más corta eliminada. Si <code>parameter</code> es un nombre de matriz con subíndice <code>@</code> o <code>*</code>, esto se hará en cada elemento. Lo mismo para todos los elementos siguientes.
+</td>
+</tr>
+<tr>
+<td>
+<code>${parameter##pattern}</code>
+</td>
+<td>
+Igual que el anterior, pero se elimina la coincidencia más <em>larga</em>.
+</td>
+</tr>
+<tr>
+<td>
+<code>${parameter%pattern}</code>
+</td>
+<td>
+<code>pattern</code> se compara con el <strong>final</strong> de <code>parameter</code>. El resultado es el valor expandido de <code>parameter</code> con la coincidencia más corta eliminada.
+</td>
+</tr>
+<tr>
+<td>
+<code>${parameter%%pattern}</code>
+</td>
+<td>
+Igual que el anterior, pero se elimina la coincidencia más <em>larga</em>.
+</td>
+</tr>
+<tr>
+<td>
+<code>${parameter/pat/string}</code>
+</td>
+<td>
+El resultado es el valor expandido de <code>parameter</code> con la <strong>primera</strong> coincidencia (no anclada) de <code>pat</code> reemplazada por <code>string</code>. Se asume que la cadena es nula cuando la parte <code>/string</code> está ausente.
+</td>
+</tr>
+<tr>
+<td>
+<code>${parameter//pat/string}</code>
+</td>
+<td>
+Igual que el anterior, pero se reemplaza <em>cada coincidencia</em> de <code>pat</code>.
+</td>
+</tr>
+<tr>
+<td>
+<code>${parameter/#pat/string}</code>
+</td>
+<td>
+Igual que el anterior, pero comparado con el <strong>principio</strong>. Útil para agregar un prefijo común con un patrón nulo: <code>${array[@]/#/prefix}</code>.
+</td>
+</tr>
+<tr>
+<td>
+<code>${parameter/%pat/string}</code>
+</td>
+<td>
+Igual que el anterior, pero combinado con el <strong>final</strong>. Útil para agregar un sufijo común con un patrón nulo.
+</td>
+</tr>
+</tbody>
+</table>
+<p>Los aprenderás con la experiencia. Te resultarán útiles con mucha más frecuencia de la que crees. A continuación, te mostramos algunos ejemplos para empezar:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> file=<span class="st">&quot;</span><span class="va">$HOME</span><span class="st">/.secrets/007&quot;</span><span class="kw">;</span> <span class="dt">\</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Ubicación del archivo: </span><span class="va">$file</span><span class="st">&quot;</span><span class="kw">;</span> <span class="dt">\</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Nombre del archivo: </span><span class="va">${file</span><span class="op">##</span><span class="pp">*</span>/<span class="va">}</span><span class="st">&quot;</span><span class="kw">;</span> <span class="dt">\</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Directorio de archivos: </span><span class="va">${file</span><span class="op">%</span>/<span class="pp">*</span><span class="va">}</span><span class="st">&quot;</span><span class="kw">;</span> <span class="dt">\</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Archivo no secreto: </span><span class="va">${file</span><span class="op">/</span><span class="ss">secrets</span><span class="op">/</span>not_secret<span class="va">}</span><span class="st">&quot;</span><span class="kw">;</span> <span class="dt">\</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span><span class="kw">;</span> <span class="dt">\</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Otra ubicación de archivo: </span><span class="va">${other</span><span class="op">:-</span>No hay otro archivo<span class="va">}</span><span class="st">&quot;</span><span class="kw">;</span> <span class="dt">\</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Usar archivo si no hay otro archivo: </span><span class="va">${other</span><span class="op">:=</span><span class="va">$file}</span><span class="st">&quot;</span><span class="kw">;</span> <span class="dt">\</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Otro nombre de archivo: </span><span class="va">${other</span><span class="op">##</span><span class="pp">*</span>/<span class="va">}</span><span class="st">&quot;</span><span class="kw">;</span> <span class="dt">\</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Longitud de otra ubicación de archivo: </span><span class="va">${</span><span class="op">#</span><span class="va">other}</span><span class="st">&quot;</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="ex">Ubicación</span> del archivo: /home/lhunath/.secrets/007</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="ex">Nombre</span> del archivo: 007</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="ex">Directorio</span> de archivos: /home/lhunath/.secrets</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="ex">Archivo</span> no secreto: /home/lhunath/.not_secret/007</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="ex">Otra</span> ubicación de archivo: No hay otro archivo</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="ex">Usar</span> archivo si no hay otro archivo: /home/lhunath/.secrets/007</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="ex">Otro</span> nombre de archivo: 007</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="ex">Longitud</span> de otra ubicación de archivo: 26</span></code></pre></div>
+<p>Recuerde la diferencia entre <code>${v#p}</code> y <code>${v##p}</code>. La duplicación del carácter <code>#</code> significa que los patrones se volverán voraces. Lo mismo ocurre con <code>%</code>:</p>
+<pre><code>$ version=1.5.9; echo &quot;MAJOR: ${version%%.*}, MINOR: ${version#*.}.&quot;
+MAJOR: 1, MINOR: 5.9.
+$ echo &quot;Dash: ${version/./-}, Dashes: ${version//./-}.&quot;
+Dash: 1-5.9, Dashes: 1-5-9.</code></pre>
+<p>Nota: <strong>No puedes</strong> utilizar varios PE juntos. Si necesitas ejecutar varios PE en un parámetro, necesitarás utilizar varias instrucciones:</p>
+<pre><code>$ file=$HOME/image.jpg
+$ file=${file##*/}
+$ echo &quot;${file%.*}&quot;
+image</code></pre>
+<blockquote>
+<p><strong>Buenas prácticas.</strong></p>
+<p>Puede verse tentado a utilizar aplicaciones externas como <code>sed</code>, <code>awk</code>, <code>cut</code>, <code>perl</code> u otras para modificar sus cadenas. Tenga en cuenta que todas ellas requieren que se inicie un proceso adicional, lo que en algunos casos puede provocar ralentizaciones. Las expansiones de parámetros son la alternativa perfecta.</p>
+</blockquote>
+<blockquote>
+<p><strong>En el manual.</strong></p>
+<ul>
+<li><a href="http://www.gnu.org/software/bash/manual/bashref.html#Shell-Parameter-Expansion">Shell Parameter Expansion</a></li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>En las preguntas frecuentes.</strong></p>
+<ul>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/100">¿Cómo puedo manipular cadenas en bash?</a></li>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/030">¿Cómo puedo cambiar el nombre de todos mis archivos *.foo a *.bar, o convertir espacios en guiones bajos, o convertir nombres de archivos en mayúsculas a minúsculas?</a></li>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/073">¿Cómo puedo usar la expansión de parámetros? ¿Cómo puedo obtener subcadenas? ¿Cómo puedo obtener un archivo sin su extensión, o solo la extensión de un archivo?</a></li>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/074">¿Cómo obtengo los efectos de esas ingeniosas expansiones de parámetros de Bash en shells más antiguos?</a></li>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/083">¿Cómo puedo determinar si una variable ya está definida? ¿O una función?</a></li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>Revisar.</strong></p>
+<ul>
+<li><dl>
+<dt><em>Expansión de parámetros</em></dt>
+<dd>
+Cualquier expansión (consulte la definición anterior) de un parámetro. Durante esta expansión, se pueden realizar determinadas operaciones sobre el valor que se va a expandir.
+</dd>
+</dl></li>
+</ul>
+</blockquote>
+<p><a href="caracteres-especiales.html">↤ Caracteres especiales</a> ‧ <a href="patrones.html">Patrones ↦</a></p>
 <p><a href="https://mywiki.wooledge.org/BashGuide/Parameters">Página original</a></p>
 	</main>
 </body>
