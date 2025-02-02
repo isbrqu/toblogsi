@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="color-scheme" content="light dark">
+	<meta name="author" content="Lhunath,GreyCat,isbrqu">
+	<meta name="description" content="Pruebas y condicionales">
+	<link rel="stylesheet" href="../css/pico.min.css">
+	<title>Pruebas y condicionales</title>
+</head>
+<body>
+	<header class="container">
+		<hgroup>
+			<h1><a href="/">ToBlogSi</a></h1>
+			<p>Traducciones manuales</p>
+		</hgroup>
+		<nav>
+			<ul>
+				<li><a href="/guia/introduccion.html">Guía</a></li>
+				<li><a href="/preguntas-frecuentes/introduccion.html">Preguntas frecuentes</a></li>
+				<li><a href="/malas-practicas/introduccion.html">Malas prácticas</a></li>
+				<li><a href="/referencia-rapida/introduccion.html">Referencia rápida</a></li>
+				<li><a href="/programacion/introduccion.html">Programación</a></li>
+			</ul>
+		</nav>
+	</header>
+	<main class="container">
+		<h1>Pruebas y condicionales</h1>
+		<p>La ejecución secuencial de comandos es una cosa, pero para lograr una lógica avanzada en sus scripts o en sus líneas de comandos, necesitará pruebas y condiciones. Las pruebas determinan si algo es verdadero o falso. Las condiciones se utilizan para tomar decisiones que determinan el flujo de ejecución de un script.</p>
+<h2 id="estado-de-salida">Estado de salida</h2>
+<p>Cada comando genera un código de salida cada vez que finaliza. Este código de salida lo utiliza la aplicación que lo inició para evaluar si todo salió bien. Este código de salida es como un valor de retorno de las funciones. Es un número entero entre 0 y 255 (inclusive). La convención dicta que usemos 0 para indicar éxito y cualquier otro número para indicar algún tipo de falla. El número específico es completamente específico de la aplicación y se utiliza para indicar qué salió mal exactamente.</p>
+<p>Por ejemplo, el comando <code>ping</code> envía paquetes ICMP a través de la red a un host determinado. Ese host normalmente responde a este paquete enviando exactamente el mismo. De esta manera, podemos verificar si podemos comunicarnos con un host remoto. <code>ping</code> tiene una serie de códigos de salida que pueden indicarnos qué salió mal, si es que salió mal algo:</p>
+<blockquote>
+<p><strong>Del manual de <code>ping</code> de Linux:</strong></p>
+<p><em>Si ping no recibe ningún paquete de respuesta, saldrá con el código 1. Si se especifican un recuento de paquetes y una fecha límite, y se reciben menos de los paquetes antes de que llegue la fecha límite, también saldrá con el código 1. En caso de otro error, saldrá con el código 2. De lo contrario, saldrá con el código 0. Esto permite usar el código de salida para ver si un host está activo o no.</em></p>
+</blockquote>
+<p>El parámetro especial <code>?</code> nos muestra el código de salida del último proceso en primer plano que finalizó. Juguemos un poco con <code>ping</code> para ver sus códigos de salida:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ping Good</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">ping:</span> unknown host Good</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="va">$?</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">2</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ping <span class="at">-c</span> 1 <span class="at">-W</span> 1 1.1.1.1</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">PING</span> 1.1.1.1 <span class="er">(</span><span class="ex">1.1.1.1</span><span class="kw">)</span> <span class="ex">56</span><span class="er">(</span><span class="ex">84</span><span class="kw">)</span> <span class="ex">bytes</span> of data.</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span> 1.1.1.1 ping statistics <span class="at">---</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ex">1</span> packets transmitted, 0 received, 100% packet loss, time 0ms</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="va">$?</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ex">1</span></span></code></pre></div>
+<blockquote>
+<p><strong>Buenas prácticas.</strong></p>
+<p>Debes asegurarte de que tus scripts siempre devuelvan un código de salida distinto de cero si ocurre algo inesperado durante su ejecución. Puedes hacerlo con la función integrada <code>exit</code>:</p>
+</blockquote>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> file <span class="kw">||</span> <span class="kw">{</span> <span class="bu">echo</span> <span class="st">&#39;No se ha podido eliminar el archivo!&#39;</span> <span class="op">&gt;&amp;</span><span class="dv">2</span><span class="kw">;</span> <span class="bu">exit</span> 1<span class="kw">;</span> <span class="kw">}</span></span></code></pre></div>
+<blockquote>
+<p><strong>En el manual.</strong></p>
+<p><a href="http://www.gnu.org/software/bash/manual/bashref.html#Exit-Status">Exit Status</a></p>
+</blockquote>
+<blockquote>
+<p><strong>Revisar.</strong></p>
+<ul>
+<li><dl>
+<dt><em>Código de salida</em> / <em>Estado de salida</em></dt>
+<dd>
+Siempre que un comando finaliza, notifica a su padre (que en nuestro caso siempre será el shell que lo inició) su estado de salida. Esto se representa mediante un número que va de 0 a 255. Este código es una pista sobre el éxito de la ejecución del comando.
+</dd>
+</dl></li>
+</ul>
+</blockquote>
+<h2 id="operadores-de-control-and">Operadores de control (<code>&amp;&amp;</code> and <code>||</code>)</h2>
+<p>Ahora que sabemos qué son los códigos de salida y que un código de salida de ‘0’ significa que la ejecución del comando fue exitosa, aprenderemos a usar esta información. La forma más fácil de realizar una determinada acción dependiendo del éxito de un comando anterior es mediante el uso de <em>operadores de control</em>. Estos operadores son <code>&amp;&amp;</code> y <code>||</code>, que representan respectivamente un AND lógico y un OR lógico. Estos operadores se utilizan entre dos comandos y se utilizan para controlar si el segundo comando debe ejecutarse dependiendo del éxito del primero. Este concepto se llama <em>ejecución condicional</em>.</p>
+<p>Pongamos esa teoría en práctica:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> mkdir d <span class="kw">&amp;&amp;</span> <span class="bu">cd</span> d</span></code></pre></div>
+<p>Este ejemplo simple tiene dos comandos, <code>mkdir d</code> y <code>cd d</code>. Podrías usar un punto y coma para separar los comandos y ejecutarlos secuencialmente; pero queremos algo más. En el ejemplo anterior, <a href="https://mywiki.wooledge.org/BASH">BASH</a> ejecutará <code>mkdir d</code>, luego <code>&amp;&amp;</code> verificará el resultado de la aplicación <code>mkdir</code> después de que finalice. Si la aplicación <code>mkdir</code> fue exitosa (código de salida 0), entonces Bash ejecutará el siguiente comando, <code>cd d</code>. Si <code>mkdir d</code> falló y devolvió un código de salida distinto de 0, Bash omitirá el siguiente comando y permaneceremos en el directorio actual.</p>
+<p>Another example:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> rm /etc/some_file.conf <span class="kw">||</span> <span class="bu">echo</span> <span class="st">&quot;No pude eliminar el archivo&quot;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">rm:</span> cannot remove <span class="kw">`</span><span class="ex">/etc/some_file.conf</span><span class="st">&#39;: No such file or directory</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="st">No pude eliminar el archivo</span></span></code></pre></div>
+<p><code>||</code> es muy parecido a <code>&amp;&amp;</code>, pero hace exactamente lo contrario. Solo ejecuta el siguiente comando si el primero <strong>falló</strong>. Por lo tanto, el mensaje solo se repite si el comando <code>rm</code> no tuvo éxito.</p>
+<p>En general, no es buena idea encadenar varios operadores de control diferentes en un solo comando (lo analizaremos en la siguiente sección). <code>&amp;&amp;</code> y <code>||</code> son bastante útiles en casos simples, pero no en casos complejos. En las siguientes secciones, mostraremos otras herramientas que puede utilizar para la toma de decisiones.</p>
+<blockquote>
+<p><strong>Buenas prácticas.</strong></p>
+<p>Es mejor no exagerar al trabajar con operadores condicionales, ya que pueden dificultar la comprensión del script, especialmente para una persona que está encargada de su mantenimiento y no lo escribió ella misma.</p>
+</blockquote>
+<blockquote>
+<p><strong>En el manual.</strong></p>
+<p><a href="http://www.gnu.org/software/bash/manual/bashref.html#Lists">Lists of Commands</a></p>
+</blockquote>
+<blockquote>
+<p><strong>Revisar.</strong></p>
+<ul>
+<li><dl>
+<dt><em>Operadores de control</em></dt>
+<dd>
+estos operadores se utilizan para vincular comandos entre sí. Comprueban el código de salida del comando anterior para determinar si se debe ejecutar o no el siguiente comando de la secuencia.
+</dd>
+</dl></li>
+</ul>
+</blockquote>
+<h2 id="declaraciones-de-agrupación">Declaraciones de agrupación</h2>
+<p>El uso de operadores condicionales es fácil y conciso si queremos realizar comprobaciones de errores simples. Sin embargo, las cosas se ponen un poco más peligrosas cuando queremos ejecutar varias instrucciones si una condición es verdadera o si necesitamos evaluar varias condiciones.</p>
+<p>Supongamos que desea eliminar un archivo si contiene una determinada palabra <code>good</code> pero tampoco contiene otra palabra <code>bad</code>. Al utilizar <code>grep</code> (un comando que comprueba la entrada en busca de patrones), traducimos estas condiciones a:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-q</span> goodword <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span>            <span class="co"># exit status 0 (success) if &quot;$file&quot; contains &#39;goodword&#39;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ot">! </span><span class="fu">grep</span> <span class="at">-q</span> <span class="st">&quot;badword&quot;</span> <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span>         <span class="co"># exit status 0 (success) if &quot;$file&quot; does not contain &#39;badword&#39;</span></span></code></pre></div>
+<p>Usamos <code>-q</code> (silencioso) en grep porque no queremos que muestre las líneas que coinciden; solo queremos que se establezca el código de salida.</p>
+<p>El <code>!</code> delante de un comando hace que Bash <em>niegue</em> el estado de salida del comando. Si el comando devuelve 0 (éxito), el <code>!</code> lo convierte en un error. Del mismo modo, si el comando devuelve un valor distinto de cero (error), el <code>!</code> lo convierte en un éxito.</p>
+<p>Ahora, para juntar estas condiciones y eliminar el archivo como resultado de que ambas sean verdaderas, podríamos usar <strong>Operadores condicionales</strong>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> grep <span class="at">-q</span> goodword <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span> <span class="kw">&amp;&amp;</span> <span class="ot">! </span><span class="fu">grep</span> <span class="at">-q</span> badword <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span> <span class="kw">&amp;&amp;</span> <span class="fu">rm</span> <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span></span></code></pre></div>
+<p>Esto funciona muy bien. (De hecho, podemos encadenar tantos <code>&amp;&amp;</code> como queramos, sin ningún problema). Ahora, imaginemos que queremos mostrar un mensaje de error en caso de que falle la eliminación del archivo:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> grep <span class="at">-q</span> goodword <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span> <span class="kw">&amp;&amp;</span> <span class="ot">! </span><span class="fu">grep</span> <span class="at">-q</span> badword <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span> <span class="kw">&amp;&amp;</span> <span class="fu">rm</span> <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span> <span class="kw">||</span> <span class="bu">echo</span> <span class="st">&quot;Couldn&#39;t delete: </span><span class="va">$file</span><span class="st">&quot;</span> <span class="op">&gt;&amp;</span><span class="dv">2</span></span></code></pre></div>
+<p>A primera vista, esto parece correcto. Si el código de salida de <code>rm</code> no es <code>0</code> (éxito), entonces el operador <code>||</code> activará el siguiente comando y <code>echo</code> el mensaje de error (<code>&gt;&amp;2</code>: al error estándar).</p>
+<p>Pero hay un problema. Cuando tenemos una secuencia de comandos separados por <em>Operadores condicionales</em>, Bash analiza cada uno de ellos, en orden de izquierda a derecha. El estado de salida se traslada a partir del comando que se haya ejecutado más recientemente y omitir un comando no lo cambia.</p>
+<p>Entonces, imaginemos que el primer <code>grep</code> falla (establece el estado de salida en 1). Bash ve un <code>&amp;&amp;</code> a continuación, por lo que se salta el segundo <code>grep</code> por completo. Luego ve otro <code>&amp;&amp;</code>, por lo que también se salta el <code>rm</code> que sigue a ese. Finalmente, ve un operador <code>||</code>. ¡Ajá! El estado de salida es “error”, y tenemos un <code>||</code>, por lo que Bash ejecuta el comando <code>echo</code> y nos dice que no pudo eliminar un archivo, ¡aunque en realidad nunca lo <em>intentó</em>! Eso no es lo que queremos.</p>
+<p>Esto no suena tan mal cuando se trata simplemente de un mensaje de error incorrecto que recibes, pero si no tienes cuidado, esto <strong>ocurrirá</strong> eventualmente en un código más peligroso. ¡No querrás eliminar archivos accidentalmente o sobrescribirlos como resultado de una falla en tu lógica!</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> grep <span class="at">-q</span> goodword <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span> <span class="kw">&amp;&amp;</span> <span class="ot">! </span><span class="fu">grep</span> <span class="at">-q</span> badword <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span> <span class="kw">&amp;&amp;</span> <span class="kw">{</span> <span class="fu">rm</span> <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span> <span class="kw">||</span> <span class="bu">echo</span> <span class="st">&quot;Couldn&#39;t delete: </span><span class="va">$file</span><span class="st">&quot;</span> <span class="op">&gt;&amp;</span><span class="dv">2</span><span class="kw">;</span> <span class="kw">}</span></span></code></pre></div>
+<p>(Nota: ¡no olvides que necesitas un punto y coma o una nueva línea antes de la llave de cierre!)</p>
+<p>Ahora hemos agrupado los comandos <code>rm</code> y <code>echo</code> juntos. Eso significa que, efectivamente, el grupo se considera <strong>una declaración</strong> en lugar de varias. Volviendo a nuestra situación en la que falló el primer <code>grep</code>, en lugar de que Bash intente la declaración <code>&amp;&amp; rm "$file"</code>, ahora intentará la declaración <code>&amp;&amp; { ... }</code>. Dado que está precedida por un <code>&amp;&amp;</code> y el último comando que ejecutó falló (el <code>grep</code> fallido), omitirá este grupo y seguirá adelante.</p>
+<p>La agrupación de comandos se puede utilizar para más cosas que solo <em>Operadores condicionales</em>. También podemos querer agruparlos para poder redirigir la entrada a un grupo de instrucciones en lugar de solo a una:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">{</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">read</span> <span class="va">firstLine</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">read</span> <span class="va">secondLine</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="bu">read</span> <span class="va">otherLine</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>        <span class="ex">something</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">done</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span> <span class="op">&lt;</span> file</span></code></pre></div>
+<p>Aquí estamos <a href="https://mywiki.wooledge.org/BashGuide/InputAndOutput#Redirection">redireccionando</a> <code>archivo</code> a un grupo de comandos que leen la entrada. El archivo se abrirá cuando comience el grupo de comandos, permanecerá abierto mientras dure y se cerrará cuando finalice el grupo de comandos. De esta manera, podemos seguir leyendo líneas de forma secuencial con varios comandos.</p>
+<p>Otro uso común de la agrupación es en el manejo de errores simples:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Comprueba si podemos acceder a appdir. Si no es así, muestra un error y sale del script.</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="st">&quot;</span><span class="va">$appdir</span><span class="st">&quot;</span> <span class="kw">||</span> <span class="kw">{</span> <span class="bu">echo</span> <span class="st">&quot;Por favor crea el directorio de aplicaciones y vuelve a intentarlo&quot;</span> <span class="op">&gt;&amp;</span><span class="dv">2</span><span class="kw">;</span> <span class="bu">exit</span> 1<span class="kw">;</span> <span class="kw">}</span></span></code></pre></div>
+<h2 id="bloques-condicionales-if-test-and">Bloques condicionales (<code>if</code>, <code>test</code> and <code>[[</code>)</h2>
+<p><code>if</code> es una palabra clave del shell que ejecuta un comando (o un conjunto de comandos) y verifica el código de salida de ese comando para ver si se ejecutó correctamente. Según ese código de salida, <code>if</code> ejecuta un bloque específico y diferente de comandos.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> if true</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> then <span class="bu">echo</span> <span class="st">&quot;Era verdad.&quot;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> else <span class="bu">echo</span> <span class="st">&quot;Era falso.&quot;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> fi</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Era</span> verdad.</span></code></pre></div>
+<p>Aquí puede ver el esquema básico de una <em>declaración if</em>. Comenzamos llamando a <code>if</code> con el comando <code>true</code>. <code>true</code> es un comando incorporado que siempre termina con éxito. <code>if</code> ejecuta ese comando y, una vez que el comando termina, <code>if</code> verifica el código de salida. Dado que <code>true</code> siempre termina con éxito, <code>if</code> continúa hasta el bloque <code>then</code> y ejecuta ese código. Si el comando <code>true</code> hubiera fallado de alguna manera y hubiera devuelto un código de salida fallido, la declaración <code>if</code> habría omitido el código <code>then</code> y habría ejecutado el bloque de código <code>else</code> en su lugar.</p>
+<p>Distintas personas tienen distintos estilos preferidos para escribir sentencias “if”. Estos son algunos de los estilos más comunes:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="ex">COMMANDS</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span> <span class="ex">OTHER</span> COMMANDS</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="ex">COMMANDS</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="ex">OTHER</span> COMMANDS</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="ex">COMMANDS</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="ex">OTHER</span> COMMANDS</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<p>Hay algunos comandos diseñados específicamente para <em>probar</em> cosas y devolver un estado de salida en función de lo que encuentren. El primero de estos comandos es <code>test</code> (también conocido como <code>[</code>). Una versión más avanzada se llama <code>[</code>. <code>[</code> o <code>test</code> es un comando normal que lee sus argumentos y realiza algunas comprobaciones con ellos. <code>[[</code> es muy parecido a <code>[</code>, pero es especial (una palabra clave de shell) y ofrece mucha más versatilidad. Seamos prácticos:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> if [ a = b ]</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> then <span class="bu">echo</span> <span class="st">&quot;a is the same as b.&quot;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> else <span class="bu">echo</span> <span class="st">&quot;a is not the same as b.&quot;</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> fi</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="ex">a</span> is not the same as b.</span></code></pre></div>
+<p><code>if</code> ejecuta el comando <code>[</code> (recuerde, no <strong>necesita</strong> un <code>if</code> para ejecutar el comando <code>[</code>!) con los argumentos <code>a</code>, <code>=</code>, <code>b</code> y <code>]</code>. <code>[</code> usa estos argumentos para determinar qué se debe verificar. En este caso, verifica si la cadena <code>a</code> (el primer argumento) es igual (el segundo argumento) a la cadena <code>b</code> (el tercer argumento), y si este es el caso, saldrá exitosamente. Sin embargo, dado que la cadena “a” no es igual a la cadena “b”, <code>[</code> no saldrá exitosamente (su código de salida será 1). <code>if</code> ve que <code>[</code> terminó sin éxito y ejecuta el código en el bloque <code>else</code>.</p>
+<p>El último argumento, <code>]</code>, no significa nada para <code>[</code>, pero es obligatorio. Observa lo que ocurre cuando lo omites.</p>
+<p>A continuación se muestra un ejemplo de un error común cuando se utiliza <code>[</code>:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> myname=<span class="st">&#39;Greg Wooledge&#39;</span> yourname=<span class="st">&#39;Alguien más&#39;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> [ <span class="va">$myname</span> = <span class="va">$yourname</span> ]</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="ex">-bash:</span> [: too many arguments</span></code></pre></div>
+<p>¿Puedes adivinar qué causó el problema?</p>
+<p><code>[</code> se ejecutó con los argumentos <code>Greg</code>, <code>Wooledge</code>, <code>=</code>, <code>Someone</code>, <code>Else</code> y <code>]</code>. ¡Eso son 6 argumentos, no 4! <code>[</code> no entiende qué prueba se supone que debe ejecutar, porque espera que el primer o el segundo argumento sea un operador. En nuestro caso, el operador es el tercer argumento. Otra razón más por la que las <a href="https://mywiki.wooledge.org/Quotes">comillas</a> son tan terriblemente importantes. Siempre que escribimos un espacio en blanco en Bash que va junto con las palabras anteriores o posteriores, <strong>necesitamos ponerlo entre comillas</strong>, y lo mismo ocurre con las expansiones de parámetros:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> [ <span class="st">&quot;</span><span class="va">$myname</span><span class="st">&quot;</span> = <span class="st">&quot;</span><span class="va">$yourname</span><span class="st">&quot;</span> ]</span></code></pre></div>
+<p>Esta vez, <code>[</code> ve un operador (<code>=</code>) en el segundo argumento y puede continuar con su trabajo.</p>
+<p>Para ayudarnos un poco, el shell Korn introdujo (y Bash adoptó) un nuevo estilo de prueba condicional. Por muy originales que sean los autores del shell Korn, lo llamaron <code>[[</code>. <code>[[</code> está repleto de varias características muy interesantes de las que <code>[</code> carece.</p>
+<p>Una de las características de <code>[[</code> es la coincidencia de <a href="patrones.html">patrones</a>:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ![ <span class="va">$filename</span> = <span class="pp">*</span>.png ]<span class="er">(</span> <span class="va">$filename</span> = <span class="pp">*</span>.png <span class="kw">)</span> <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$filename</span><span class="st"> parece un archivo PNG&quot;</span></span></code></pre></div>
+<p>Otra característica de <code>[[</code> nos ayuda a lidiar con las expansiones de parámetros:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ![ <span class="va">$me</span> = <span class="va">$you</span> ]<span class="er">(</span> <span class="va">$me</span> = <span class="va">$you</span> <span class="kw">)</span>           <span class="co"># Fine.</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ![ I am <span class="va">$me</span> = I am <span class="va">$you</span> ]<span class="er">(</span> <span class="ex">I</span> am <span class="va">$me</span> = I am <span class="va">$you</span> <span class="kw">)</span> <span class="co"># Not fine!</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="ex">-bash:</span> conditional binary operator expected</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="ex">-bash:</span> syntax error near <span class="kw">`</span><span class="ex">am</span><span class="st">&#39;</span></span></code></pre></div>
+<p>Esta vez, <code>$me</code> y <code>$you</code> no necesitaban comillas. Dado que <code>[[</code> no es un comando normal (como <code>[</code> lo es), sino una <em>palabra clave de shell</em>, tiene poderes mágicos especiales. Analiza sus argumentos antes de que sean expandidos por Bash y realiza la expansión por sí mismo, tomando el resultado como un único argumento, incluso si ese resultado contiene espacios en blanco. (En otras palabras, <code>[[</code> no permite la división de palabras de sus argumentos). <em>Sin embargo</em>, tenga en cuenta que las cadenas simples aún deben estar entre comillas correctamente. <code>[[</code> trata un espacio fuera de las comillas como un separador de argumentos, tal como lo haría Bash normalmente. Arreglemos nuestro último ejemplo:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ![ <span class="st">&quot;I am </span><span class="va">$me</span><span class="st">&quot;</span> = <span class="st">&quot;I am </span><span class="va">$you</span><span class="st">&quot;</span> ]<span class="er">(</span> <span class="st">&quot;I am </span><span class="va">$me</span><span class="st">&quot;</span> = <span class="st">&quot;I am </span><span class="va">$you</span><span class="st">&quot;</span> <span class="kw">)</span></span></code></pre></div>
+<p>Además, existe una diferencia sutil entre citar y no citar el <strong>lado derecho</strong> de la comparación en <code>[[</code>. El operador <code>=</code> realiza una comparación de patrones de manera predeterminada, siempre que el <em>lado derecho</em> <strong>no</strong> esté entre comillas:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> foo=<span class="pp">[</span><span class="ss">a</span><span class="pp">-</span><span class="ss">z</span><span class="pp">]*</span> name=lhunath</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ![ <span class="va">$name</span> = <span class="va">$foo</span>   ]<span class="er">(</span> <span class="va">$name</span> = <span class="va">$foo</span>   <span class="kw">)</span> <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">&quot;El nombre </span><span class="va">$name</span><span class="st"> coincide con el patrón </span><span class="va">$foo</span><span class="st">&quot;</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="ex">El</span> nombre lhunath coincide con el patrón <span class="pp">[</span><span class="ss">a</span><span class="pp">-</span><span class="ss">z</span><span class="pp">]*</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ![ <span class="va">$name</span> = <span class="st">&quot;</span><span class="va">$foo</span><span class="st">&quot;</span> ]<span class="er">(</span> <span class="va">$name</span> = <span class="st">&quot;</span><span class="va">$foo</span><span class="st">&quot;</span> <span class="kw">)</span> <span class="kw">||</span> <span class="bu">echo</span> <span class="st">&quot;El nombre </span><span class="va">$name</span><span class="st"> no es igual a la cadena </span><span class="va">$foo</span><span class="st">&quot;</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="ex">El</span> nombre lhunath no es igual a la cadena <span class="pp">[</span><span class="ss">a</span><span class="pp">-</span><span class="ss">z</span><span class="pp">]*</span></span></code></pre></div>
+<p>La primera prueba comprueba si <code>$name</code> coincide con el <em>patrón</em> en <code>$foo</code>. La segunda prueba comprueba si <code>$name</code> es igual a la <em>cadena</em> en <code>$foo</code>. Las comillas realmente hacen una gran diferencia, una sutileza que vale la pena destacar.</p>
+<blockquote>
+<p><strong>Recuerde:</strong></p>
+<p>El uso de comillas normalmente le proporcionará el comportamiento que desea, así que conviértalo en un hábito; omítalo solo cuando la situación específica requiera un comportamiento sin comillas. Desafortunadamente, los errores causados por el uso incorrecto de comillas suelen ser difíciles de encontrar, porque el código suele ser válido con o sin comillas, pero puede tener diferentes significados. En tales casos, bash no puede saber que hizo algo mal; simplemente hace lo que le dice, incluso si eso no es lo que pretendía.</p>
+</blockquote>
+<p>También puedes combinar varias declaraciones <code>if</code> en una usando <code>elif</code> en lugar de <code>else</code>, donde cada prueba indica otra posibilidad:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> name=lhunath</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> if ![ <span class="va">$name</span> = <span class="st">&quot;George&quot;</span> ]<span class="er">(</span> <span class="va">$name</span> = <span class="st">&quot;George&quot;</span> <span class="kw">)</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> then <span class="bu">echo</span> <span class="st">&quot;Bonjour, </span><span class="va">$name</span><span class="st">&quot;</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> elif <span class="ex">![</span> <span class="va">$name</span> = <span class="st">&quot;Hans&quot;</span> ]<span class="er">(</span> <span class="va">$name</span> = <span class="st">&quot;Hans&quot;</span> <span class="kw">)</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> then <span class="bu">echo</span> <span class="st">&quot;Goeie dag, </span><span class="va">$name</span><span class="st">&quot;</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> elif <span class="ex">![</span> <span class="va">$name</span> = <span class="st">&quot;Jack&quot;</span> ]<span class="er">(</span> <span class="va">$name</span> = <span class="st">&quot;Jack&quot;</span> <span class="kw">)</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> then <span class="bu">echo</span> <span class="st">&quot;Good day, </span><span class="va">$name</span><span class="st">&quot;</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> else</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> echo <span class="st">&quot;No eres George, Hans ni Jack. ¿Quién diablos eres, </span><span class="va">$name</span><span class="st">?&quot;</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> fi</span></code></pre></div>
+<p>Tenga en cuenta que <code>&lt;</code> y <code>&gt;</code> tienen un significado especial en bash. Prueba sorpresa: predice qué sucede cuando haces <code>[manzana &lt; banana]</code>. Pon a prueba tu hipótesis (¡no hagas trampa intentando sin formular primero una hipótesis!). <em>Música de Jeopardy sonando…</em> Respuesta: bash busca un archivo llamado “banana” en el directorio actual para que su contenido pueda enviarse a <code>[ apple</code> (a través de la entrada estándar).</p>
+<p>Suponiendo que no tienes un archivo llamado “banana” en tu directorio actual, esto generará un error. Pregunta rápida: Suponiendo que la intención original de ese comando es determinar si “apple” viene antes que “banana”, ¿cómo cambiarías el comando para obtener el efecto deseado? <em>Música de Jeopardy sonando…</em> Respuesta: escape el <code>&lt;</code> con una barra invertida como esta: <code>[ manzana \&lt; banana ]</code> o use <code>[[</code> en lugar de <code>[</code>.</p>
+<p>Tenga en cuenta que los operadores de comparación <code>=</code>, <code>!=</code>, <code>&gt;</code> y <code>&lt;</code> tratan sus argumentos como cadenas. Para que los operandos se traten como números, debe utilizar uno de un conjunto diferente de operadores: <code>-eq</code>, <code>-ne</code> (no igual a), <code>-lt</code> (menor que), <code>-gt</code>, <code>-le</code> (menor o igual que) o <code>-ge</code>. Pregunta sorpresa: Piense en un ejemplo que muestre la diferencia entre <code>&lt;</code> y <code>-lt</code>. Suena la música de Jeopardy… Dado que “314” viene antes de “9” lexicográficamente (es decir, el orden en que los pondría el diccionario), <code>[</code> considera que el primero es <code>&lt;</code> que el segundo; mientras que, <code>[</code> considera que “314” NO es <code>-lt</code> “9”, porque trescientos catorce NO es menor que nueve.</p>
+<p>Ahora que tienes una comprensión decente de los problemas de citas que pueden surgir, echemos un vistazo a algunas de las otras características con las que fueron bendecidos <code>[</code> y <code>[[</code>:</p>
+<h3 id="pruebas-admitidas-por-también-conocidas-como-test-y">Pruebas admitidas por <code>[</code> (también conocidas como <code>test</code>) y <code>[[</code></h3>
+<p>Sobre archivos:</p>
+<table>
+<thead>
+<tr>
+<th>
+Expresión
+</th>
+<th>
+Descripción
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>-e FILE</code>
+</td>
+<td>
+Verdadero si el archivo existe.
+</td>
+</tr>
+<tr>
+<td>
+<code>-f FILE</code>
+</td>
+<td>
+Verdadero si el archivo es un archivo normal.
+</td>
+</tr>
+<tr>
+<td>
+<code>-d FILE</code>
+</td>
+<td>
+Verdadero si el archivo es un directorio.
+</td>
+</tr>
+<tr>
+<td>
+<code>-h FILE</code>
+</td>
+<td>
+Verdadero si el archivo es un enlace simbólico.
+</td>
+</tr>
+<tr>
+<td>
+<code>-p PIPE</code>
+</td>
+<td>
+Verdadero si existe la tubería.
+</td>
+</tr>
+<tr>
+<td>
+<code>-r FILE</code>
+</td>
+<td>
+Verdadero si usted puede leer el archivo.
+</td>
+</tr>
+<tr>
+<td>
+<code>-s FILE</code>
+</td>
+<td>
+Verdadero si el archivo existe y no está vacío.
+</td>
+</tr>
+<tr>
+<td>
+<code>-t FD</code>
+</td>
+<td>
+Verdadero si FD se abre en una terminal.
+</td>
+</tr>
+<tr>
+<td>
+<code>-w FILE</code>
+</td>
+<td>
+Verdadero si usted puede escribir en el archivo.
+</td>
+</tr>
+<tr>
+<td>
+<code>-x FILE</code>
+</td>
+<td>
+Verdadero si usted puede ejecutar el archivo.
+</td>
+</tr>
+<tr>
+<td>
+<code>-O FILE</code>
+</td>
+<td>
+Verdadero si el archivo es efectivamente de su propiedad.
+</td>
+</tr>
+<tr>
+<td>
+<code>-G FILE</code>
+</td>
+<td>
+Verdadero si el archivo es efectivamente propiedad de su grupo.
+</td>
+</tr>
+<tr>
+<td>
+<code>FILE -nt FILE</code>
+</td>
+<td>
+Verdadero si el primer archivo es más nuevo que el segundo.
+</td>
+</tr>
+<tr>
+<td>
+<code>FILE -ot FILE</code>
+</td>
+<td>
+Verdadero si el primer archivo es más antiguo que el segundo.
+</td>
+</tr>
+</tbody>
+</table>
+<p>Sobre cadenas (y expresión):</p>
+<table>
+<thead>
+<tr>
+<th>
+Expresión
+</th>
+<th>
+Descripción
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>-z STRING</code>
+</td>
+<td>
+Verdadero si la cadena está vacía (su longitud es cero).
+</td>
+</tr>
+<tr>
+<td>
+<code>-n STRING</code>
+</td>
+<td>
+Verdadero si la cadena no está vacía (su longitud no es cero).
+</td>
+</tr>
+<tr>
+<td>
+<code>STRING = STRING</code>
+</td>
+<td>
+Verdadero si la primera cadena es idéntica a la segunda.
+</td>
+</tr>
+<tr>
+<td>
+<code>STRING != STRING</code>
+</td>
+<td>
+Verdadero si la primera cadena no es idéntica a la segunda.
+</td>
+</tr>
+<tr>
+<td>
+<code>STRING &lt; STRING</code>
+</td>
+<td>
+Verdadero si la primera cadena se ordena antes que la segunda.
+</td>
+</tr>
+<tr>
+<td>
+<code>STRING &gt; STRING</code>
+</td>
+<td>
+Verdadero si la primera cadena se ordena después de la segunda.
+</td>
+</tr>
+<tr>
+<td>
+<code>! EXPR</code>
+</td>
+<td>
+Invierte el resultado de la expresión (NO lógico).
+</td>
+</tr>
+</tbody>
+</table>
+<p>Sobre números:</p>
+<table>
+<thead>
+<tr>
+<th>
+Expresión
+</th>
+<th>
+Descripción
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>INT -eq INT</code>
+</td>
+<td>
+Verdadero si ambos números enteros son idénticos.
+</td>
+</tr>
+<tr>
+<td>
+<code>INT -ne INT</code>
+</td>
+<td>
+Verdadero si los números enteros no son idénticos.
+</td>
+</tr>
+<tr>
+<td>
+<code>INT -lt INT</code>
+</td>
+<td>
+Verdadero si el primer entero es menor que el segundo.
+</td>
+</tr>
+<tr>
+<td>
+<code>INT -gt INT</code>
+</td>
+<td>
+Verdadero si el primer entero es mayor que el segundo.
+</td>
+</tr>
+<tr>
+<td>
+<code>INT -le INT</code>
+</td>
+<td>
+Verdadero si el primer entero es menor o igual que el segundo.
+</td>
+</tr>
+<tr>
+<td>
+<code>INT -ge INT</code>
+</td>
+<td>
+Verdadero si el primer entero es mayor o igual que el segundo.
+</td>
+</tr>
+</tbody>
+</table>
+<p>Pruebas adicionales admitidas únicamente por <code>[[</code> con cadenas:</p>
+<table>
+<thead>
+<tr>
+<th>
+Expresión
+</th>
+<th>
+Descripción
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>STRING = (or ==) PATTERN</code>
+</td>
+<td>
+No se realiza una comparación de cadenas como con <code>[</code> (o <code>test</code>), sino que se realiza una <em>coincidencia de patrones</em>. Es verdadero si la cadena coincide con el patrón global.
+</td>
+</tr>
+<tr>
+<td>
+<code>STRING != PATTERN</code>
+</td>
+<td>
+No se realiza una comparación de cadenas como con <code>[</code> (o <code>test</code>), sino que se realiza una <em>coincidencia de patrones</em>. Es verdadero si la cadena no coincide con el patrón global.
+</td>
+</tr>
+<tr>
+<td>
+<code>STRING =~ REGEX</code>
+</td>
+<td>
+Verdadero si la cadena coincide con el patrón de expresión regular.
+</td>
+</tr>
+</tbody>
+</table>
+<p>Pruebas adicionales admitidas únicamente por <code>[[</code> con expresiones:</p>
+<table>
+<thead>
+<tr>
+<th>
+Expresión
+</th>
+<th>
+Descripción
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>( EXPR )</code>
+</td>
+<td>
+Se pueden utilizar paréntesis para cambiar la precedencia de la evaluación.
+</td>
+</tr>
+<tr>
+<td>
+<code>EXPR &amp;&amp; EXPR</code>
+</td>
+<td>
+Muy similar al operador ‘-a’ de ‘test’, pero no evalúa la segunda expresión si la primera ya resulta ser falsa.
+</td>
+</tr>
+<tr>
+<td>
+<code>EXPR || EXPR</code>
+</td>
+<td>
+Much like the ‘-o’ operator of <code>test</code>, but does not evaluate the second expression if the first already turns out to be true.
+</td>
+</tr>
+</tbody>
+</table>
+<p>Pruebas exclusivas de <code>[</code> (y <code>test</code>):</p>
+<table>
+<thead>
+<tr>
+<th>
+Expresión
+</th>
+<th>
+Descripción
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>EXPR -a EXPR</code>
+</td>
+<td>
+Verdadero si ambas expresiones son verdaderas (AND lógico).
+</td>
+</tr>
+<tr>
+<td>
+<code>EXPR -o EXPR</code>
+</td>
+<td>
+Verdadero si alguna de las expresiones es verdadera (OR lógico).
+</td>
+</tr>
+</tbody>
+</table>
+<p>¿Algunos ejemplos? Seguro:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> test <span class="at">-e</span> /etc/X11/xorg.conf <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">&#39;Tu &quot;Xorg&quot; está configurado&#39;</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Tu</span> <span class="st">&quot;Xorg&quot;</span> está configurado</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> test <span class="at">-n</span> <span class="st">&quot;</span><span class="va">$HOME</span><span class="st">&quot;</span> <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">&#39;Tu directorio personal está configurado&#39;</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Tu</span> directorio personal está configurado</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ![ boar != bear ]<span class="er">(</span> <span class="ex">boar</span> != bear <span class="kw">)</span> <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">&quot;Los jabalíes no son osos.&quot;</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Los</span> jabalíes no son osos.</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ![ boar != b<span class="pp">?</span>ar ]<span class="er">(</span> <span class="ex">boar</span> != b<span class="pp">?</span>ar <span class="kw">)</span> <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">&quot;Los jabalíes no se parecen a los osos.&quot;</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ![ <span class="va">$DISPLAY</span> ]<span class="er">(</span> <span class="va">$DISPLAY</span> <span class="kw">)</span> <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">&quot;Su variable DISPLAY no está vacía, probablemente tenga Xorg ejecutándose.&quot;</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="ex">Su</span> variable DISPLAY no está vacía, probablemente tenga Xorg ejecutándose.</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ![ ! <span class="va">$DISPLAY</span> ]<span class="er">(</span> <span class="ot">! </span><span class="va">$DISPLAY</span> <span class="kw">)</span> <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">&quot;Su variable DISPLAY no está vacía, probablemente no tenga Xorg ejecutándose.&quot;</span></span></code></pre></div>
+<blockquote>
+<p><strong>Buenas prácticas.</strong></p>
+<p>Siempre que crees un script Bash, debes utilizar siempre <code>[[</code> en lugar de <code>[</code>.</p>
+<p>Siempre que esté creando un script de Shell, que puede terminar siendo utilizado en un entorno donde Bash no está disponible, debe utilizar <code>[</code>, porque es mucho más portátil. (Si bien está integrado en Bash y algunos otros shells, <code>[</code> también debe estar disponible como una aplicación externa; lo que significa que funcionará como argumento para, por ejemplo, <code>-exec</code> y <code>xargs</code> de <code>find</code>).</p>
+<p>Nunca utilice las pruebas <code>-a</code> o <code>-o</code> del comando <code>[</code>. En su lugar, utilice varios comandos <code>[</code> (o utilice <code>[[</code> si puede). POSIX no define el comportamiento de <code>[</code> con conjuntos complejos de pruebas, por lo que nunca se sabe lo que se obtendrá.</p>
+</blockquote>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$food</span><span class="st">&quot;</span> <span class="ot">=</span> manzana <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="bu">[</span> <span class="st">&quot;</span><span class="va">$drink</span><span class="st">&quot;</span> <span class="ot">=</span> te <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">&quot;La comida es aceptable.&quot;</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div>
+<blockquote>
+<p><strong>En el manual.</strong></p>
+<p><a href="http://www.gnu.org/software/bash/manual/bashref.html#Conditional-Constructs">Conditional Constructs</a></p>
+</blockquote>
+<blockquote>
+<p><strong>En preguntas frecuentes.</strong></p>
+<ul>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/017">¿Cómo puedo agrupar expresiones, por ejemplo <code>(A Y B) O C</code>?</a></li>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/031">¿Cuál es la diferencia entre los comandos de prueba antiguos y nuevos (<code>[</code> y <code>[[</code>)?</a></li>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/041">¿Cómo puedo determinar si una variable contiene una subcadena?</a></li>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/054">¿Cómo puedo saber si una variable contiene un número válido?</a></li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>Revisar.</strong></p>
+<dl>
+<dt><code>if</code> (keyword)</dt>
+<dd>
+<ul>
+<li>Ejecuta una lista de comandos y luego, dependiendo de su código de salida, ejecuta el código en el siguiente bloque <code>then</code> (u opcionalmente <code>else</code>).</li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<h2 id="bucles-condicionales-while-till-y-for">Bucles condicionales (while, till y for)</h2>
+<p>Ahora ya aprendiste a tomar algunas decisiones básicas en tus scripts. Sin embargo, eso no es suficiente para todo tipo de tareas que queramos programar. A veces necesitamos repetir cosas. Para eso, necesitamos usar un <em>bucle</em>. Hay dos tipos básicos de bucles (más un par de variantes), y usar el tipo correcto de bucle te ayudará a mantener tus scripts legibles y fáciles de mantener.</p>
+<p>Los dos tipos básicos de bucles se denominan <code>while</code> y <code>for</code>. El bucle <code>while</code> tiene una variante llamada <code>until</code> que simplemente invierte su comprobación; y el bucle <code>for</code> puede aparecer en dos formas diferentes. A continuación, se incluye un resumen:</p>
+<ul>
+<li><dl>
+<dt><code>while</code> <em>command</em></dt>
+<dd>
+Repita hasta que el comando se ejecute correctamente (el código de salida es 0).
+</dd>
+</dl></li>
+<li><dl>
+<dt><code>until</code> <em>command</em></dt>
+<dd>
+Repita hasta que el comando se ejecute sin éxito (el código de salida no sea 0).
+</dd>
+</dl></li>
+<li><dl>
+<dt><code>for</code> <em>variable</em> <code>in</code> <em>words</em></dt>
+<dd>
+Repita el ciclo para cada palabra, asignando <em>variable</em> a cada palabra por turno.
+</dd>
+</dl></li>
+<li><dl>
+<dt><code>for ((</code> <em>expression</em><code>;</code> <em>expression</em><code>;</code> <em>expression</em> <code>))</code></dt>
+<dd>
+Comienza evaluando la primera expresión aritmética; repite el bucle hasta que la segunda expresión aritmética sea exitosa; y al final de cada bucle evalúa la tercera expresión aritmética.
+</dd>
+</dl></li>
+</ul>
+<p>Cada forma de bucle va seguida de la palabra clave <code>do</code>, luego uno o más comandos en el <em>cuerpo</em>, luego la palabra clave <code>done</code>. <code>do</code> y <code>done</code> son similares a <code>then</code> y <code>fi</code> (y posiblemente <code>elif</code> y/o <code>else</code>) de la declaración <code>if</code> que vimos antes. Su trabajo es decirnos dónde comienza y termina el cuerpo del bucle.</p>
+<p>En la práctica, los bucles se utilizan para distintos tipos de tareas. El bucle <code>for</code> (primera forma) es adecuado cuando tenemos una lista de cosas y queremos recorrerla secuencialmente. El bucle <code>while</code> es adecuado cuando no sabemos exactamente cuántas veces tenemos que repetir algo; simplemente queremos que siga funcionando hasta que encontremos lo que estamos buscando.</p>
+<p>A continuación se muestran algunos ejemplos para ilustrar las diferencias y las similitudes entre los bucles. (Recuerde: en la mayoría de los sistemas operativos, debe presionar <strong>Ctrl-C</strong> para cerrar un programa que se esté ejecutando en su terminal).</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> while true</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> do <span class="bu">echo</span> <span class="st">&quot;Bucle infinito&quot;</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> done</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> while ! ping <span class="at">-c</span> 1 <span class="at">-W</span> 1 1.1.1.1<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> echo <span class="st">&quot;Todavía estoy esperando a 1.1.1.1&quot;</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> sleep <span class="ex">1</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> done</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> <span class="er">(</span><span class="kw">(</span> <span class="va">i</span><span class="op">=</span>10 <span class="kw">));</span> <span class="cf">while</span> <span class="kw">((</span> <span class="va">i</span> <span class="op">&gt;</span> <span class="dv">0</span> <span class="kw">))</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> do <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$i</span><span class="st"> latas de cerveza vacías.&quot;</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> <span class="kw">((</span> <span class="va">i</span><span class="op">--</span> <span class="kw">))</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> done</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> for <span class="er">(</span><span class="kw">(</span> <span class="va">i</span><span class="op">=</span>10<span class="kw">;</span> <span class="ex">i</span> <span class="op">&gt;</span> 0<span class="kw">;</span> <span class="ex">i--</span> <span class="kw">))</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> do <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$i</span><span class="st"> latas de cerveza vacías.&quot;</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> done</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> for i in <span class="dt">{</span><span class="dv">10</span><span class="dt">..</span><span class="dv">1</span><span class="dt">}</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> do <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$i</span><span class="st"> latas de cerveza vacías.&quot;</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> done</span></code></pre></div>
+<p>Los últimos tres bucles logran exactamente el mismo resultado, utilizando una sintaxis diferente. Te encontrarás con esto muchas veces en tu experiencia con scripts de shell. Casi siempre habrá múltiples enfoques para resolver un problema. La prueba de tu habilidad pronto no será tanto la resolución de un problema sino la <em>mejor</em> forma de resolverlo. Debes aprender a elegir el mejor ángulo de enfoque para el trabajo. Por lo general, los principales factores a tener en cuenta serán la simplicidad y la flexibilidad del código resultante. Mi favorito personal es el último de los ejemplos. En ese ejemplo usé <em>Expansión de la abrazadera</em> para generar las palabras; pero también hay otras formas.</p>
+<p>Veamos más de cerca este último ejemplo, porque si bien parece el más fácil de los dos, a menudo puede ser el más complicado si no sabes exactamente cómo funciona.</p>
+<p>Como mencioné antes: <code>for</code> recorre una lista de palabras y coloca cada una en la variable de índice del bucle, una a la vez, y luego recorre el cuerpo con ella. La parte complicada es cómo decide Bash cuáles son las palabras. Permítanme explicarme expandiendo las llaves del ejemplo anterior:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> for i in 10 9 8 7 6 5 4 3 2 1</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> do <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$i</span><span class="st"> latas de cerveza vacías.&quot;</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> done</span></code></pre></div>
+<p>Bash toma los caracteres entre <code>in</code> y el final de la línea y los divide en palabras. Esta división se realiza en espacios y tabulaciones, al igual que la división de argumentos. Sin embargo, si hay sustituciones sin comillas, también se dividirán en palabras (usando <a href="https://mywiki.wooledge.org/IFS">IFS</a>). Todas estas palabras divididas se convierten en elementos de iteración.</p>
+<p>Por lo tanto, tenga <em>MUCHO cuidado</em> de no cometer el siguiente error:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="ex">The</span> best song in the world.mp3</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> for file in <span class="va">$(</span><span class="fu">ls</span> <span class="pp">*</span>.mp3<span class="va">)</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> do <span class="fu">rm</span> <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> done</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="ex">rm:</span> cannot remove <span class="kw">`</span><span class="ex">The</span><span class="st">&#39;: No such file or directory</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="st">rm: cannot remove `best&#39;</span><span class="ex">:</span> No such file or directory</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="ex">rm:</span> cannot remove <span class="kw">`</span>song<span class="st">&#39;: No such file or directory</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="st">rm: cannot remove `in&#39;</span>: No such file or directory</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="ex">rm:</span> cannot remove <span class="kw">`</span><span class="ex">the</span><span class="st">&#39;: No such file or directory</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="st">rm: cannot remove `world.mp3&#39;</span><span class="ex">:</span> No such file or directory</span></code></pre></div>
+<p>Ya deberías saber que debes citar el <code>$file</code> en la declaración <code>rm</code>; pero ¿qué está fallando aquí? Bash expande la sustitución del comando (<code>$(ls *.mp3)</code>), lo reemplaza por su salida y <em>luego</em> realiza una división de palabras en él (porque no estaba entre comillas). Básicamente, Bash ejecuta <code>for file in The best song in the world.mp3</code>. <em>Boom, estás muerto</em>.</p>
+<p>¿Quieres citarla, dices? Agreguemos otra canción:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="ex">The</span> best song in the world.mp3  The worst song in the world.mp3</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> for file in <span class="st">&quot;</span><span class="va">$(</span><span class="fu">ls</span> <span class="pp">*</span>.mp3<span class="va">)</span><span class="st">&quot;</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> do <span class="fu">rm</span> <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> done</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="ex">rm:</span> cannot remove <span class="kw">`</span><span class="ex">The</span> best song in the world.mp3  The worst song in the world.mp3<span class="st">&#39;: No such file or directory</span></span></code></pre></div>
+<p>Las comillas protegerán los espacios en blanco de los nombres de archivo, pero harán más que eso. Las comillas protegerán <strong>todos los espacios en blanco</strong> de la salida de <code>ls</code>. No hay forma de que Bash pueda saber qué partes de la salida de <code>ls</code> representan nombres de archivo; no es algo psíquico. La salida de <code>ls</code> es una cadena simple y Bash la trata como tal. El <code>for</code> pone toda la salida entre comillas en <code>i</code> y ejecuta el comando <code>rm</code> con ella. <em>Maldita sea, muerto de nuevo</em>.</p>
+<p>¿Qué hacemos entonces? Como sugerimos antes, los globs son tus mejores amigos:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> for file in <span class="pp">*</span>.mp3</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> do <span class="fu">rm</span> <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> done</span></code></pre></div>
+<p>Esta vez, Bash <strong>sí</strong> sabe que está tratando con nombres de archivos, y <strong>sí</strong> sabe cuáles son los nombres de archivos y, como tal, puede dividirlos de manera ordenada. El resultado de expandir el glob es este: <code>for file in "The best song in the world.mp3" "The worst song in the world.mp3"</code> ¡Problema resuelto!</p>
+<p>Ahora veamos el bucle <code>while</code>. El bucle <code>while</code> es muy interesante por su capacidad de ejecutar comandos hasta que ocurra algo interesante. A continuación, se muestran algunos ejemplos de cómo se utilizan con mucha frecuencia los bucles <code>while</code>:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> <span class="co"># </span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> while read <span class="at">-p</span> <span class="st">$&#39;The sweet machine.</span><span class="dt">\n</span><span class="st">Insert 20c and enter your name: &#39;</span> name</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> do <span class="bu">echo</span> <span class="st">&quot;The machine spits out three lollipops at </span><span class="va">$name</span><span class="st">.&quot;</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> done</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> <span class="co"># Revise su correo electrónico cada cinco minutos.</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> while sleep 300</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> do <span class="ex">kmail</span> <span class="at">--check</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> done</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> <span class="co"># Espere a que un host vuelva a estar en línea.</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> while ! ping <span class="at">-c</span> 1 <span class="at">-W</span> 1 <span class="st">&quot;</span><span class="va">$host</span><span class="st">&quot;</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> do <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$host</span><span class="st"> aún no está disponible.&quot;</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> done<span class="kw">;</span> <span class="bu">echo</span> <span class="at">-e</span> <span class="st">&quot;</span><span class="va">$host</span><span class="st"> está disponible nuevamente.\a&quot;</span></span></code></pre></div>
+<p>El bucle <code>until</code> casi nunca se utiliza, aunque sólo sea porque es prácticamente exactamente igual que <code>while !</code>. Podríamos reescribir nuestro último ejemplo utilizando un bucle <code>until</code>:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> <span class="co"># Espere a que un host vuelva a estar en línea.</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> until ping <span class="at">-c</span> 1 <span class="at">-W</span> 1 <span class="st">&quot;</span><span class="va">$host</span><span class="st">&quot;</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> do <span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$host</span><span class="st"> aún no está disponible.&quot;</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> done<span class="kw">;</span> <span class="bu">echo</span> <span class="at">-e</span> <span class="st">&quot;</span><span class="va">$host</span><span class="st"> está disponible nuevamente.\a&quot;</span></span></code></pre></div>
+<p>En la práctica, la mayoría de la gente simplemente utiliza <code>while !</code>.</p>
+<p>Por último, puedes usar la instrucción incorporada <code>continue</code> para saltar a la siguiente iteración de un bucle sin ejecutar el resto del cuerpo, y la instrucción incorporada <code>break</code> para salir del bucle y continuar con el script que lo siguió. Esto funciona tanto en bucles <code>for</code> como <code>while</code>.</p>
+<blockquote>
+<p><strong>En el manual.</strong></p>
+<p><a href="http://www.gnu.org/software/bash/manual/bashref.html#Looping-Constructs">Looping Constructs</a></p>
+</blockquote>
+<blockquote>
+<p><strong>En preguntas frecuentes. </strong></p>
+<ul>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/015">¿Cómo puedo ejecutar un comando en todos los archivos con la extensión .gz?</a></li>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/018">¿Cómo puedo utilizar números con ceros a la izquierda en un bucle, por ejemplo, <code>01</code>, <code>02</code>?</a></li>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/020">¿Cómo puedo encontrar y tratar nombres de archivos que contienen nuevas líneas, espacios o ambos?</a></li>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/030">¿Cómo puedo cambiar el nombre de todos mis archivos <code>*.foo</code> a <code>*.bar</code>, o convertir espacios en guiones bajos, o convertir nombres de archivos en mayúsculas a minúsculas?</a></li>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/034">¿Puedo hacer un spinner en Bash?</a></li>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/046">Quiero comprobar si una palabra está en una lista (o un elemento es miembro de un conjunto).</a></li>
+</ul>
+</blockquote>
+<ul>
+<li><dl>
+<dt><em>Loop</em></dt>
+<dd>
+Un bucle es una estructura diseñada para repetir el código que contiene hasta que se cumpla una determinada condición. En ese momento, el bucle se detiene y se ejecuta el código que lo sigue.
+</dd>
+</dl></li>
+<li><dl>
+<dt><code>for</code> (keyword)</dt>
+<dd>
+Un bucle <code>for</code> es un tipo de bucle que asigna a una variable cada uno de los valores de una lista por turno y se repite hasta que se agota la lista.
+</dd>
+</dl></li>
+<li><dl>
+<dt><code>while</code> (keyword)</dt>
+<dd>
+Un bucle <code>while</code> es un tipo de bucle que continúa ejecutando su código siempre que un determinado comando (ejecutado antes de cada iteración) se ejecute correctamente.
+</dd>
+</dl></li>
+<li><dl>
+<dt><code>until</code> (keyword)</dt>
+<dd>
+Un bucle <code>until</code> es un tipo de bucle que continúa ejecutando su código hasta que un determinado comando (ejecutado antes de cada iteración) se ejecute sin éxito.
+</dd>
+</dl></li>
+</ul>
+<h2 id="opciones-case-y-select">Opciones (<code>case</code> y <code>select</code>)</h2>
+<p>A veces, se desea crear la lógica de la aplicación en función del contenido de una variable. Esto se puede implementar tomando una rama diferente de una declaración <code>if</code> en función de los resultados de la prueba con un glob:</p>
+<p><code>bash#!highlight bash shopt -s extglob if ![ $LANG = en* ]( $LANG = en* ); then     echo 'Hello!' elif ![ $LANG = fr* ]( $LANG = fr* ); then     echo 'Salut!' elif ![ $LANG = de* ]( $LANG = de* ); then     echo 'Guten Tag!' elif ![ $LANG = nl* ]( $LANG = nl* ); then     echo 'Hallo!' elif ![ $LANG = it* ]( $LANG = it* ); then     echo 'Ciao!' elif ![ $LANG = es* ]( $LANG = es* ); then     echo 'Hola!' elif [POSIX) ]( $LANG = @(C); then     echo 'hello world' else     echo 'I do not speak your language.' fi</code></p>
+<p>Pero todas estas comparaciones son un poco redundantes. Bash proporciona una palabra clave llamada <code>case</code> exactamente para este tipo de situación. Una declaración <code>case</code> básicamente enumera varios <em>patrones globales</em> posibles y verifica el contenido de su parámetro con respecto a estos:</p>
+<p><code>bash#!highlight bash case $LANG in     en*) echo 'Hello!' ;;     fr*) echo 'Salut!' ;;     de*) echo 'Guten Tag!' ;;     nl*) echo 'Hallo!' ;;     it*) echo 'Ciao!' ;;     es*) echo 'Hola!' ;;     C|POSIX) echo 'Hola Mundo' ;; *)   echo 'No hablo su idioma.' ;; esac</code></p>
+<p>Cada opción en una declaración <code>case</code> consiste en un patrón (o una lista de patrones con <code>|</code> entre ellos), un paréntesis derecho, un bloque de código que se ejecutará si la cadena coincide con uno de esos patrones y dos puntos y coma para indicar el final del bloque de código (ya que es posible que necesite escribirlo en varias líneas).</p>
+<p>Se puede agregar un paréntesis izquierdo a la izquierda del patrón. El uso de <code>;&amp;</code> en lugar de <code>;;</code> le otorgará la capacidad de pasar por alto la coincidencia de <code>case</code> en bash, zsh y ksh. <code>case</code> deja de coincidir patrones tan pronto como uno tiene éxito. Por lo tanto, podemos usar el patrón <code>*</code> al final para coincidir con cualquier caso que no haya sido detectado por las otras opciones.</p>
+<p>Cuando se encuentra un patrón coincidente y se utiliza el operador <code>;&amp;</code> después del bloque de código, entonces también se ejecutará el bloque de código para la siguiente opción (si hay alguna), sin importar si el patrón para esa opción coincide o no. Para “caer” a través de varios patrones consecutivos, utilice el operador <code>;&amp;</code> para todos excepto el último.</p>
+<p>Cuando se encuentra un patrón coincidente y se utiliza el operador <code>;;&amp;</code> después del bloque de código, en lugar del bloque de código para la <em>siguiente</em> opción, se ejecutará el bloque de código para el <em>siguiente patrón coincidente</em> (si lo hay).</p>
+<p>Otra construcción de elección es la construcción <code>select</code>. Esta declaración parece un bucle y es una declaración de conveniencia para generar un menú de opciones entre las que el usuario puede elegir.</p>
+<p>Se le presentan al usuario varias opciones y se le pide que ingrese un número que refleje su elección. Luego, se ejecuta el código en el bloque <code>select</code> con una variable establecida en la opción elegida por el usuario. Si la opción del usuario no es válida, la variable se deja vacía:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">&quot;¿Cuál de estos no pertenece al grupo?&quot;</span><span class="kw">;</span> <span class="dt">\</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> select <span class="ex">choice</span> in Apples Pears Crisps Lemons Kiwis<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> if <span class="ex">![</span> <span class="va">$choice</span> = Crisps ]<span class="er">(</span> <span class="va">$choice</span> = Crisps <span class="kw">)</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> then <span class="bu">echo</span> <span class="st">&quot;¡Correcto! Las patatas fritas no son fruta.&quot;</span><span class="kw">;</span> <span class="cf">break</span><span class="kw">;</span> <span class="cf">fi</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> echo <span class="st">&quot;Error... Inténtalo de nuevo.&quot;</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> done</span></code></pre></div>
+<p>El menú vuelve a aparecer mientras no se ejecute la instrucción <code>break</code>. En el ejemplo, la instrucción <code>break</code> solo se ejecuta cuando el usuario realiza la elección correcta.</p>
+<p>También podemos utilizar la variable <code>PS3</code> para definir el mensaje al que responde el usuario. En lugar de mostrar la pregunta antes de ejecutar la instrucción <code>select</code>, podríamos optar por configurar la pregunta como mensaje:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> PS3=<span class="st">&quot;¿Cuál de estos no pertenece al grupo (#)?&quot;</span><span class="kw">;</span> <span class="dt">\</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> select <span class="ex">choice</span> in Apples Pears Crisps Lemons Kiwis<span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> if <span class="ex">![</span> <span class="va">$choice</span> = Crisps ]<span class="er">(</span> <span class="va">$choice</span> = Crisps <span class="kw">)</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> then <span class="bu">echo</span> <span class="st">&quot;¡Correcto! Las patatas fritas no son fruta.&quot;</span><span class="kw">;</span> <span class="cf">break</span><span class="kw">;</span> <span class="cf">fi</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> echo <span class="st">&quot;Error... Inténtalo de nuevo.&quot;</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> done</span></code></pre></div>
+<p>Todas estas construcciones condicionales (<code>if</code>, <code>for</code>, <code>while</code> y <code>case</code>) se pueden <em>anidar</em>. Esto significa que podría tener un bucle <code>for</code> con un bucle <code>while</code> dentro de él, o cualquier otra combinación, tan profundamente como necesite para resolver su problema.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A simple menu:</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="fu">true</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Welcome to the Menu&quot;</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;  1. Say hello&quot;</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;  2. Say good-bye&quot;</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">read</span> <span class="at">-p</span> <span class="st">&quot;-&gt; &quot;</span> <span class="va">response</span></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> <span class="va">$response</span> <span class="kw">in</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>        <span class="ss">1</span><span class="kw">)</span> <span class="bu">echo</span> <span class="st">&#39;Hello there!&#39;</span> <span class="cf">;;</span></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>        <span class="ss">2</span><span class="kw">)</span> <span class="bu">echo</span> <span class="st">&#39;See you later!&#39;</span><span class="kw">;</span> <span class="cf">break</span> <span class="cf">;;</span></span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a><span class="pp">*</span><span class="kw">)</span> <span class="bu">echo</span> <span class="st">&#39;What was that?&#39;</span> <span class="cf">;;</span></span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">esac</span></span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Alternative: use a variable to terminate the loop instead of an</span></span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a><span class="co"># explicit break command.</span></span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a><span class="va">quit</span><span class="op">=</span></span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">test</span> <span class="at">-z</span> <span class="st">&quot;</span><span class="va">$quit</span><span class="st">&quot;</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;....&quot;</span></span>
+<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a>    <span class="bu">read</span> <span class="at">-p</span> <span class="st">&quot;-&gt; &quot;</span> <span class="va">response</span></span>
+<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> <span class="va">$response</span> <span class="kw">in</span></span>
+<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a>        <span class="ss">...</span></span>
+<span id="cb36-24"><a href="#cb36-24" aria-hidden="true" tabindex="-1"></a>        <span class="ss">2</span><span class="kw">)</span> <span class="bu">echo</span> <span class="st">&#39;See you later!&#39;</span><span class="kw">;</span> <span class="va">quit</span><span class="op">=</span>y <span class="cf">;;</span></span>
+<span id="cb36-25"><a href="#cb36-25" aria-hidden="true" tabindex="-1"></a>        <span class="ss">...</span></span>
+<span id="cb36-26"><a href="#cb36-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">esac</span></span>
+<span id="cb36-27"><a href="#cb36-27" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<blockquote>
+<p><strong>Buenas prácticas.</strong></p>
+<p>Una sentencia <code>select</code> simplifica un menú simple, pero no ofrece mucha flexibilidad. Si desea algo más elaborado, es posible que prefiera escribir su propio menú utilizando un bucle while, algunos comandos echo o printf y un comando read.</p>
+</blockquote>
+<blockquote>
+<p><strong>En el manual.</strong></p>
+<p><a href="http://www.gnu.org/software/bash/manual/bashref.html#Conditional-Constructs">Conditional Constructs</a></p>
+</blockquote>
+<blockquote>
+<p><strong>En preguntas frecuentes.</strong></p>
+<ul>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/066">Quiero comprobar si <code>[[ $var == foo</code> o <code>$var == bar</code> o <code>$var = more ...</code> sin repetir <code>$var</code> n veces.</a></li>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/035">¿Cómo puedo manejar fácilmente los argumentos de la línea de comandos (opciones) de mi script?</a></li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>Revisar.</strong></p>
+<ul>
+<li><dl>
+<dt><code>case</code> (keyword)</dt>
+<dd>
+La declaración <code>case</code> evalúa el valor de un parámetro frente a varios patrones (opciones) dados.
+</dd>
+</dl></li>
+<li><dl>
+<dt><code>select</code> (keyword)</dt>
+<dd>
+La instrucción <code>select</code> ofrece al usuario la posibilidad de elegir entre varias opciones y ejecuta un bloque de código con la elección del usuario en un parámetro. El menú se repite hasta que se ejecuta un comando <code>break</code>.
+</dd>
+</dl></li>
+</ul>
+</blockquote>
+<p><a href="patrones.html">↤ Patrones</a> ‧ <a href="array.html">Arrays ↦</a></p>
+<p><a href="https://mywiki.wooledge.org/BashGuide/TestsAndConditionals">Página original</a></p>
+	</main>
+</body>
+</html>

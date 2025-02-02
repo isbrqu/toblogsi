@@ -87,8 +87,8 @@ La guía se ha dividido en secciones, que se deben leer aproximadamente en el or
 - [Caracteres especiales](caracteres-especiales.html).
 - [Parámetros](parametros.html): Parámetros Variables; parámetros especiales; tipos de parámetros; expansión de parámetros.
 - [Patrones](patrones.html): Globs; coincidencia de nombre de archivo; globs extendidos; expansión de llaves; expresiones regulares.
-- [Tests y condicionales](https://mywiki.wooledge.org/BashGuide/TestsAndConditionals): Estado de salida; `&&` y `||`; `if`, `test` y `[[`; `while`, `until` y `for`; `case` y `select`.
 - [Arrays](https://mywiki.wooledge.org/BashGuide/Arrays): Arrays; arrays asociativos.
+- [Tests y condicionales](pruebas-y-condicionales.html): Estado de salida; `&&` y `||`; `if`, `test` y `[[`; `while`, `until` y `for`; `case` y `select`.
 - [Comandos compuestos](https://mywiki.wooledge.org/BashGuide/CompoundCommands): Subshells; agrupación de comandos; evaluación aritmética; funciones; alias.
 - [Sourcing](https://mywiki.wooledge.org/BashGuide/Sourcing): Leyendo comandos de otros archivos.
 - [Control de trabajo](https://mywiki.wooledge.org/BashGuide/JobControl).
