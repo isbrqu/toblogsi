@@ -28,7 +28,243 @@
 	<main class="container">
 		<h1>Patrones</h1>
 		<p><a href="https://mywiki.wooledge.org/BASH">BASH</a> ofrece tres tipos diferentes de <em>comparación de patrones</em>. La comparación de patrones cumple dos funciones en el shell: seleccionar nombres de archivos dentro de un directorio o determinar si una cadena se ajusta a un formato deseado.</p>
-<p><a href="parametros.html">↤ Parámetros</a> ‧ <a href="https://mywiki.wooledge.org/BashGuide/TestsAndConditionals">Tests y condicionales ↦</a></p>
+<p>En la línea de comandos, utilizará principalmente <em>globs</em>. Se trata de una forma bastante sencilla de patrones que se pueden utilizar fácilmente para hacer coincidir un rango de archivos o para comprobar variables con reglas simples.</p>
+<p>El segundo tipo de coincidencia de patrones implica <em>globs extendidos</em>, que permiten expresiones más complicadas que los globs regulares.</p>
+<p>Desde la versión <code>3.0</code>, Bash también admite patrones de “expresiones regulares”. Estos serán útiles principalmente en scripts para probar la entrada del usuario o analizar datos. (No se puede usar una expresión regular para seleccionar nombres de archivos; solo los globs y los globs extendidos pueden hacerlo).</p>
+<blockquote>
+<p><strong>Revisar.</strong></p>
+<ul>
+<li><em>Patrón</em> :Un patrón es una cadena con un formato especial diseñado para que coincida con nombres de archivos o para verificar, clasificar o validar cadenas de datos.</li>
+</ul>
+</blockquote>
+<h2 id="patrones-de-glob">Patrones de glob</h2>
+<p>Los <a href="https://mywiki.wooledge.org/glob">globs</a> son un concepto muy importante en Bash, aunque solo sea por su increíble conveniencia. Comprenderlos correctamente le resultará beneficioso de muchas maneras. Los globs son básicamente patrones que se pueden usar para hacer coincidir nombres de archivos u otras cadenas.</p>
+<p>Los globs se componen de caracteres normales y metacaracteres. Los metacaracteres son caracteres que tienen un significado especial. Estos son los metacaracteres que se pueden utilizar en los globs:</p>
+<table>
+<thead>
+<tr>
+<th>
+Metacaracter
+</th>
+<th>
+Descripción
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>*</code>
+</td>
+<td>
+Coincide con cualquier cadena, incluida la cadena nula.
+</td>
+</tr>
+<tr>
+<td>
+<code>?</code>
+</td>
+<td>
+Coincide con cualquier caracter individual.
+</td>
+</tr>
+<tr>
+<td>
+<code>[...]</code>
+</td>
+<td>
+Coincide con cualquiera de los caracteres incluidos.
+</td>
+</tr>
+</tbody>
+</table>
+<p>Los globs están implícitamente <em>anclados</em> en ambos extremos. Esto significa que un glob debe coincidir con una cadena <em>completa</em> (nombre de archivo o cadena de datos). Un glob de <code>a*</code> no coincidirá con la cadena <code>cat</code>, porque solo coincide con <code>at</code>, no con la cadena completa. Sin embargo, un glob de <code>ca*</code> coincidiría con <code>cat</code>.</p>
+<p>A continuación se muestra un ejemplo de cómo podemos usar patrones glob para expandirnos a nombres de archivos:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">a</span>  abc  b  c</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="pp">*</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">a</span> abc b c</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo a<span class="pp">*</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">a</span> abc</span></code></pre></div>
+<p>Bash ve el glob, por ejemplo <code>a*</code>. <em>Expande</em> este glob, buscando en el directorio actual y comparándolo con todos los archivos que hay allí. Todos los nombres de archivo que coinciden con el glob se reúnen y ordenan, y luego la lista de nombres de archivo se utiliza en lugar del glob. Como resultado, la instrucción <code>echo a*</code> se reemplaza por la instrucción <code>echo a abc</code>, que luego se ejecuta.</p>
+<p>Cuando se utiliza un glob para hacer coincidir <em>nombres de archivo</em>, los caracteres <code>*</code> y <code>?</code> no pueden coincidir con un carácter de barra (<code>/</code>). Por ejemplo, el glob <code>*/bin</code> puede coincidir con <code>foo/bin</code>, pero no puede coincidir con <code>/usr/local/bin</code>. Cuando los globs coinciden con <em>patrones</em>, se elimina la restricción <code>/</code>.</p>
+<p>Bash realiza expansiones de nombres de archivo <em>después</em> de que ya se haya realizado la división de palabras. Por lo tanto, los nombres de archivo generados por un glob no se dividirán; siempre se manejarán correctamente. Por ejemplo:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> touch <span class="st">&quot;a b.txt&quot;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">a</span> b.txt</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> rm <span class="pp">*</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls</span></code></pre></div>
+<p>Aquí, <code>*</code> se expande en un solo nombre de archivo <code>"a b.txt"</code>. Este nombre de archivo se pasará como un único argumento a <code>rm</code>. Usar globs para enumerar archivos es <strong>siempre</strong> una mejor idea que usar <code>`ls`</code> para ese propósito. Aquí hay un ejemplo con una sintaxis más compleja que cubriremos más adelante, pero que ilustrará muy bien la razón:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">a</span> b.txt</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> for file in <span class="kw">`</span><span class="fu">ls</span><span class="kw">`;</span> <span class="cf">do</span> <span class="fu">rm</span> <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span><span class="kw">;</span> <span class="cf">done</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">rm:</span> cannot remove <span class="kw">`</span><span class="ex">a</span><span class="st">&#39;: No such file or directory</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="st">rm: cannot remove `b.txt&#39;</span><span class="ex">:</span> No such file or directory</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> for file in <span class="pp">*</span><span class="kw">;</span> <span class="cf">do</span> <span class="fu">rm</span> <span class="st">&quot;</span><span class="va">$file</span><span class="st">&quot;</span><span class="kw">;</span> <span class="cf">done</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls</span></code></pre></div>
+<p>Aquí usamos el comando <code>for</code> para recorrer la salida del comando <code>ls</code>. El comando <code>ls</code> imprime la cadena <code>a b.txt</code>. El comando <code>for</code> divide esa cadena en palabras sobre las que itera. Como resultado, <code>for</code> itera primero sobre <code>a</code> y luego sobre <code>b.txt</code>. Naturalmente, esto <strong>no</strong> es lo que queremos. Sin embargo, el glob se expande en la forma adecuada. Da como resultado la cadena <code>"a b.txt"</code>, que <code>for</code> toma como único argumento.</p>
+<p>Aquí usamos el comando <code>for</code> para recorrer la salida del comando <code>ls</code>. El comando <code>ls</code> imprime la cadena <code>a b.txt</code>. El comando <code>for</code> divide esa cadena en palabras sobre las que itera. Como resultado, <code>for</code> itera primero sobre <code>a</code> y luego sobre <code>b.txt</code>. Naturalmente, esto <strong>no</strong> es lo que queremos. Sin embargo, el glob se expande en la forma adecuada. Da como resultado la cadena “<code>a b.txt</code>”, que <code>for</code> toma como único argumento.</p>
+<p>Además de la expansión de nombres de archivo, los globs también se pueden usar para verificar si los datos coinciden con un formato específico. Por ejemplo, podríamos recibir un nombre de archivo y necesitar realizar diferentes acciones según su extensión:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> filename=<span class="st">&quot;somefile.jpg&quot;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> if [[ <span class="va">$filename</span> = <span class="pp">*</span>.jpg ]]<span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> echo <span class="st">&quot;</span><span class="va">$filename</span><span class="st"> is a jpeg&quot;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> fi</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">somefile.jpg</span> is a jpeg</span></code></pre></div>
+<p>La palabra clave <code>[[</code> y la palabra clave <code>case</code> (que analizaremos con más detalle más adelante) ofrecen la oportunidad de comprobar una cadena con un glob, ya sean globs regulares o globs extendidos, si estos últimos se han habilitado.</p>
+<blockquote>
+<p><strong><em>Buena práctica.</em></strong></p>
+<p>Siempre debe usar globs en lugar de <code>ls</code> (o similar) para enumerar archivos. Los globs siempre se expandirán de manera segura y minimizarán el riesgo de errores.</p>
+<p>A veces puede terminar con nombres de archivo muy extraños. La mayoría de los scripts no se prueban con todos los casos extraños con los que pueden terminar usándose. <strong><em>¡No permita que su script sea uno de ellos!</em></strong></p>
+</blockquote>
+<blockquote>
+<p><strong>En el manual</strong></p>
+<ul>
+<li><a href="http://www.gnu.org/software/bash/manual/bashref.html#Pattern-Matching">Pattern Matching</a></li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>En las preguntas frecuentes.</strong></p>
+<ul>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/016">¿Cómo puedo utilizar un AND/OR/NO lógico en un patrón de shell (glob)?</a>.</li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>Revisar.</strong></p>
+<ul>
+<li><dl>
+<dt><em>Glob</em></dt>
+<dd>
+Un glob es una cadena que puede coincidir con ciertas cadenas o nombres de archivos.
+</dd>
+</dl></li>
+</ul>
+</blockquote>
+<h2 id="globs-extendidos">Globs extendidos</h2>
+<p>Bash también admite una característica llamada <em>Extended Globs</em>. Estos globs son más potentes por naturaleza; técnicamente, son equivalentes a expresiones regulares, aunque la sintaxis es diferente a la que la mayoría de las personas están acostumbradas. Esta característica está desactivada de forma predeterminada, pero se puede activar con el comando <code>shopt</code>, que se utiliza para alternar las <strong>sh</strong>ell <strong>opt</strong>ions (opciones de shell):</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> shopt <span class="at">-s</span> extglob</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>
+Expresión
+</th>
+<th>
+Descripción
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>?(list)</code>
+</td>
+<td>
+Coincide con cero o una ocurrencia de los patrones dados.
+</td>
+</tr>
+<tr>
+<td>
+<code>*(list)</code>
+</td>
+<td>
+Coincide con cero o más ocurrencias de los patrones dados.
+</td>
+</tr>
+<tr>
+<td>
+<code>+(list)</code>
+</td>
+<td>
+Coincide con una o más ocurrencias de los patrones dados.
+</td>
+</tr>
+<tr>
+<td>
+<code>@(list)</code>
+</td>
+<td>
+Coincide con uno de los patrones dados.
+</td>
+</tr>
+<tr>
+<td>
+<code>!(list)</code>
+</td>
+<td>
+Coincide con cualquier cosa excepto con los patrones dados.
+</td>
+</tr>
+</tbody>
+</table>
+<p>La lista dentro de los paréntesis es una lista de globs o globs extendidos separados por el carácter <code>|</code>. A continuación se muestra un ejemplo:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ls</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">names.txt</span>  tokyo.jpg  california.bmp</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="pp">!(*</span>jpg<span class="pp">|*</span>bmp<span class="pp">)</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ex">names.txt</span></span></code></pre></div>
+<p>Nuestro glob extendido se expande a cualquier cosa que no coincida con el patrón <code>*jpg</code> o <code>*bmp</code>. Solo el archivo de texto pasa por eso, por lo que se expande.</p>
+<h2 id="expresiones-regulares">Expresiones regulares</h2>
+<p>Las expresiones regulares (regex) son similares a los <em>Patrones Glob</em>, pero sólo se pueden usar para la coincidencia de patrones, no para la coincidencia de nombres de archivos. Desde la versión 3.0, Bash admite el operador <code>=~</code> para la palabra clave <code>[[</code>. Este operador hace coincidir la cadena que viene antes con el patrón de expresión regular que lo sigue. Cuando la cadena coincide con el patrón, <code>[[</code> devuelve un código de salida de <code>0</code> (“verdadero”). Si la cadena no coincide con el patrón, se devuelve un código de salida de <code>1</code> (“falso”). En caso de que la sintaxis del patrón no sea válida, <code>[[</code> abortará la operación y devolverá un código de salida de <code>2</code>.</p>
+<p>Bash utiliza el dialecto <em>Expresión regular extendida</em> (<code>ERE</code>). No abordaremos las expresiones regulares en profundidad en esta guía, pero si le interesa este concepto, lea sobre expresiones regulares o <a href="http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap09.html#tag_09_04">Expresiones regulares extendidas</a>.</p>
+<p>Los patrones de <em>Expresión regular</em> que utilizan grupos de captura (paréntesis) tendrán sus cadenas capturadas asignadas a la variable <code>BASH_REMATCH</code> para su posterior recuperación.</p>
+<p>Ilustremos cómo se pueden utilizar expresiones regulares en Bash:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> langRegex=<span class="st">&#39;(..)_(..)&#39;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> if ![ <span class="va">$LANG</span> =~ <span class="va">$langRegex</span> ]<span class="er">(</span> <span class="va">$LANG</span> =~ <span class="va">$langRegex</span> <span class="kw">)</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> then</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span>     echo <span class="st">&quot;Tu código de país (ISO 3166-1-alpha-2) es </span><span class="va">${BASH_REMATCH</span><span class="op">[</span><span class="dv">2</span><span class="op">]</span><span class="va">}</span><span class="st">.&quot;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span>     echo <span class="st">&quot;Tu código de país (ISO 639-1) es </span><span class="va">${BASH_REMATCH</span><span class="op">[</span><span class="dv">1</span><span class="op">]</span><span class="va">}</span><span class="st">.&quot;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> else</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span>     echo <span class="st">&quot;No se reconoció su configuración regional&quot;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> fi</span></code></pre></div>
+<p>Tenga en cuenta que el análisis de expresiones regulares en Bash ha cambiado entre las versiones <code>3.1</code> y <code>3.2</code>. Antes de <code>3.2</code> era seguro envolver su patrón de expresión regular entre comillas, pero esto ha cambiado en <code>3.2</code>. Desde entonces, las expresiones regulares siempre deben estar sin comillas. Debe proteger cualquier carácter especial escapándolo con una barra invertida. La mejor manera de ser siempre compatible es poner su expresión regular en una variable y expandir esa variable en <code>[[</code> sin comillas, como mostramos anteriormente.</p>
+<blockquote>
+<p><strong>Buenas prácticas.</strong></p>
+<ul>
+<li>Dado que la forma en que se utilizan las expresiones regulares en <code>3.2</code> también es válida en <code>3.1</code>, recomendamos <em>enfáticamente</em> nunca usar las comillas. ¡Recuerde mantener los caracteres especiales correctamente escapados!</li>
+<li>Para compatibilidad cruzada (para evitar tener que escapar paréntesis, barras verticales, etc.) use una variable para almacenar su expresión regular, por ejemplo <code>![{re='^\*( &gt;| *Applying |.*\.diff|.*\.patch)'; ![ $var =~ $re ]( $var =~ $re )]({re='^\*( &gt;| *Applying |.*\.diff|.*\.patch)'; ![ $var =~ $re ]( $var =~ $re ))}</code>. Esto es mucho más fácil de mantener ya que solo escribe sintaxis ERE y evita la necesidad de escape de shell, además de ser compatible con todas las versiones 3.x de BASH.</li>
+<li>Véase también <a href="http://tiswww.case.edu/php/chet/bash/FAQ">Chet Ramey’s Bash FAQ</a>, section E14.</li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>En el manual.</strong></p>
+<p><a href="http://www.daemon-systems.org/man/regex.3.html">Regex(3)</a></p>
+</blockquote>
+<blockquote>
+<p><strong>En preguntas frecuentes.</strong></p>
+<ul>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/066">Quiero comprobar si <code>[[ $var == foo</code> o <code>$var == bar</code> o <code>$var == more...</code> sin repetir <code>$var</code> n veces</a></li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>Revisar.</strong></p>
+<ul>
+<li><dl>
+<dt>Regular Expression</dt>
+<dd>
+Una expresión regular es un patrón más complejo que se puede utilizar para hacer coincidir cadenas específicas (pero a diferencia de los globs, no se puede expandir a nombres de archivos).
+</dd>
+</dl></li>
+</ul>
+</blockquote>
+<h2 id="expansión-de-llaves">Expansión de llaves</h2>
+<p>Luego está la <em>Expansión de llaves</em>. La Expansión de llaves técnicamente no encaja en la categoría de patrones, pero es similar. Los globs solo se expanden a nombres de archivos reales, pero las expansiones de llaves se expandirán a cualquier permutación posible de sus contenidos. Así es como funcionan:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo th<span class="dt">{e</span><span class="op">,</span><span class="dt">a}</span>n</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="cf">then</span> <span class="ex">than</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="dt">{/home/</span><span class="pp">*</span><span class="op">,</span><span class="dt">/root}</span>/.<span class="pp">*</span>profile</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ex">/home/axxo/.bash_profile</span> /home/lhunath/.profile /root/.bash_profile /root/.profile</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">9</span><span class="dt">}</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="ex">1</span> 2 3 4 5 6 7 8 9</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="dt">{0</span><span class="op">,</span><span class="dt">1}{</span><span class="dv">0</span><span class="dt">..</span><span class="dv">9</span><span class="dt">}</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="ex">00</span> 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19</span></code></pre></div>
+<p>La expansión de llaves se reemplaza por una lista de palabras, al igual que un glob. Sin embargo, estas palabras no son necesariamente nombres de archivos y no están ordenadas (<code>than</code> habría venido antes de <code>then</code> si lo estuvieran).</p>
+<p>La expansión de llaves se produce <em>antes</em> de la expansión del nombre de archivo. En el segundo comando <code>echo</code> anterior, usamos una combinación de expansión de llaves y globs. La expansión de llaves se realiza primero y obtenemos:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo /home/<span class="pp">*</span>/.<span class="pp">*</span>profile /root/.<span class="pp">*</span>profile</span></code></pre></div>
+<p>Después de la expansión de las llaves, los globs se expanden y obtenemos los nombres de archivo como resultado final.</p>
+<p>Las expansiones de llaves solo se pueden utilizar para generar listas de palabras. No se pueden utilizar para la búsqueda de patrones.</p>
+<p>Existen algunas diferencias interesantes y no muy intuitivas entre los rangos en clases de caracteres como [a-z] y la expansión de llaves. Por ejemplo, la expansión de llaves permite contar hacia atrás, como se puede ver con <code>{5..1}</code> o incluso <code>{b..Y}</code>, mientras que <code>[5-1]</code> no se expande por el shell. <code>[b-Y]</code> puede o no expandirse, dependiendo de su <a href="https://mywiki.wooledge.org/locale">locale</a>. Además, los rangos de caracteres en las expansiones de llaves ignoran las variables de configuración regional como <code>LANG</code> y <code>LC_COLLATE</code> y siempre usan el orden ASCII. El uso de globbing, por otro lado, se ve afectado por la configuración del idioma.</p>
+<p>El siguiente fragmento es un ejemplo de cuenta regresiva y visualización de caracteres en el orden de sus códigos ASCII:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="dt">{</span>b<span class="dt">..</span>Y<span class="dt">}</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">b</span> a <span class="kw">`</span> <span class="ex">_</span> ^ ]  [ Z Y</span></code></pre></div>
+<p><a href="parametros.html">↤ Parámetros</a> ‧ <a href="pruebas-y-condicionales.html">Tests y condicionales ↦</a></p>
 <p><a href="https://mywiki.wooledge.org/BashGuide/Patterns">Página original</a></p>
 	</main>
 </body>
