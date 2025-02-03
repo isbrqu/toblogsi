@@ -13,7 +13,7 @@ Desde la versión `3.0`, Bash también admite patrones de "expresiones regulares
 > **Revisar.**
 >
 > - *Patrón*
-> :Un patrón es una cadena con un formato especial diseñado para que coincida con nombres de archivos o para verificar, clasificar o validar cadenas de datos.
+> : Un patrón es una cadena con un formato especial diseñado para que coincida con nombres de archivos o para verificar, clasificar o validar cadenas de datos.
 
 ## Patrones de glob
 
@@ -246,6 +246,6 @@ $ echo {b..Y}
 b a ` _ ^ ]  [ Z Y
 ```
 
-[&#8612; Parámetros](parametros.html) &#8231; [Tests y condicionales &#8614;](pruebas-y-condicionales.html)
+[&#8612; Parámetros](base_url/guia/parametros.html) &#8231; [Tests y condicionales &#8614;](base_url/guia/pruebas-y-condicionales.html)
 
 [Página original](https://mywiki.wooledge.org/BashGuide/Patterns)

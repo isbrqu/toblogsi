@@ -35,11 +35,17 @@ Piense en un shell como una forma de comunicarse con su sistema. Su sistema no l
 
 BASH **no** es su sistema operativo. No es su gestor de ventanas. No es su terminal (pero a menudo se ejecuta _dentro_ de su terminal). No controla su ratón ni su teclado. No configura su sistema, no activa su protector de pantalla ni abre sus archivos cuando hace doble clic en ellos. Por lo general, no interviene en el lanzamiento de aplicaciones desde su gestor de ventanas o entorno de escritorio.  Es importante entender que BASH es sólo una interfaz para ejecutar instrucciones (utilizando la sintaxis de BASH), ya sea en el indicador interactivo de BASH o a través de scripts de BASH.
 
-> **[En el manual: Introducción](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Introduction)**
+> **En el manual.**
 >
-> _Shell_ : Un intérprete de comandos (posiblemente interactivo), que actúa como una capa entre el usuario y el sistema.
+> - [Introduction](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Introduction)
+
+> **Revisar.**
 >
-> _Bash_ : The Bourne Again Shell, un shell compatible con _Bourne_.
+> - _Shell_
+> : Un intérprete de comandos (posiblemente interactivo), que actúa como una capa entre el usuario y el sistema.
+>
+> - _Bash_
+> : The Bourne Again Shell, un shell compatible con _Bourne_.
 
 ## Usando Bash
 
@@ -71,29 +77,34 @@ $ help
 $ help read
 ```
 
-> En FAQ:
-> [¿Existe una lista de las características que se agregaron a versiones específicas de Bash?](https://mywiki.wooledge.org/BashFAQ/061)
+> **En las preguntas frecuentes.**
 >
-> _Modo interactivo_ : Un modo de operación en el que un mensaje le solicita un comando a la vez.
+> - [¿Existe una lista de las características que se agregaron a versiones específicas de Bash?](https://mywiki.wooledge.org/BashFAQ/061)
+
+
+> **Revisar.**
 >
-> _Script_ : Archivo que contiene una secuencia de comandos para ejecutar uno tras otro.
+> - _Modo interactivo_
+> : Un modo de operación en el que un mensaje le solicita un comando a la vez.
+> - _Script_
+> : Archivo que contiene una secuencia de comandos para ejecutar uno tras otro.
 
 
 ## Contenido
 
 La guía se ha dividido en secciones, que se deben leer aproximadamente en el orden en que se presentan. Si se salta una sección específica, es posible que se pierda información de fondo de las secciones anteriores. (No siempre se proporcionan enlaces a las secciones pertinentes cuando se menciona un tema).
 
-- [Comandos y argumentos](comandos-y-argumentos.html): Tipos de comandos; división de argumentos; escritura de scripts.
-- [Caracteres especiales](caracteres-especiales.html).
-- [Parámetros](parametros.html): Parámetros Variables; parámetros especiales; tipos de parámetros; expansión de parámetros.
-- [Patrones](patrones.html): Globs; coincidencia de nombre de archivo; globs extendidos; expansión de llaves; expresiones regulares.
-- [Arrays](https://mywiki.wooledge.org/BashGuide/Arrays): Arrays; arrays asociativos.
-- [Tests y condicionales](pruebas-y-condicionales.html): Estado de salida; `&&` y `||`; `if`, `test` y `[[`; `while`, `until` y `for`; `case` y `select`.
+- [Comandos y argumentos](base_url/guia/comandos-y-argumentos.html): Tipos de comandos; división de argumentos; escritura de scripts.
+- [Caracteres especiales](base_url/guia/caracteres-especiales.html).
+- [Parámetros](base_url/guia/parametros.html): Parámetros Variables; parámetros especiales; tipos de parámetros; expansión de parámetros.
+- [Patrones](base_url/guia/patrones.html): Globs; coincidencia de nombre de archivo; globs extendidos; expansión de llaves; expresiones regulares.
+- [Tests y condicionales](base_url/guia/pruebas-y-condicionales.html): Estado de salida; `&&` y `||`; `if`, `test` y `[[`; `while`, `until` y `for`; `case` y `select`.
+- [Arrays](base_url/guia/array.html): Arrays; arrays asociativos.
 - [Comandos compuestos](https://mywiki.wooledge.org/BashGuide/CompoundCommands): Subshells; agrupación de comandos; evaluación aritmética; funciones; alias.
 - [Sourcing](https://mywiki.wooledge.org/BashGuide/Sourcing): Leyendo comandos de otros archivos.
 - [Control de trabajo](https://mywiki.wooledge.org/BashGuide/JobControl).
 - [Prácticas](https://mywiki.wooledge.org/BashGuide/Practices): Elegir su shell; citar; legibilidad; depuración.
 
-&#8231; [Comandos y argumentos &#8614;](comandos-y-argumentos.html)
+&#8231; [Comandos y argumentos &#8614;](base_url/guia/comandos-y-argumentos.html)
 
 [Página original](https://mywiki.wooledge.org/BashGuide)

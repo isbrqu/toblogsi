@@ -17,11 +17,11 @@
 		</hgroup>
 		<nav>
 			<ul>
-				<li><a href="/guia/introduccion.html">Guía</a></li>
-				<li><a href="/preguntas-frecuentes/introduccion.html">Preguntas frecuentes</a></li>
-				<li><a href="/malas-practicas/introduccion.html">Malas prácticas</a></li>
-				<li><a href="/referencia-rapida/introduccion.html">Referencia rápida</a></li>
-				<li><a href="/programacion/introduccion.html">Programación</a></li>
+				<li><a href="https://isbrqu.github.io/toblogsi/guia/introduccion.html">Guía</a></li>
+				<li><a href="https://isbrqu.github.io/toblogsi/preguntas-frecuentes/introduccion.html">Preguntas frecuentes</a></li>
+				<li><a href="https://isbrqu.github.io/toblogsi/malas-practicas/introduccion.html">Malas prácticas</a></li>
+				<li><a href="https://isbrqu.github.io/toblogsi/referencia-rapida/introduccion.html">Referencia rápida</a></li>
+				<li><a href="https://isbrqu.github.io/toblogsi/programacion/introduccion.html">Programación</a></li>
 			</ul>
 		</nav>
 	</header>
@@ -70,9 +70,9 @@ The secret voice in your head.mp3             # ¡Pero tu archivo &#39;secreto&#
 <p>Los argumentos se separan del nombre del comando y entre sí mediante un espacio en blanco. Es importante recordar esto. Por ejemplo, lo siguiente es incorrecto:</p>
 <pre><code>$ [-f file]
 bash: [-f: command not found</code></pre>
-<p>Esto tiene como objetivo comprobar la existencia de un archivo llamado “file”. Es razonable suponer que los espacios en blanco alrededor de “[” y ”]” no importan, pero <code>[</code> es en realidad un comando y requiere que su último argumento sea <code>]</code>. (Trataremos el comando <code>[</code> con más detalle <a href="https://mywiki.wooledge.org/BashGuide/TestsAndConditionals">más adelante</a>). Por lo tanto, debemos separar <code>[</code> de <code>-f</code> y <code>]</code> de file, de lo contrario Bash pensará que estamos intentando ejecutar un comando llamado <code>[-f</code> con un solo argumento <code>file]</code>. El comando correcto separa todos los argumentos con espacios en blanco:</p>
+<p>Esto tiene como objetivo comprobar la existencia de un archivo llamado “file”. Es razonable suponer que los espacios en blanco alrededor de “[” y ”]” no importan, pero <code>[</code> es en realidad un comando y requiere que su último argumento sea <code>]</code>. (Trataremos el comando <code>[</code> con más detalle <a href="https://isbrqu.github.io/toblogsi/guia/pruebas-y-condicionales.html">más adelante</a>). Por lo tanto, debemos separar <code>[</code> de <code>-f</code> y <code>]</code> de file, de lo contrario Bash pensará que estamos intentando ejecutar un comando llamado <code>[-f</code> con un solo argumento <code>file]</code>. El comando correcto separa todos los argumentos con espacios en blanco:</p>
 <p>(Vemos muchas personas que están confundidas por este comportamiento; creen que pueden omitir el espacio en blanco entre éste y sus argumentos, por lo que debemos presentar este ejemplo particular al principio).</p>
-<p>Y, si nuestro nombre de archivo contiene espacios en blanco u <a href="https://mywiki.wooledge.org/BashGuide/SpecialCharacters">otros caracteres especiales</a>, también debe ir entre comillas:</p>
+<p>Y, si nuestro nombre de archivo contiene espacios en blanco u <a href="https://isbrqu.github.io/toblogsi/guia/caracteres-especiales.html">otros caracteres especiales</a>, también debe ir entre comillas:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> [ <span class="at">-f</span> <span class="st">&quot;my file&quot;</span> ]</span></code></pre></div>
 <p>Eche un vistazo a <a href="https://mywiki.wooledge.org/Arguments">argumentos</a>, <a href="https://mywiki.wooledge.org/Quotes">comillas</a> y <a href="https://mywiki.wooledge.org/WordSplitting">división de palabras</a> si todo esto aún no le ha quedado muy claro. Es importante tener una buena comprensión de cómo el shell interpreta los espacios en blanco y los caracteres especiales antes de continuar con esta guía.</p>
 <blockquote>
@@ -130,7 +130,7 @@ Las dos formas de comillas, simples y dobles (<code>'</code> y <code>"</code>), 
 <h3 id="elementos-incorporados-builtins">Elementos incorporados (Builtins)</h3>
 <p>Bash tiene algunos comandos básicos integrados, como cd (cambiar directorio), echo (escribir salida), etc. Se pueden considerar funciones que ya están incluidas.</p>
 <h3 id="palabras-clave-keywords">Palabras clave (keywords)</h3>
-<p>Las palabras clave son como las incorporadas, con la principal diferencia de que las palabras clave son en realidad sintaxis de Bash y pueden analizarse utilizando reglas especiales. Por ejemplo, <code>[</code> es una incorporada de Bash, mientras que <code>[[</code> es una palabra clave de Bash; ambas se utilizan para <a href="https://mywiki.wooledge.org/BashGuide/TestsAndConditionals">probar una variedad de condiciones</a>. Aquí intentamos usarlas para comparar las palabras “<em>a</em>” y “<em>b</em>” lexicográficamente:</p>
+<p>Las palabras clave son como las incorporadas, con la principal diferencia de que las palabras clave son en realidad sintaxis de Bash y pueden analizarse utilizando reglas especiales. Por ejemplo, <code>[</code> es una incorporada de Bash, mientras que <code>[[</code> es una palabra clave de Bash; ambas se utilizan para <a href="https://isbrqu.github.io/toblogsi/guia/pruebas-y-condicionales.html">probar una variedad de condiciones</a>. Aquí intentamos usarlas para comparar las palabras “<em>a</em>” y “<em>b</em>” lexicográficamente:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> [ a <span class="op">&lt;</span> b ]</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">-bash:</span> b: No such file or directory</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> [[ a <span class="op">&lt;</span> b ]]</span></code></pre></div>
@@ -239,7 +239,7 @@ Un programa que puede ejecutarse haciendo referencia a su ruta de archivo (por e
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Copyright (C) &lt;date&gt; &lt;name&gt;...</span></span>
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
 <span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># scriptname [option] [argument] ...</span></span></code></pre></div>
-<p><a href="introduccion.html">↤ Introducción</a> ‧ <a href="caracteres-especiales.html">Caracteres especiales ↦</a></p>
+<p><a href="https://isbrqu.github.io/toblogsi/guia/introduccion.html">↤ Introducción</a> ‧ <a href="https://isbrqu.github.io/toblogsi/guia/caracteres-especiales.html">Caracteres especiales ↦</a></p>
 <p><a href="https://mywiki.wooledge.org/BashGuide/CommandsAndArguments">Página original</a></p>
 	</main>
 </body>

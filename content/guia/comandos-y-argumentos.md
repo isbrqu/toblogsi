@@ -81,11 +81,11 @@ $ [-f file]
 bash: [-f: command not found
 ```
 
-Esto tiene como objetivo comprobar la existencia de un archivo llamado "file". Es razonable suponer que los espacios en blanco alrededor de "[" y "]" no importan, pero `[` es en realidad un comando y requiere que su último argumento sea `]`. (Trataremos el comando `[` con más detalle [más adelante](https://mywiki.wooledge.org/BashGuide/TestsAndConditionals)). Por lo tanto, debemos separar `[` de `-f` y `]` de file, de lo contrario Bash pensará que estamos intentando ejecutar un comando llamado `[-f` con un solo argumento `file]`. El comando correcto separa todos los argumentos con espacios en blanco:
+Esto tiene como objetivo comprobar la existencia de un archivo llamado "file". Es razonable suponer que los espacios en blanco alrededor de "[" y "]" no importan, pero `[` es en realidad un comando y requiere que su último argumento sea `]`. (Trataremos el comando `[` con más detalle [más adelante](base_url/guia/pruebas-y-condicionales.html)). Por lo tanto, debemos separar `[` de `-f` y `]` de file, de lo contrario Bash pensará que estamos intentando ejecutar un comando llamado `[-f` con un solo argumento `file]`. El comando correcto separa todos los argumentos con espacios en blanco:
 
 (Vemos muchas personas que están confundidas por este comportamiento; creen que pueden omitir el espacio en blanco entre éste y sus argumentos, por lo que debemos presentar este ejemplo particular al principio).
 
-Y, si nuestro nombre de archivo contiene espacios en blanco u [otros caracteres especiales](https://mywiki.wooledge.org/BashGuide/SpecialCharacters), también debe ir entre comillas:
+Y, si nuestro nombre de archivo contiene espacios en blanco u [otros caracteres especiales](base_url/guia/caracteres-especiales.html), también debe ir entre comillas:
 
 ```bash
 $ [ -f "my file" ]
@@ -165,7 +165,7 @@ Bash tiene algunos comandos básicos integrados, como cd (cambiar directorio), e
 
 ### Palabras clave (keywords)
 
-Las palabras clave son como las incorporadas, con la principal diferencia de que las palabras clave son en realidad sintaxis de Bash y pueden analizarse utilizando reglas especiales. Por ejemplo, `[` es una incorporada de Bash, mientras que `[[` es una palabra clave de Bash; ambas se utilizan para [probar una variedad de condiciones](https://mywiki.wooledge.org/BashGuide/TestsAndConditionals). Aquí intentamos usarlas para comparar las palabras "*a*" y "*b*" lexicográficamente:
+Las palabras clave son como las incorporadas, con la principal diferencia de que las palabras clave son en realidad sintaxis de Bash y pueden analizarse utilizando reglas especiales. Por ejemplo, `[` es una incorporada de Bash, mientras que `[[` es una palabra clave de Bash; ambas se utilizan para [probar una variedad de condiciones](base_url/guia/pruebas-y-condicionales.html). Aquí intentamos usarlas para comparar las palabras "*a*" y "*b*" lexicográficamente:
 
 ```bash
 $ [ a < b ]
@@ -296,6 +296,6 @@ $ myscript
 # scriptname [option] [argument] ...
 ```
 
-[&#8612; Introducción](introduccion.html) &#8231; [Caracteres especiales &#8614;](caracteres-especiales.html)
+[&#8612; Introducción](base_url/guia/introduccion.html) &#8231; [Caracteres especiales &#8614;](base_url/guia/caracteres-especiales.html)
 
 [Página original](https://mywiki.wooledge.org/BashGuide/CommandsAndArguments)

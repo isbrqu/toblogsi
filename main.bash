@@ -1,14 +1,25 @@
 #!/usr/bin/env bash
 
+ 
 main() { 
   local content="content"
   local docs="docs"
+  local param="${1}"
+  local base_url
+  if [[ "${param}" = "build" ]];then
+    base_url="https://isbrqu.github.io/toblogsi"
+  else
+    base_url="http://localhost:8000"
+  fi
   while IFS= read -r -d $'\0' md;do
     local html="$(cext "${md}" "html")"
     html="$(cpath "${html}" "${docs}")"
     local css="$(generate_css_path "${html}")"
     create_html "${md}" "${css}" "${html}"
+    sed -i "s#base_url#${base_url}#g" "${html}"
+    echo "${html}"
   done < <(find "${content}" -type f -print0)
+  echo "done!"
 }
 
 generate_css_path() {

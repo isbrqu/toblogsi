@@ -6,8 +6,10 @@ Los parámetros son una especie de espacio con nombre en la memoria que se puede
 
 Los parámetros se presentan en dos formas: variables y parámetros especiales. Los parámetros especiales son de solo lectura, están preestablecidos por BASH y se utilizan para comunicar algún tipo de estado interno. Las variables son parámetros que puede crear y actualizar usted mismo. Los nombres de las variables están sujetos a la siguiente regla:
 
+> **Revisar.**
+>
 > - *Nombre*
-: Palabra que consta únicamente de letras, dígitos y guiones bajos y que comienza con una letra o un guión bajo. También se denomina identificador.
+> : Palabra que consta únicamente de letras, dígitos y guiones bajos y que comienza con una letra o un guión bajo. También se denomina identificador.
 
 Para almacenar datos en una variable, utilizamos la siguiente sintaxis de asignación:
 
@@ -273,8 +275,8 @@ Imaginemos que tenemos dos archivos, uno `no secret` y otro `secret`. El primero
 
 > **En el manual.**
 >
-> - [Parametros](http://www.gnu.org/software/bash/manual/bashref.html#Shell-Parameters).
-> - [Variables](http://www.gnu.org/software/bash/manual/bashref.html#Shell-Variables).
+> - [Shell-Parameters](http://www.gnu.org/software/bash/manual/bashref.html#Shell-Parameters).
+> - [Shell-Variables](http://www.gnu.org/software/bash/manual/bashref.html#Shell-Variables).
 
 > **En las preguntas frecuentes.**
 >
@@ -284,9 +286,9 @@ Imaginemos que tenemos dos archivos, uno `no secret` y otro `secret`. El primero
 > **Revisar.**
 >
 > - *Variable*
-: Una variable es un tipo de parámetro que se puede crear y modificar directamente. Se denota por un nombre, que debe comenzar con una letra o un guión bajo (\_), y debe constar únicamente de letras, dígitos y el guión bajo. Los nombres de las variables distinguen entre mayúsculas y minúsculas.
+> : Una variable es un tipo de parámetro que se puede crear y modificar directamente. Se denota por un nombre, que debe comenzar con una letra o un guión bajo (\_), y debe constar únicamente de letras, dígitos y el guión bajo. Los nombres de las variables distinguen entre mayúsculas y minúsculas.
 > - *Expansion*
-: La expansión se produce cuando un parámetro tiene como prefijo un signo de dólar. Bash toma el valor del parámetro y reemplaza la expansión del parámetro por su valor antes de ejecutar el comando. Esto también se denomina *sustitución*.
+> : La expansión se produce cuando un parámetro tiene como prefijo un signo de dólar. Bash toma el valor del parámetro y reemplaza la expansión del parámetro por su valor antes de ejecutar el comando. Esto también se denomina *sustitución*.
 
 ## Tipos de variables
 
@@ -329,7 +331,7 @@ Aunque Bash no es un lenguaje tipado, sí tiene algunos tipos diferentes de vari
 	</tbody>
 </table>
 
-Los [arreglos](https://mywiki.wooledge.org/BashGuide/Arrays) son básicamente listas indexadas de cadenas. Son muy convenientes por su capacidad de almacenar múltiples cadenas juntas sin depender de un delimitador para separarlas (lo que es tedioso cuando se hace correctamente y propenso a errores cuando no se hace).
+Los [arreglos](base_url/guia/array.html) son básicamente listas indexadas de cadenas. Son muy convenientes por su capacidad de almacenar múltiples cadenas juntas sin depender de un delimitador para separarlas (lo que es tedioso cuando se hace correctamente y propenso a errores cuando no se hace).
 
 Definir variables como números enteros tiene la ventaja de que se puede omitir parte de la sintaxis al intentar asignarlas o modificarlas:
 
@@ -354,8 +356,8 @@ También es raro ver una declaración explícita de una matriz utilizando `decla
 >
 > - *String*
 > : Una *cadena* es una secuencia de caracteres.
-> - *Array*
-> : Una *arreglo* es una lista de cadenas indexadas por números.
+> - *Array (o arreglo)*
+> : Un *array* es una lista de cadenas indexadas por números.
 > - *Integer*
 > : Un entero es un número entero (positivo, negativo o cero).
 > - *Read Only*
@@ -527,6 +529,6 @@ image
 > - *Expansión de parámetros*
 > : Cualquier expansión (consulte la definición anterior) de un parámetro. Durante esta expansión, se pueden realizar determinadas operaciones sobre el valor que se va a expandir.
 
-[&#8612; Caracteres especiales](caracteres-especiales.html) &#8231; [Patrones &#8614;](patrones.html)
+[&#8612; Caracteres especiales](base_url/guia/caracteres-especiales.html) &#8231; [Patrones &#8614;](base_url/guia/patrones.html)
 
 [Página original](https://mywiki.wooledge.org/BashGuide/Parameters)

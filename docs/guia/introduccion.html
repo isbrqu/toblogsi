@@ -17,11 +17,11 @@
 		</hgroup>
 		<nav>
 			<ul>
-				<li><a href="/guia/introduccion.html">Guía</a></li>
-				<li><a href="/preguntas-frecuentes/introduccion.html">Preguntas frecuentes</a></li>
-				<li><a href="/malas-practicas/introduccion.html">Malas prácticas</a></li>
-				<li><a href="/referencia-rapida/introduccion.html">Referencia rápida</a></li>
-				<li><a href="/programacion/introduccion.html">Programación</a></li>
+				<li><a href="https://isbrqu.github.io/toblogsi/guia/introduccion.html">Guía</a></li>
+				<li><a href="https://isbrqu.github.io/toblogsi/preguntas-frecuentes/introduccion.html">Preguntas frecuentes</a></li>
+				<li><a href="https://isbrqu.github.io/toblogsi/malas-practicas/introduccion.html">Malas prácticas</a></li>
+				<li><a href="https://isbrqu.github.io/toblogsi/referencia-rapida/introduccion.html">Referencia rápida</a></li>
+				<li><a href="https://isbrqu.github.io/toblogsi/programacion/introduccion.html">Programación</a></li>
 			</ul>
 		</nav>
 	</header>
@@ -47,9 +47,27 @@
 <p>Piense en un shell como una forma de comunicarse con su sistema. Su sistema no lo necesita para la mayor parte de su trabajo, pero es una excelente interfaz entre usted y lo que su sistema puede ofrecer. Le permite realizar cálculos matemáticos básicos, ejecutar pruebas básicas y ejecutar aplicaciones. Más importante aún, le permite combinar estas operaciones y conectar aplicaciones entre sí para realizar tareas complejas y automatizadas.</p>
 <p>BASH <strong>no</strong> es su sistema operativo. No es su gestor de ventanas. No es su terminal (pero a menudo se ejecuta <em>dentro</em> de su terminal). No controla su ratón ni su teclado. No configura su sistema, no activa su protector de pantalla ni abre sus archivos cuando hace doble clic en ellos. Por lo general, no interviene en el lanzamiento de aplicaciones desde su gestor de ventanas o entorno de escritorio. Es importante entender que BASH es sólo una interfaz para ejecutar instrucciones (utilizando la sintaxis de BASH), ya sea en el indicador interactivo de BASH o a través de scripts de BASH.</p>
 <blockquote>
-<p><strong><a href="https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Introduction">En el manual: Introducción</a></strong></p>
-<p><em>Shell</em> : Un intérprete de comandos (posiblemente interactivo), que actúa como una capa entre el usuario y el sistema.</p>
-<p><em>Bash</em> : The Bourne Again Shell, un shell compatible con <em>Bourne</em>.</p>
+<p><strong>En el manual.</strong></p>
+<ul>
+<li><a href="https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Introduction">Introduction</a></li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>Revisar.</strong></p>
+<ul>
+<li><dl>
+<dt><em>Shell</em></dt>
+<dd>
+Un intérprete de comandos (posiblemente interactivo), que actúa como una capa entre el usuario y el sistema.
+</dd>
+</dl></li>
+<li><dl>
+<dt><em>Bash</em></dt>
+<dd>
+The Bourne Again Shell, un shell compatible con <em>Bourne</em>.
+</dd>
+</dl></li>
+</ul>
 </blockquote>
 <h2 id="usando-bash">Usando Bash</h2>
 <p>La mayoría de los usuarios que piensan en BASH lo consideran como un <em>prompt</em> y una línea de comandos. Eso es BASH en modo <em>interactivo</em>. BASH también puede ejecutarse en modo <em>no interactivo</em>, como cuando se ejecutan scripts. Podemos usar scripts para automatizar cierta lógica. Los scripts son básicamente listas de comandos (como los que se pueden escribir en la línea de comandos), pero almacenados en un archivo. Cuando se ejecuta un script, todos estos comandos se ejecutan (generalmente) secuencialmente, uno tras otro.</p>
@@ -66,25 +84,43 @@
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> help</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> help read</span></code></pre></div>
 <blockquote>
-<p>En FAQ: <a href="https://mywiki.wooledge.org/BashFAQ/061">¿Existe una lista de las características que se agregaron a versiones específicas de Bash?</a></p>
-<p><em>Modo interactivo</em> : Un modo de operación en el que un mensaje le solicita un comando a la vez.</p>
-<p><em>Script</em> : Archivo que contiene una secuencia de comandos para ejecutar uno tras otro.</p>
+<p><strong>En las preguntas frecuentes.</strong></p>
+<ul>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/061">¿Existe una lista de las características que se agregaron a versiones específicas de Bash?</a></li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>Revisar.</strong></p>
+<ul>
+<li><dl>
+<dt><em>Modo interactivo</em></dt>
+<dd>
+Un modo de operación en el que un mensaje le solicita un comando a la vez.
+</dd>
+</dl></li>
+<li><dl>
+<dt><em>Script</em></dt>
+<dd>
+Archivo que contiene una secuencia de comandos para ejecutar uno tras otro.
+</dd>
+</dl></li>
+</ul>
 </blockquote>
 <h2 id="contenido">Contenido</h2>
 <p>La guía se ha dividido en secciones, que se deben leer aproximadamente en el orden en que se presentan. Si se salta una sección específica, es posible que se pierda información de fondo de las secciones anteriores. (No siempre se proporcionan enlaces a las secciones pertinentes cuando se menciona un tema).</p>
 <ul>
-<li><a href="comandos-y-argumentos.html">Comandos y argumentos</a>: Tipos de comandos; división de argumentos; escritura de scripts.</li>
-<li><a href="caracteres-especiales.html">Caracteres especiales</a>.</li>
-<li><a href="parametros.html">Parámetros</a>: Parámetros Variables; parámetros especiales; tipos de parámetros; expansión de parámetros.</li>
-<li><a href="patrones.html">Patrones</a>: Globs; coincidencia de nombre de archivo; globs extendidos; expansión de llaves; expresiones regulares.</li>
-<li><a href="https://mywiki.wooledge.org/BashGuide/Arrays">Arrays</a>: Arrays; arrays asociativos.</li>
-<li><a href="pruebas-y-condicionales.html">Tests y condicionales</a>: Estado de salida; <code>&amp;&amp;</code> y <code>||</code>; <code>if</code>, <code>test</code> y <code>[[</code>; <code>while</code>, <code>until</code> y <code>for</code>; <code>case</code> y <code>select</code>.</li>
+<li><a href="https://isbrqu.github.io/toblogsi/guia/comandos-y-argumentos.html">Comandos y argumentos</a>: Tipos de comandos; división de argumentos; escritura de scripts.</li>
+<li><a href="https://isbrqu.github.io/toblogsi/guia/caracteres-especiales.html">Caracteres especiales</a>.</li>
+<li><a href="https://isbrqu.github.io/toblogsi/guia/parametros.html">Parámetros</a>: Parámetros Variables; parámetros especiales; tipos de parámetros; expansión de parámetros.</li>
+<li><a href="https://isbrqu.github.io/toblogsi/guia/patrones.html">Patrones</a>: Globs; coincidencia de nombre de archivo; globs extendidos; expansión de llaves; expresiones regulares.</li>
+<li><a href="https://isbrqu.github.io/toblogsi/guia/pruebas-y-condicionales.html">Tests y condicionales</a>: Estado de salida; <code>&amp;&amp;</code> y <code>||</code>; <code>if</code>, <code>test</code> y <code>[[</code>; <code>while</code>, <code>until</code> y <code>for</code>; <code>case</code> y <code>select</code>.</li>
+<li><a href="https://isbrqu.github.io/toblogsi/guia/array.html">Arrays</a>: Arrays; arrays asociativos.</li>
 <li><a href="https://mywiki.wooledge.org/BashGuide/CompoundCommands">Comandos compuestos</a>: Subshells; agrupación de comandos; evaluación aritmética; funciones; alias.</li>
 <li><a href="https://mywiki.wooledge.org/BashGuide/Sourcing">Sourcing</a>: Leyendo comandos de otros archivos.</li>
 <li><a href="https://mywiki.wooledge.org/BashGuide/JobControl">Control de trabajo</a>.</li>
 <li><a href="https://mywiki.wooledge.org/BashGuide/Practices">Prácticas</a>: Elegir su shell; citar; legibilidad; depuración.</li>
 </ul>
-<p>‧ <a href="comandos-y-argumentos.html">Comandos y argumentos ↦</a></p>
+<p>‧ <a href="https://isbrqu.github.io/toblogsi/guia/comandos-y-argumentos.html">Comandos y argumentos ↦</a></p>
 <p><a href="https://mywiki.wooledge.org/BashGuide">Página original</a></p>
 	</main>
 </body>

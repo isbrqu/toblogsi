@@ -213,7 +213,7 @@ Esta vez, `[` ve un operador (`=`) en el segundo argumento y puede continuar con
 
 Para ayudarnos un poco, el shell Korn introdujo (y Bash adoptó) un nuevo estilo de prueba condicional. Por muy originales que sean los autores del shell Korn, lo llamaron `[[`. `[[` está repleto de varias características muy interesantes de las que `[` carece.
 
-Una de las características de `[[` es la coincidencia de [patrones](patrones.html):
+Una de las características de `[[` es la coincidencia de [patrones](base_url/guia/patrones.html):
 
 ```bash
 $ ![ $filename = *.png ]( $filename = *.png ) && echo "$filename parece un archivo PNG"
@@ -826,6 +826,6 @@ done
 > - `select` (keyword)
 > : La instrucción `select` ofrece al usuario la posibilidad de elegir entre varias opciones y ejecuta un bloque de código con la elección del usuario en un parámetro. El menú se repite hasta que se ejecuta un comando `break`.
 
-[&#8612; Patrones](patrones.html) &#8231; [Arrays &#8614;](array.html)
+[&#8612; Patrones](base_url/guia/patrones.html) &#8231; [Arrays &#8614;](base_url/guia/array.html)
 
 [Página original](https://mywiki.wooledge.org/BashGuide/TestsAndConditionals)
