@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="color-scheme" content="light dark">
+	<meta name="author" content="Lhunath,GreyCat,isbrqu">
+	<meta name="description" content="Arrays">
+	<link rel="stylesheet" href="../css/pico.min.css">
+	<title>Arrays</title>
+</head>
+<body>
+	<header class="container">
+		<hgroup>
+			<h1><a href="/">ToBlogSi</a></h1>
+			<p>Traducciones manuales</p>
+		</hgroup>
+		<nav>
+			<ul>
+				<li><a href="https://isbrqu.github.io/toblogsi/guia/introduccion.html">Guía</a></li>
+				<li><a href="https://isbrqu.github.io/toblogsi/preguntas-frecuentes/introduccion.html">Preguntas frecuentes</a></li>
+				<li><a href="https://isbrqu.github.io/toblogsi/malas-practicas/introduccion.html">Malas prácticas</a></li>
+				<li><a href="https://isbrqu.github.io/toblogsi/referencia-rapida/introduccion.html">Referencia rápida</a></li>
+				<li><a href="https://isbrqu.github.io/toblogsi/programacion/introduccion.html">Programación</a></li>
+			</ul>
+		</nav>
+	</header>
+	<main class="container">
+		<h1>Arrays</h1>
+		<p><a href="https://isbrqu.github.io/toblogsi/guia/parametros.html#tipos-de-variables">Como se mencionó anteriormente</a>, <a href="https://mywiki.wooledge.org/Bash">Bash</a> tiene múltiples tipos de parámetros. Es importante señalar que las variables pueden contener un único valor (escalares) o múltiples valores (arreglos).</p>
+<p>Las cadenas son, sin duda, el tipo de parámetro más utilizado, pero también el que menos se utiliza. Es importante recordar que una cadena contiene solo <strong>un</strong> elemento. Capturar la salida de un comando, por ejemplo, y ponerla en un parámetro de cadena significa que ese parámetro contiene solo <strong>una</strong> cadena de caracteres, independientemente de si esa cadena representa veinte nombres de archivos, veinte números o veinte nombres de personas.</p>
+<p>Y como siempre ocurre cuando se colocan varios elementos en una sola cadena, estos elementos múltiples deben estar delimitados de alguna manera entre sí. Nosotros, como humanos, normalmente podemos descifrar cuáles son los diferentes nombres de archivo cuando observamos una cadena. Suponemos que, tal vez, cada línea de la cadena representa un nombre de archivo, o cada palabra representa un nombre de archivo. Si bien esta suposición es comprensible, también es inherentemente errónea. Cada nombre de archivo individual puede contener todos los caracteres que se podrían utilizar para separar los nombres de archivo entre sí en una cadena. Eso significa que técnicamente no hay forma de saber dónde termina el primer nombre de archivo en la cadena, porque no hay ningún carácter que pueda decir: “Indico el final de este nombre de archivo” porque ese carácter en sí mismo podría ser parte del nombre de archivo.</p>
+<p>A menudo la gente comete este error:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Esto NO funciona en el caso general.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> files=<span class="va">$(</span><span class="fu">ls</span> ~/<span class="pp">*</span>.jpg<span class="va">)</span><span class="kw">;</span> <span class="fu">cp</span> <span class="va">$files</span> /backups/</span></code></pre></div>
+<p>Probablemente esta sea una mejor idea (usando la notación de arreglo, que se explica más adelante, en la siguiente sección):</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Esto SÍ funciona en el caso general.</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> files=<span class="er">(</span><span class="ex">~/*.jpg</span><span class="kw">);</span> <span class="fu">cp</span> <span class="st">&quot;</span><span class="va">${files</span><span class="op">[@]</span><span class="va">}</span><span class="st">&quot;</span> /backups/</span></code></pre></div>
+<p>El primer intento de hacer una copia de seguridad de nuestros archivos en el directorio actual es defectuoso. Ponemos la salida de <code>ls</code> en una cadena llamada <code>files</code> y luego usamos la expansión de parámetros <code>$files</code> <strong>sin comillas</strong> para cortar esa cadena en argumentos (confiando en la <em>división de palabras</em>). Como se mencionó antes, la división de argumentos y palabras corta una cadena en pedazos donde haya espacios en blanco. Confiar en esto significa que asumimos que ninguno de nuestros nombres de archivo contendrá ningún espacio en blanco. Si lo hacen, el nombre del archivo se cortará a la mitad o más. Conclusión: <strong>malo</strong>.</p>
+<p>La única forma segura de representar <strong>varios</strong> elementos de cadena en Bash es mediante el uso de arreglos. Una arreglo es un tipo de variable que <strong>mapea números enteros a cadenas</strong>. Eso básicamente significa que contiene una lista numerada de cadenas. Dado que cada una de estas cadenas es una entidad (elemento) independiente, puede contener de forma segura cualquier carácter, incluso espacios en blanco.</p>
+<p>Para obtener mejores resultados y menos dolores de cabeza, recuerda que si tienes una lista de cosas, siempre debes colocarla en una arreglo.</p>
+<p>A diferencia de otros lenguajes de programación, Bash no ofrece listas, tuplas, etc. Sólo arreglos y arreglos asociativas (que son nuevas en Bash 4).</p>
+<blockquote>
+<p><strong>Revisar.</strong></p>
+<dl>
+<dt><em>Arreglo</em></dt>
+<dd>
+Un arreglo es una lista numerada de cadenas: asigna números enteros a cadenas.
+</dd>
+</dl>
+</blockquote>
+<h2 id="creando-arreglos">Creando arreglos</h2>
+<p>Existen varias formas de crear o llenar un arreglo con datos. No existe una única forma verdadera: el método que necesitará dependerá de dónde provengan los datos y de qué tipo sean.</p>
+<p>La forma más sencilla de crear una arreglo simple con datos es utilizando la sintaxis <code>=()</code>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> names=<span class="er">(</span><span class="st">&quot;Bob&quot;</span> <span class="st">&quot;Peter&quot;</span> <span class="st">&quot;</span><span class="va">$USER</span><span class="st">&quot;</span> <span class="st">&quot;Big Bad John&quot;</span><span class="kw">)</span></span></code></pre></div>
+<p>Esta sintaxis es excelente para crear arreglos con datos estáticos o un conjunto conocido de parámetros de cadena, pero nos da muy poca flexibilidad para agregar muchos elementos de arreglo. Si necesita más flexibilidad, también puede especificar índices explícitos:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> names=<span class="er">(</span><span class="ex">[0]=</span><span class="st">&quot;Bob&quot;</span> <span class="pp">[</span><span class="ss">1</span><span class="pp">]</span>=<span class="st">&quot;Peter&quot;</span> <span class="pp">[</span><span class="ss">20</span><span class="pp">]</span>=<span class="st">&quot;</span><span class="va">$USER</span><span class="st">&quot;</span> <span class="pp">[</span><span class="ss">21</span><span class="pp">]</span>=<span class="st">&quot;Big Bad John&quot;</span><span class="kw">)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># or...</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> names<span class="pp">[</span><span class="ss">0</span><span class="pp">]</span>=<span class="st">&quot;Bob&quot;</span></span></code></pre></div>
+<p>Observe que en este ejemplo hay un espacio entre los índices 1 y 20. Un arreglo con espacios se denomina <em>arreglo disperso</em>. Bash permite esto y, a menudo, puede resultar bastante útil.</p>
+<p>Si desea llenar una arreglo con nombres de archivos, entonces probablemente querrá usar <em>Globs</em> allí:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> photos=<span class="er">(</span><span class="ex">~/</span><span class="st">&quot;My Photos&quot;</span><span class="ex">/*.jpg</span><span class="kw">)</span></span></code></pre></div>
+<p>Observe aquí que hemos citado la parte <code>Mis fotos</code> porque contiene un espacio. Si no la hubiéramos citado, Bash la habría dividido en <code>fotos=('~/Mis' 'Fotos/'*.jpg )</code> que obviamente <strong>no</strong> es lo que queremos. Observe también que hemos citado <strong>solo</strong> la parte que contiene el espacio. Esto se debe a que no podemos citar el <code>~</code> o el <code>*</code>; si lo hacemos, se volverán literales y Bash ya no los tratará como caracteres especiales.</p>
+<p>Desafortunadamente, es muy fácil crear <strong>de manera equívoca</strong> arreglos con un montón de nombres de archivos de la siguiente manera:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> files=<span class="va">$(</span><span class="fu">ls</span><span class="va">)</span>    <span class="co"># MAL, MAL, MAL</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> files=<span class="er">(</span><span class="va">$(</span><span class="fu">ls</span><span class="va">)</span><span class="kw">)</span>  <span class="co"># ¡AÚN MAL!</span></span></code></pre></div>
+<p>Recuerde <strong>siempre evitar</strong> el uso de <code>ls</code>. El primero crearía una <strong>cadena</strong> con la salida de <code>ls</code>. Esa cadena no se puede usar de forma segura por las razones mencionadas anteriormente en la introducción de <code>arreglos</code>. El segundo es más preciso, pero aún divide los nombres de archivo con espacios en blanco.</p>
+<p>Esta es la forma correcta de hacerlo:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> files=<span class="er">(</span><span class="ex">*</span><span class="kw">)</span>      <span class="co"># ¡Bien!</span></span></code></pre></div>
+<p>Esta declaración nos da un arreglo donde cada nombre de archivo es un elemento separado. El <code>*</code> es un patrón global para <code>cualquier cadena</code> que expande la ruta de acceso a todos los nombres de archivo en el directorio actual (tal como lo haría, por ejemplo, en <code>rm *</code>). Después de la expansión de la ruta de acceso, el comando se verá como <code>files=([cada archivo en el directorio actual que coincida con *])</code> que asigna todos los archivos a l arreglo <code>files</code>. ¡Perfecto!</p>
+<p><em>Esta sección que vamos a presentar contiene algunos conceptos avanzados. Si te pierdes, es posible que quieras volver aquí después de haber leído toda la guía. Puedes saltar directamente a <a href="#usando-arreglos">usando arreglos</a> si quieres simplificar las cosas.</em></p>
+<p>Ahora bien, a veces queremos construir un arreglo a partir de una cadena o de la salida de un comando. Los comandos (por lo general) solo generan cadenas: por ejemplo, al ejecutar un comando <code>find</code> se enumerarán los nombres de los archivos y se separarán estos nombres de archivos con nuevas líneas (es decir, cada nombre de archivo en una línea separada). Por lo tanto, para analizar esa gran cadena en un arreglo, debemos indicarle a Bash dónde termina cada elemento. (Tenga en cuenta que este es un mal ejemplo, porque los nombres de archivos pueden <strong>contener</strong> una nueva línea, por lo que no es seguro delimitarlos con nuevas líneas. Pero vea más abajo).</p>
+<p>Dividir una cadena es para lo que se utiliza <code>IFS</code>:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> IFS=. read <span class="at">-ra</span> ip_elements <span class="op">&lt;&lt;&lt;</span> <span class="st">&quot;127.0.0.1&quot;</span></span></code></pre></div>
+<p>Aquí usamos <code>IFS</code> con el valor <code>.</code> para dividir la dirección IP dada en elementos de arreglo donde haya un <code>.</code>, lo que da como resultado un arreglo con los elementos <code>127</code>, <code>0</code>, <code>0</code> y <code>1</code>. (El comando incorporado <code>read</code> y el operador <code>&lt;&lt;&lt;</code> se tratarán con más profundidad en el capítulo <a href="https://mywiki.wooledge.org/BashGuide/InputAndOutput">Entrada y salida</a>).</p>
+<p>Podríamos hacer lo mismo con un comando <code>find</code>, configurando <code>IFS</code> con una nueva línea. Pero entonces nuestro script fallaría cuando alguien crea un nombre de archivo con una nueva línea (ya sea de manera accidental o maliciosa).</p>
+<p>Entonces, ¿hay alguna manera de obtener una lista de elementos de un programa externo (como <code>find</code>) en un arreglo de Bash? En general, la respuesta es sí, siempre que haya una forma confiable de delimitar los elementos.</p>
+<p>En el caso específico de los nombres de archivo, la respuesta a este problema son los bytes NUL. Un byte NUL es un byte que está compuesto únicamente de ceros: <code>00000000</code>. Las cadenas de Bash no pueden contener bytes NUL debido a un defecto del lenguaje de programación “C”: los bytes NUL se utilizan en C para marcar el final de una cadena. Dado que Bash está escrito en C y utiliza las cadenas nativas de C, hereda ese comportamiento.</p>
+<p>Un flujo de datos (como la salida de un comando o un archivo) puede contener bytes NUL. Los flujos son como cadenas con tres grandes diferencias: se leen secuencialmente (normalmente no se puede saltar de una a otra); son <em>unidireccionales</em> (se puede leer desde ellos o escribir en ellos, pero normalmente no ambas cosas); y pueden contener bytes NUL.</p>
+<p>Los <em>nombres</em> de archivos no pueden contener bytes NUL (ya que Unix los implementa como cadenas de C), y tampoco la gran mayoría de cosas legibles por humanos que querríamos almacenar en un script (nombres de personas, direcciones IP, etc.). Eso hace que NUL sea un gran candidato para separar elementos en un flujo. Muy a menudo, el comando cuya salida quieres leer tendrá una opción que hace que muestre sus datos separados por bytes NUL en lugar de nuevas líneas o algo más. <code>find</code> (en GNU y BSD, de todos modos) tiene la opción <code>-print0</code>, que usaremos en este ejemplo:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> files=<span class="er">(</span><span class="kw">)</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> while read <span class="at">-r</span> <span class="at">-d</span> <span class="st">&#39;&#39;</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span>     files+=<span class="kw">(</span><span class="st">&quot;</span><span class="va">$REPLY</span><span class="st">&quot;</span><span class="kw">)</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> done <span class="op">&lt;</span> <span class="op">&lt;(</span><span class="fu">find</span> /foo <span class="at">-print0</span><span class="op">)</span></span></code></pre></div>
+<p>Esta es una forma segura de analizar la salida de un comando en cadenas. Es comprensible que parezca un poco confuso y complicado al principio. Así que vamos a analizarlo:</p>
+<ul>
+<li>La primera línea <code>files=()</code> crea un arreglo vacío llamado <code>files</code>.</li>
+<li>Estamos usando un <a href="https://isbrqu.github.io/toblogsi/guia/pruebas-y-condicionales.html">bucle while</a> que ejecuta un comando <code>read</code> cada vez. El comando <code>read</code> usa la opción <code>-d ''</code> para especificar el delimitador e interpreta la cadena vacía como un byte NUL (<code>\0</code>) (ya que los argumentos de Bash no pueden contener NUL). Esto significa que en lugar de leer una línea a la vez (hasta una nueva línea), estamos leyendo hasta un byte NUL. También usa <code>-r</code> para evitar que trate las barras invertidas de manera especial.</li>
+<li>Una vez que <code>read</code> ha leído algunos datos y ha encontrado un byte NUL, se ejecuta el cuerpo del bucle <code>while</code>. Colocamos lo que leímos (que está en el parámetro <code>REPLY</code>) en nuestra matriz.</li>
+<li>Para ello, utilizamos la sintaxis <code>+=()</code>. Esta sintaxis añade uno o más elementos al final de nuestra matriz.</li>
+<li>Finalmente, la sintaxis <code>&lt; &lt;(..)</code> es una combinación de <em>Redirección de archivo</em> (<code>&lt;</code>) y <em>Sustitución de proceso</em> (<code>&lt;(..)</code>). Omitiendo los detalles técnicos por ahora, simplemente diremos que así es como enviamos la salida del comando <code>find</code> a nuestro bucle <code>while</code>.</li>
+</ul>
+<p>El comando <code>find</code> utiliza la opción <code>-print0</code> como se mencionó anteriormente para indicarle que separe los nombres de archivo que encuentra con un byte NUL.</p>
+<p>Aparte de esto, consulte <a href="https://mywiki.wooledge.org/glob#globstar_.28since_bash_4.0-alpha.29">globstar</a> si está usando bash &gt;= 4.0 y solo desea recorrer directorios de forma recursiva.</p>
+<blockquote>
+<p><strong>Buenas prácticas.</strong></p>
+<p>Las matrices son una lista segura de cadenas. Son perfectas para almacenar varios nombres de archivos. Si tiene que analizar un flujo de datos en sus elementos, debe haber una manera de saber dónde empieza y dónde termina cada elemento. El byte NUL suele ser la mejor opción para esta tarea. Si tiene una lista de cosas, manténgala en formato de lista el mayor tiempo posible. No la convierta en una cadena o en un archivo hasta que sea absolutamente necesario. Si tiene que escribirla en un archivo y volver a leerla más tarde, tenga en cuenta el problema de los delimitadores que mencionamos anteriormente.</p>
+</blockquote>
+<blockquote>
+<p><strong>En el manual.</strong></p>
+<ul>
+<li><a href="http://www.gnu.org/software/bash/manual/bashref.html#Arrays">Arrays</a></li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>En preguntas frecuentes.</strong></p>
+<ul>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/005">¿Cómo puedo utilizar variables de arreglo?</a></li>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/006">¿Cómo puedo utilizar variables variables (variables indirectas, punteros, referencias) o matrices asociativas?</a></li>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/020">¿Cómo puedo encontrar y tratar nombres de archivos que contienen nuevas líneas, espacios o ambos?</a></li>
+<li><a href="https://mywiki.wooledge.org/BashFAQ/024">Establecí variables en un bucle. ¿Por qué desaparecen de repente después de que finaliza el bucle? O bien, ¿por qué no puedo enviar datos a leer?</a></li>
+</ul>
+</blockquote>
+<p><a href="https://isbrqu.github.io/toblogsi/guia/pruebas-y-condicionales.html">↤ Tests y condicionales</a> ‧ <a href="https://mywiki.wooledge.org/BashGuide/CompoundCommands">Comandos compuestos ↦</a></p>
+<p><a href="https://mywiki.wooledge.org/BashGuide/Arrays">Página original</a></p>
+	</main>
+</body>
+</html>
